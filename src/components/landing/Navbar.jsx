@@ -24,7 +24,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-7 h-7 rounded-lg bg-stone-900 flex items-center justify-center">
-            <span className="text-white text-xs font-bold">P</span>
+            <span className="text-white text-xs font-bold">A</span>
           </div>
           <span className="text-lg font-semibold tracking-tight text-stone-900">AKW Marketing</span>
         </div>
