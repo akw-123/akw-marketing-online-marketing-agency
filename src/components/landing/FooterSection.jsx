@@ -7,10 +7,12 @@ export default function FooterSection() {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-stone-900 flex items-center justify-center">
-              <span className="text-white text-xs font-bold">P</span>
-            </div>
-            <span className="text-lg font-semibold tracking-tight text-stone-900">ProfResults</span>
+            <img
+              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69aa2d66169a7c4374014381/adfe82e85_Logo_official1.png"
+              alt="AKW Marketing Logo"
+              className="w-8 h-8 rounded-md object-contain"
+            />
+            <span className="text-lg font-semibold tracking-tight text-stone-900">AKW Marketing</span>
           </div>
 
           <div className="flex items-center gap-6">
