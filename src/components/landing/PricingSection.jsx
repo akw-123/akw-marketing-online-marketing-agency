@@ -173,7 +173,7 @@ export default function PricingSection() {
                   Get Started
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
-                <a href="tel:+447400487527" className="block">
+                <a href="tel:+15067038558" className="block">
                   <Button
                     variant="outline"
                     className={`w-full rounded-xl h-11 font-medium text-sm ${
