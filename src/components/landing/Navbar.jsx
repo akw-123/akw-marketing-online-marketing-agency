@@ -26,7 +26,7 @@ export default function Navbar() {
           <div className="w-7 h-7 rounded-lg bg-stone-900 flex items-center justify-center">
             <span className="text-white text-xs font-bold">P</span>
           </div>
-          <span className="text-lg font-semibold tracking-tight text-stone-900">ProfResults</span>
+          <span className="text-lg font-semibold tracking-tight text-stone-900">AKW Marketing</span>
         </div>
 
         <div className="hidden md:flex items-center gap-8">
