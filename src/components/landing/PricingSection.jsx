@@ -44,7 +44,7 @@ const plans = [
     name: "Best Value",
     price: "CA$999",
     period: "/ Quarter",
-    badge: "Save £194",
+    badge: "Save CA$198",
     commitment: "Cancellable every 3 months.",
     highlight: "Top 3 on Google within 90 days. Guaranteed or you don't pay.",
     noGuarantee: false,
