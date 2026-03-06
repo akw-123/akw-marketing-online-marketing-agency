@@ -51,20 +51,11 @@ export default function HeroSection() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="relative"
           >
-            <div className="aspect-video bg-stone-900 rounded-2xl overflow-hidden shadow-2xl shadow-stone-900/20 flex items-center justify-center relative group cursor-pointer">
-              <img
-                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80"
-                alt="Marketing Results"
-                className="w-full h-full object-cover opacity-60"
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-white/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
-                  <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[18px] border-l-stone-900 border-b-[10px] border-b-transparent ml-1"></div>
-                </div>
-              </div>
-              <div className="absolute bottom-4 left-4 text-white/80 text-xs font-medium uppercase tracking-wider">
-                Click to watch · 3:03
-              </div>
+            <div className="rounded-2xl overflow-hidden shadow-2xl shadow-stone-900/20">
+              <script src="https://fast.wistia.com/player.js" async></script>
+              <script src="https://fast.wistia.com/embed/g8bkx9vdzr.js" async type="module"></script>
+              <style>{`wistia-player[media-id='g8bkx9vdzr']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/g8bkx9vdzr/swatch'); display: block; filter: blur(5px); padding-top:56.25%; }`}</style>
+              <wistia-player media-id="g8bkx9vdzr" aspect="1.7777777777777777"></wistia-player>
             </div>
           </motion.div>
         </div>
