@@ -23,9 +23,11 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#F5F0EB]/80 backdrop-blur-xl border-b border-stone-200/50">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-stone-900 flex items-center justify-center">
-            <span className="text-white text-xs font-bold">A</span>
-          </div>
+          <img
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69aa2d66169a7c4374014381/adfe82e85_Logo_official1.png"
+            alt="AKW Marketing Logo"
+            className="w-8 h-8 rounded-md object-contain"
+          />
           <span className="text-lg font-semibold tracking-tight text-stone-900">AKW Marketing</span>
         </div>
 
