@@ -17,11 +17,11 @@ export default function FooterSection() {
 
           <div className="flex items-center gap-6">
             <a
-              href="tel:+447400487527"
+              href="tel:+15067038558"
               className="flex items-center gap-2 text-sm text-stone-500 hover:text-stone-900 transition-colors"
             >
               <Phone className="w-4 h-4" />
-              +44 7400 487527
+              +1 506 703 8558
             </a>
             <a
               href="mailto:hello@profresults.com"

@@ -44,10 +44,10 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          <a href="tel:+447400487527">
+          <a href="tel:+15067038558">
             <Button className="bg-stone-900 hover:bg-stone-800 text-white rounded-full px-5 h-9 text-sm font-medium">
               <Phone className="w-3.5 h-3.5 mr-2" />
-              +44 7400 487527
+              +1 506 703 8558
             </Button>
           </a>
           <button
