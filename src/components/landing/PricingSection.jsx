@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 const plans = [
   {
     name: "Minimum",
-    price: "£300",
+    price: "CA$500",
     period: "/ Month",
     commitment: "3 month commitment. Cancellable monthly thereafter.",
     highlight: "First page on Google within 90 days.",
@@ -24,7 +24,7 @@ const plans = [
   },
   {
     name: "Standard",
-    price: "£397",
+    price: "CA$599",
     period: "/ Month",
     commitment: "3 month commitment. Cancellable monthly thereafter.",
     highlight: "Top 3 on Google within 90 days. Guaranteed or you don't pay.",
@@ -42,7 +42,7 @@ const plans = [
   },
   {
     name: "Best Value",
-    price: "£997",
+    price: "CA$999",
     period: "/ Quarter",
     badge: "Save £194",
     commitment: "Cancellable every 3 months.",
