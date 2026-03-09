@@ -24,11 +24,11 @@ export default function FooterSection() {
               +1 506 703 8558
             </a>
             <a
-              href="mailto:hello@profresults.com"
+              href="mailto:contact@akwmarketing.com"
               className="flex items-center gap-2 text-sm text-stone-500 hover:text-stone-900 transition-colors"
             >
               <Mail className="w-4 h-4" />
-              hello@profresults.com
+              contact@akwmarketing.com
             </a>
           </div>
         </div>
