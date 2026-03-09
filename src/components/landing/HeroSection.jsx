@@ -51,11 +51,15 @@ export default function HeroSection() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="relative"
           >
-            <div className="rounded-2xl overflow-hidden shadow-2xl shadow-stone-900/20">
-              <script src="https://fast.wistia.com/player.js" async></script>
-              <script src="https://fast.wistia.com/embed/g8bkx9vdzr.js" async type="module"></script>
-              <style>{`wistia-player[media-id='g8bkx9vdzr']:not(:defined) { background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/g8bkx9vdzr/swatch'); display: block; filter: blur(5px); padding-top:56.25%; }`}</style>
-              <wistia-player media-id="g8bkx9vdzr" aspect="1.7777777777777777"></wistia-player>
+            <div className="rounded-2xl overflow-hidden shadow-2xl shadow-stone-900/20 relative" style={{ paddingTop: "56.25%" }}>
+              <iframe
+                src="https://fast.wistia.net/embed/iframe/g8bkx9vdzr?videoFoam=true&playButton=true&muted=false"
+                title="AKW Marketing Video"
+                allow="autoplay; fullscreen"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+                style={{ border: "none" }}
+              />
             </div>
           </motion.div>
         </div>
