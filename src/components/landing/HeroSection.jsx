@@ -53,10 +53,12 @@ export default function HeroSection() {
           >
             <div className="rounded-2xl overflow-hidden shadow-2xl shadow-stone-900/20 relative" style={{ paddingTop: "56.25%" }}>
               <iframe
-                src="https://fast.wistia.net/embed/iframe/g8bkx9vdzr?videoFoam=true&playButton=true&muted=false"
+                src="https://fast.wistia.net/embed/iframe/g8bkx9vdzr?videoFoam=true&playButton=true&controlsVisibleOnLoad=true&volumeControl=true&fullscreenButton=true&playbar=true"
                 title="AKW Marketing Video"
                 allow="autoplay; fullscreen"
                 allowFullScreen
+                frameBorder="0"
+                scrolling="no"
                 className="absolute inset-0 w-full h-full"
                 style={{ border: "none" }}
               />
