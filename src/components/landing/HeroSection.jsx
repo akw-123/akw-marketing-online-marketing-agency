@@ -61,17 +61,13 @@ export default function HeroSection() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="relative"
           >
-            <div className="rounded-2xl overflow-hidden shadow-2xl shadow-stone-900/20 relative" style={{ paddingTop: "56.25%" }}>
-              <iframe
-                src="https://fast.wistia.net/embed/iframe/g8bkx9vdzr?videoFoam=true&playButton=true&controlsVisibleOnLoad=true&volumeControl=true&fullscreenButton=true&playbar=true"
-                title="AKW Marketing Video"
-                allow="autoplay; fullscreen"
-                allowFullScreen
-                frameBorder="0"
-                scrolling="no"
-                className="absolute inset-0 w-full h-full"
-                style={{ border: "none" }}
-              />
+            <div className="rounded-2xl overflow-hidden shadow-2xl shadow-stone-900/20 w-full">
+              <div
+                className="wistia_embed wistia_async_g8bkx9vdzr videoFoam=true"
+                style={{ position: "relative", paddingTop: "56.25%", width: "100%" }}
+              >
+                <div style={{ position: "absolute", inset: 0 }}></div>
+              </div>
             </div>
           </motion.div>
         </div>
