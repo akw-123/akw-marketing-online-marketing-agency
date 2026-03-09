@@ -35,7 +35,7 @@ export default function FooterSection() {
 
         <div className="mt-8 pt-8 border-t border-stone-200/60 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-stone-400">
-            © {new Date().getFullYear()} ProfResults. All rights reserved.
+            © {new Date().getFullYear()} AKW Marketing. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <a href="#" className="text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1">
