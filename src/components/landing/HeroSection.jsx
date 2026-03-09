@@ -3,6 +3,16 @@ import { motion } from "framer-motion";
 import { Users, Clock, Zap } from "lucide-react";
 
 export default function HeroSection() {
+  useEffect(() => {
+    const script1 = document.createElement("script");
+    script1.src = "https://fast.wistia.com/assets/external/E-v1.js";
+    script1.async = true;
+    document.body.appendChild(script1);
+    return () => {
+      document.body.removeChild(script1);
+    };
+  }, []);
+
   const stats = [
     { icon: Users, label: "32+ Satisfied Clients" },
     { icon: Clock, label: "4+ Years of Experience" },
