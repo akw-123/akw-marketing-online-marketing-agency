@@ -1,18 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { Users, Clock, Zap } from "lucide-react";
 
 export default function HeroSection() {
-  useEffect(() => {
-    const script1 = document.createElement("script");
-    script1.src = "https://fast.wistia.com/assets/external/E-v1.js";
-    script1.async = true;
-    document.body.appendChild(script1);
-    return () => {
-      document.body.removeChild(script1);
-    };
-  }, []);
-
   const stats = [
     { icon: Users, label: "32+ Satisfied Clients" },
     { icon: Clock, label: "4+ Years of Experience" },
@@ -61,13 +51,17 @@ export default function HeroSection() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="relative"
           >
-            <div className="rounded-2xl overflow-hidden shadow-2xl shadow-stone-900/20 w-full">
-              <div
-                className="wistia_embed wistia_async_g8bkx9vdzr videoFoam=true"
-                style={{ position: "relative", paddingTop: "56.25%", width: "100%" }}
-              >
-                <div style={{ position: "absolute", inset: 0 }}></div>
-              </div>
+            <div className="rounded-2xl overflow-hidden shadow-2xl shadow-stone-900/20 relative" style={{ paddingTop: "56.25%" }}>
+              <iframe
+                src="https://fast.wistia.net/embed/iframe/g8bkx9vdzr?videoFoam=true&playButton=true&controlsVisibleOnLoad=true&volumeControl=true&fullscreenButton=true&playbar=true"
+                title="AKW Marketing Video"
+                allow="autoplay; fullscreen"
+                allowFullScreen
+                frameBorder="0"
+                scrolling="no"
+                className="absolute inset-0 w-full h-full"
+                style={{ border: "none" }}
+              />
             </div>
           </motion.div>
         </div>
