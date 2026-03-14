@@ -10,10 +10,10 @@ const testimonials = [
     avatar: "JH",
   },
   {
-    name: "Andre",
+    name: "Sarah Mitchell",
     role: "Dental Practice Manager",
     text: "ProfResults delivered exactly what they promised. We're now ranking #1 for our main keyword and new patient appointments have skyrocketed.",
-    avatar: "A",
+    avatar: "SM",
   },
   {
     name: "David Chen",
