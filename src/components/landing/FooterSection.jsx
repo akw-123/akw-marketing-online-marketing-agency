@@ -38,10 +38,10 @@ export default function FooterSection() {
             © {new Date().getFullYear()} AKW Marketing. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <a href="#" className="text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1">
+            <a href="/PrivacyPolicy" className="text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1">
               Privacy Policy <ArrowUpRight className="w-3 h-3" />
             </a>
-            <a href="#" className="text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1">
+            <a href="/TermsOfService" className="text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1">
               Terms of Service <ArrowUpRight className="w-3 h-3" />
             </a>
           </div>
