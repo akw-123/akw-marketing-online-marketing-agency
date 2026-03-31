@@ -43,7 +43,7 @@ export default function FooterSection() {
               <a href="https://www.instagram.com/akw_marketing/" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-stone-900 transition-colors">
                 <InstagramIcon />
               </a>
-              <a href="https://www.linkedin.com/company/akw-marketing/about/?viewAsMember=true" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-stone-900 transition-colors">
+              <a href="https://www.linkedin.com/company/akw-marketing" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-stone-900 transition-colors">
                 <LinkedInIcon />
               </a>
               <a href="https://x.com/akw_marketing" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-stone-900 transition-colors">
