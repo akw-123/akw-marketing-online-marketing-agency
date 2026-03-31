@@ -40,7 +40,7 @@ export default function FooterSection() {
         <div className="mt-8 pt-8 border-t border-stone-200/60 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-stone-400 text-center sm:text-left">
             © {new Date().getFullYear()} All rights reserved by AKW Marketing. Legal information upon request at{" "}
-            <a href="mailto:andre@akwmarketing.com" className="underline hover:text-stone-600 transition-colors">andre@akwmarketing.com</a>
+            <a href="mailto:contact@akwmarketing.com" className="underline hover:text-stone-600 transition-colors">contact@akwmarketing.com</a>
             {" "}for legal information request.
           </p>
           <div className="flex items-center gap-6">
