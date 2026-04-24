@@ -62,7 +62,7 @@ const AuthenticatedApp = () => {
       ))}
       <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
       <Route path="/TermsOfService" element={<TermsOfService />} />
-      <Route path="/meta-ads" element={<MetaAds />} />
+      <Route path="/gbp" element={<MetaAds />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
