@@ -217,18 +217,6 @@ ${form.additional_info || "—"}
         </div>
       </div>
 
-      {/* Referral */}
-      <div>
-        <label className="block text-sm font-medium text-stone-700 mb-1.5">How did you hear about us?</label>
-        <select value={form.referral_source} onChange={set("referral_source")} className={selectClass}>
-          <option value="">Select an option…</option>
-          <option>Google Search</option>
-          <option>Referral</option>
-          <option>Social Media</option>
-          <option>Other</option>
-        </select>
-      </div>
-
       {/* Additional Info */}
       <div>
         <label className="block text-sm font-medium text-stone-700 mb-1.5">Anything else you'd like us to know? <span className="text-stone-400 font-normal">(optional)</span></label>
