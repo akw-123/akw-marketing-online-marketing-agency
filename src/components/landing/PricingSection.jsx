@@ -163,16 +163,18 @@ export default function PricingSection() {
               </div>
 
               <div className="space-y-2">
-                <Button
-                  className={`w-full rounded-xl h-11 font-medium text-sm ${
-                    plan.popular
-                      ? "bg-white text-stone-900 hover:bg-stone-100"
-                      : "bg-stone-900 text-white hover:bg-stone-800"
-                  }`}
-                >
-                  Get Started
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
+                <a href="https://calendar.app.google/B2umMiNgAUYvewSN6" target="_blank" rel="noopener noreferrer" className="block">
+                  <Button
+                    className={`w-full rounded-xl h-11 font-medium text-sm ${
+                      plan.popular
+                        ? "bg-white text-stone-900 hover:bg-stone-100"
+                        : "bg-stone-900 text-white hover:bg-stone-800"
+                    }`}
+                  >
+                    Get Started
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </a>
                 <a href="tel:+15067038558" className="block">
                   <Button
                     variant="outline"
