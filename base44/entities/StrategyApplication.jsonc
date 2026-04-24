@@ -1,0 +1,88 @@
+{
+  "name": "StrategyApplication",
+  "type": "object",
+  "properties": {
+    "full_name": {
+      "type": "string",
+      "description": "Full name of the applicant"
+    },
+    "business_name": {
+      "type": "string",
+      "description": "Name of the business"
+    },
+    "email": {
+      "type": "string",
+      "description": "Email address"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Phone number"
+    },
+    "website": {
+      "type": "string",
+      "description": "Business website URL"
+    },
+    "gbp_status": {
+      "type": "string",
+      "enum": [
+        "Not set up yet",
+        "Set up but not optimized",
+        "Suspended/Penalized",
+        "Already optimized but want more"
+      ],
+      "description": "Current Google Business Profile status"
+    },
+    "primary_goal": {
+      "type": "string",
+      "enum": [
+        "Get more calls",
+        "Get more foot traffic",
+        "Rank higher in local search",
+        "Improve reviews & reputation",
+        "All of the above"
+      ],
+      "description": "Primary goal"
+    },
+    "monthly_budget": {
+      "type": "string",
+      "enum": [
+        "Under $500",
+        "$500\u2013$1,000",
+        "$1,000\u2013$2,500",
+        "$2,500\u2013$5,000",
+        "$5,000+"
+      ],
+      "description": "Monthly marketing budget"
+    },
+    "start_timeline": {
+      "type": "string",
+      "enum": [
+        "Immediately",
+        "Within 30 days",
+        "1\u20133 months",
+        "Just exploring"
+      ],
+      "description": "How soon looking to start"
+    },
+    "referral_source": {
+      "type": "string",
+      "enum": [
+        "Google Search",
+        "Referral",
+        "Social Media",
+        "Other"
+      ],
+      "description": "How they heard about us"
+    },
+    "additional_info": {
+      "type": "string",
+      "description": "Anything else they want to share"
+    }
+  },
+  "required": [
+    "full_name",
+    "business_name",
+    "email",
+    "phone"
+  ]
+}
