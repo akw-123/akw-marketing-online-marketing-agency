@@ -9,7 +9,6 @@ import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import MetaAds from './pages/MetaAds';
-import FreeAnalysis from './pages/FreeAnalysis';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -64,7 +63,6 @@ const AuthenticatedApp = () => {
       <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
       <Route path="/TermsOfService" element={<TermsOfService />} />
       <Route path="/gbp" element={<MetaAds />} />
-      <Route path="/free-analysis" element={<FreeAnalysis />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
