@@ -1,0 +1,32 @@
+{
+  "name": "FreeAnalysisRequest",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Full name"
+    },
+    "email": {
+      "type": "string",
+      "description": "Email address"
+    },
+    "business_name": {
+      "type": "string",
+      "description": "Business name"
+    },
+    "timeline": {
+      "type": "string",
+      "enum": [
+        "Today",
+        "This Week",
+        "In a few weeks"
+      ],
+      "description": "When they want to solve the problem"
+    }
+  },
+  "required": [
+    "name",
+    "email",
+    "business_name"
+  ]
+}
