@@ -47,7 +47,7 @@ export default function Navbar() {
           <a href="tel:+15067038558">
             <Button className="bg-stone-900 hover:bg-stone-800 text-white rounded-full px-5 h-9 text-sm font-medium">
               <Phone className="w-3.5 h-3.5 mr-2" />
-              +1 506 703 8558
+              +1 437 475 0076
             </Button>
           </a>
           <button

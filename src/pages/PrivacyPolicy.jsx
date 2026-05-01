@@ -107,7 +107,7 @@ export default function PrivacyPolicy() {
               </p>
               <ul className="list-none text-stone-600 space-y-2">
                 <li>Email: contact@akwmarketing.com</li>
-                <li>Phone: +1 506 703 8558</li>
+                <li>Phone: +1 437 475 0076</li>
               </ul>
             </section>
           </div>

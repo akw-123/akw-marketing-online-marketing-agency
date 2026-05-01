@@ -58,7 +58,7 @@ export default function FooterSection() {
               className="flex items-center gap-2 text-sm text-stone-500 hover:text-stone-900 transition-colors"
             >
               <Phone className="w-4 h-4" />
-              +1 506 703 8558
+              +1 437 475 0076
             </a>
             <a
               href="mailto:contact@akwmarketing.com"

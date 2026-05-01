@@ -258,7 +258,7 @@ export default function MetaAds() {
           <a href="tel:+15067038558">
             <button className="bg-stone-900 hover:bg-stone-800 text-white rounded-full px-5 h-9 text-sm font-medium flex items-center gap-2 transition-colors">
               <Phone className="w-3.5 h-3.5" />
-              +1 506 703 8558
+              +1 437 475 0076
             </button>
           </a>
         </div>
@@ -494,7 +494,7 @@ export default function MetaAds() {
           </motion.div>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
             <a href="tel:+15067038558" className="flex items-center gap-2 text-sm text-stone-500 hover:text-stone-900 transition-colors">
-              <Phone className="w-4 h-4" /> +1 506 703 8558
+              <Phone className="w-4 h-4" /> +1 437 475 0076
             </a>
             <span className="hidden sm:block text-stone-300">|</span>
             <a href="mailto:contact@akwmarketing.com" className="flex items-center gap-2 text-sm text-stone-500 hover:text-stone-900 transition-colors">
