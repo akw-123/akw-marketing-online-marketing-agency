@@ -147,6 +147,10 @@ function KitchenerCTA() {
 }
 
 export default function Kitchener() {
+  React.useEffect(() => {
+    document.title = "Internet Marketing Service in Kitchener";
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#F5F0EB]">
       <KitchenerNav />
