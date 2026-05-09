@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Users, Clock, Zap, Phone, ArrowRight } from "lucide-react";
 import AdvantagesSection from "@/components/landing/AdvantagesSection";
 import BeforeAfterSection from "@/components/landing/BeforeAfterSection";
-import ProcessSection from "@/components/landing/ProcessSection";
+import KitchenerProcessSection from "@/components/landing/KitchenerProcessSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
 import FAQSection from "@/components/landing/FAQSection";
 import FooterSection from "@/components/landing/FooterSection";
@@ -157,7 +157,7 @@ export default function Kitchener() {
       <KitchenerHero />
       <AdvantagesSection />
       <BeforeAfterSection />
-      <ProcessSection />
+      <KitchenerProcessSection />
       <TestimonialsSection />
       <FAQSection />
       <KitchenerCTA />
