@@ -487,17 +487,10 @@ export default function MetaAds() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-stone-200/60 py-10 px-6">
-        <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-start gap-6">
-          <div>
-            <p className="text-sm font-semibold text-stone-800">AKW Marketing Agency Kitchener</p>
-            <p className="text-sm text-stone-500 mt-1">Serving Kitchener</p>
-            <a href="tel:+14374750076" className="text-sm text-stone-500 hover:text-stone-900 transition-colors mt-1 block">+1 437-475-0076</a>
-          </div>
-          <p className="text-xs text-stone-400 self-end">
-            © {new Date().getFullYear()} AKW Marketing. All rights reserved.
-          </p>
-        </div>
+      <footer className="border-t border-stone-200/60 py-8 px-6 text-center">
+        <p className="text-xs text-stone-400">
+          © {new Date().getFullYear()} AKW Marketing. All rights reserved.
+        </p>
       </footer>
     </div>
   );
