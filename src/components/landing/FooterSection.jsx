@@ -35,10 +35,10 @@ export default function FooterSection() {
                 alt="AKW Marketing Logo"
                 className="w-8 h-8 rounded-md object-contain"
               />
-              <span className="text-lg font-semibold tracking-tight text-stone-900">AKW Marketing</span>
+              <span className="text-lg font-semibold tracking-tight text-stone-900">AKW Marketing Agency</span>
             </a>
             <p className="text-sm text-stone-600 font-medium">Dominate your local market.</p>
-            <p className="text-sm text-stone-400">Built for local businesses.</p>
+            <p className="text-sm text-stone-400">Service area: Kitchener, Waterloo, Cambridge, Guelph, Brantford, Stratford, Elora, Fergus, Elmira, St. Jacobs, Paris, New Hamburg, Ayr, Wellesley, Breslau, Heidelberg, Linwood, Bloomingdale, Conestogo & Rockwood.</p>
             <div className="flex items-center gap-4 mt-4">
               <a href="https://www.instagram.com/akw_marketing/" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-stone-900 transition-colors">
                 <InstagramIcon />
@@ -54,11 +54,11 @@ export default function FooterSection() {
 
           <div className="flex items-center gap-6">
             <a
-              href="tel:+15067038558"
+              href="tel:+14374750076"
               className="flex items-center gap-2 text-sm text-stone-500 hover:text-stone-900 transition-colors"
             >
               <Phone className="w-4 h-4" />
-              +1 437 475 0076
+              +1 437-475-0076
             </a>
             <a
               href="mailto:contact@akwmarketing.com"
