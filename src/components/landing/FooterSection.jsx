@@ -52,22 +52,7 @@ export default function FooterSection() {
             </div>
           </div>
 
-          <div className="flex items-center gap-6">
-            <a
-              href="tel:+15067038558"
-              className="flex items-center gap-2 text-sm text-stone-500 hover:text-stone-900 transition-colors"
-            >
-              <Phone className="w-4 h-4" />
-              +1 437 475 0076
-            </a>
-            <a
-              href="mailto:contact@akwmarketing.com"
-              className="flex items-center gap-2 text-sm text-stone-500 hover:text-stone-900 transition-colors"
-            >
-              <Mail className="w-4 h-4" />
-              contact@akwmarketing.com
-            </a>
-          </div>
+
         </div>
 
         <div className="mt-8 pt-8 border-t border-stone-200/60 flex flex-col sm:flex-row justify-between items-center gap-4">
