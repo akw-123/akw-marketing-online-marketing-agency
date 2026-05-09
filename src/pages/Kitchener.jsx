@@ -57,7 +57,7 @@ function KitchenerHero() {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-stone-900 leading-[1.1] tracking-tight">
-              Google Maps SEO<br />In Kitchener
+              Internet Marketing Service in Kitchener
             </h1>
 
             <p className="mt-6 text-stone-600 leading-relaxed max-w-lg">
