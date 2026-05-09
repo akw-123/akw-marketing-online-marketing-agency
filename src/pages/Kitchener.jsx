@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Users, Clock, Zap, Phone, ArrowRight } from "lucide-react";
 import AdvantagesSection from "@/components/landing/AdvantagesSection";
@@ -147,6 +147,10 @@ function KitchenerCTA() {
 }
 
 export default function Kitchener() {
+  useEffect(() => {
+    document.title = "Best Internet Marketing Service in Kitchener - AKW Marketing Agency in Kitchener";
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#F5F0EB]">
       <KitchenerNav />
