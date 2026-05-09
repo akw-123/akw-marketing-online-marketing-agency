@@ -148,7 +148,7 @@ function KitchenerCTA() {
 
 export default function Kitchener() {
   useEffect(() => {
-    document.title = "Best Internet Marketing Service in Kitchener - AKW Marketing Agency in Kitchener";
+    document.title = "Best Internet Marketing Service in Kitchener - AKW Marketing Agency is your internet marketing service in Kitchener";
   }, []);
 
   return (
