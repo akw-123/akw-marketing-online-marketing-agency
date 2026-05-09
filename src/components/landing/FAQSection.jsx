@@ -21,7 +21,7 @@ const faqs = [
   },
   {
     q: "How can we get started?",
-    a: "Simply choose a package below and fill out the intake form. We'll get back to you within 24 hours with a free analysis of your current Google rankings and a clear roadmap to get you into the top 3.",
+    a: "Schedule a short strategy call via the button on this page. We'll review your current Google presence together, assess your market, and tell you exactly what's needed to get you into the top 3. Free, no obligations.",
   },
 ];
 
