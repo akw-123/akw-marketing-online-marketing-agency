@@ -6,7 +6,6 @@ import BeforeAfterSection from "@/components/landing/BeforeAfterSection";
 import ProcessSection from "@/components/landing/ProcessSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
 import FAQSection from "@/components/landing/FAQSection";
-import PricingSection from "@/components/landing/PricingSection";
 import FooterSection from "@/components/landing/FooterSection";
 
 const stats = [
@@ -157,7 +156,6 @@ export default function Kitchener() {
       <ProcessSection />
       <TestimonialsSection />
       <FAQSection />
-      <PricingSection />
       <KitchenerCTA />
       <FooterSection />
     </div>
