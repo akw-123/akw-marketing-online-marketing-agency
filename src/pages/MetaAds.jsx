@@ -21,7 +21,7 @@ const advantages = [
   },
   {
     title: "Free",
-    desc: "No pay per click or huge ad budgets as with running Google Ads, Meta Ads or alike.",
+    desc: "No pay per click or huge ad budgets as with running Google Ads, Meta Ads, or alike.",
   },
   {
     title: "Long Term Strategy",
@@ -39,9 +39,9 @@ const process = [
 const faqs = [
   { q: "What is the difference between SEO and Google Ads?", a: "SEO (Search Engine Optimization) is a long-term strategy that helps your business rank organically in search results. Google Ads is a pay-per-click model where you pay every time someone clicks your ad. SEO provides sustainable, free traffic once you rank, while ads stop the moment you stop paying." },
   { q: "Which companies do you work with?", a: "We work with local service-based businesses such as plumbers, dentists, electricians, lawyers, real estate agents, restaurants, and more. Essentially any business that relies on local customers finding them through Google." },
-  { q: "How much time will I need to invest?", a: "Very little. After the initial onboarding which takes about 15 minutes, we handle everything. You'll receive bi-weekly progress updates and can reach out to us anytime with questions." },
-  { q: "What are the contract terms?", a: "We require a 3-month minimum commitment to allow enough time for results. After the initial period, you can cancel monthly. We're confident in our results which is why we offer a money-back guarantee." },
-  { q: "How can we get started?", a: "Schedule a short strategy call via the button on this page. We'll review your current Google presence together, assess your market, and tell you exactly what's needed to get you into the top 3. Free, no obligations." },
+  { q: "How much time will I need to invest?", a: "Very little. After the initial onboarding which takes about 15 minutes, we handle everything. You will receive bi-weekly progress updates and can reach out to us anytime with questions." },
+  { q: "What are the contract terms?", a: "We require a 3-month minimum commitment to allow enough time for results. After the initial period, you can cancel monthly. We are confident in our results, which is why we offer a money-back guarantee." },
+  { q: "How can we get started?", a: "Schedule a short strategy call via the button on this page. We will review your current Google presence together, assess your market, and tell you exactly what is needed to get you into the top 3. Free, no obligations." },
 ];
 
 function FAQItem({ q, a }) {
@@ -101,21 +101,21 @@ Full Name: ${form.full_name}
 Business Name: ${form.business_name}
 Email: ${form.email}
 Phone: ${form.phone}
-Website: ${form.website || "—"}
+Website: ${form.website || "N/A"}
 
-GBP Status: ${form.gbp_status || "—"}
-Primary Goal: ${form.primary_goal || "—"}
-Monthly Budget: ${form.monthly_budget || "—"}
-Start Timeline: ${form.start_timeline || "—"}
-How They Heard: ${form.referral_source || "—"}
+GBP Status: ${form.gbp_status || "N/A"}
+Primary Goal: ${form.primary_goal || "N/A"}
+Monthly Budget: ${form.monthly_budget || "N/A"}
+Start Timeline: ${form.start_timeline || "N/A"}
+How They Heard: ${form.referral_source || "N/A"}
 
 Additional Info:
-${form.additional_info || "—"}
+${form.additional_info || "N/A"}
     `.trim();
 
     await base44.integrations.Core.SendEmail({
       to: "andre@akwmarketing.com",
-      subject: `New GBP Application — ${form.business_name} (${form.full_name})`,
+      subject: `New GBP Application: ${form.business_name} (${form.full_name})`,
       body: emailBody,
     });
 
