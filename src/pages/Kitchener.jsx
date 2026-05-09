@@ -6,7 +6,7 @@ import BeforeAfterSection from "@/components/landing/BeforeAfterSection";
 import KitchenerProcessSection from "@/components/landing/KitchenerProcessSection";
 import TestimonialsSection from "@/components/landing/TestimonialsSection";
 import FAQSection from "@/components/landing/FAQSection";
-import FooterSection from "@/components/landing/FooterSection";
+import KitchenerFooter from "@/components/landing/KitchenerFooter";
 
 const stats = [
   { icon: Users, label: "32+ Satisfied Clients" },
@@ -161,7 +161,7 @@ export default function Kitchener() {
       <TestimonialsSection />
       <FAQSection />
       <KitchenerCTA />
-      <FooterSection />
+      <KitchenerFooter />
     </div>
   );
 }
