@@ -488,15 +488,29 @@ export default function MetaAds() {
 
       {/* Footer */}
       <footer className="border-t border-stone-200/60 py-10 px-6">
-        <div className="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-start gap-6">
-          <div>
-            <p className="text-sm font-semibold text-stone-800">AKW Marketing Agency Kitchener</p>
-            <p className="text-sm text-stone-500 mt-1">Serving Kitchener</p>
-            <a href="tel:+14374750076" className="text-sm text-stone-500 hover:text-stone-900 transition-colors mt-1 block">+1 437-475-0076</a>
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-8">
+            <div>
+              <p className="text-sm font-semibold text-stone-800">AKW Marketing Agency Kitchener</p>
+              <p className="text-sm text-stone-500 mt-1">Serving Kitchener</p>
+              <a href="tel:+14374750076" className="text-sm text-stone-500 hover:text-stone-900 transition-colors mt-1 block">+1 437-475-0076</a>
+            </div>
+            <p className="text-xs text-stone-400 self-end">
+              © {new Date().getFullYear()} AKW Marketing. All rights reserved.
+            </p>
           </div>
-          <p className="text-xs text-stone-400 self-end">
-            © {new Date().getFullYear()} AKW Marketing. All rights reserved.
-          </p>
+          <div className="rounded-xl overflow-hidden border border-stone-200">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2896.0!2d-80.4927!3d43.4516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zQUtXIE1hcmtldGluZyBBZ2VuY3k!5e0!3m2!1sen!2sca!4v1!5m2!1sen!2sca&q=AKW+Marketing+Agency+Kitchener"
+              width="100%"
+              height="250"
+              style={{ border: 0, display: "block" }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="AKW Marketing Agency Kitchener"
+            />
+          </div>
         </div>
       </footer>
     </div>
