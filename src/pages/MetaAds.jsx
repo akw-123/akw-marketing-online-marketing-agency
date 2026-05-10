@@ -474,15 +474,7 @@ export default function MetaAds() {
           >
             <ApplicationForm />
           </motion.div>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
-            <a href="tel:+14374750076" className="flex items-center gap-2 text-sm text-stone-500 hover:text-stone-900 transition-colors">
-              <Phone className="w-4 h-4" /> +1 437 475 0076
-            </a>
-            <span className="hidden sm:block text-stone-300">|</span>
-            <a href="mailto:contact@akwmarketing.com" className="flex items-center gap-2 text-sm text-stone-500 hover:text-stone-900 transition-colors">
-              <Mail className="w-4 h-4" /> contact@akwmarketing.com
-            </a>
-          </div>
+
         </section>
       </div>
 
