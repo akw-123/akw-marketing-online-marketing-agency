@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Phone, Mail, Users, Zap, TrendingUp, CheckCircle, ChevronDown, ChevronUp, ArrowRight, Clock, Loader2 } from "lucide-react";
+import { Users, Zap, TrendingUp, CheckCircle, ChevronDown, ArrowRight, Clock, Loader2 } from "lucide-react";
+import FooterSection from "@/components/landing/FooterSection";
 import { base44 } from "@/api/base44Client";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -478,12 +479,7 @@ export default function MetaAds() {
         </section>
       </div>
 
-      {/* Footer */}
-      <footer className="border-t border-stone-200/60 py-8 px-6 text-center">
-        <p className="text-xs text-stone-400">
-          © {new Date().getFullYear()} AKW Marketing. All rights reserved.
-        </p>
-      </footer>
+      <FooterSection />
     </div>
   );
 }
