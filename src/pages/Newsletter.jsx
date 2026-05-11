@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { ArrowUpRight, Loader2, CheckCircle } from "lucide-react";
 import { base44 } from "@/api/base44Client";
+import FAQSection from "@/components/landing/FAQSection";
+import FooterSection from "@/components/landing/FooterSection";
 
 export default function Newsletter() {
   const [form, setForm] = useState({ first_name: "", email: "" });
@@ -110,6 +112,8 @@ export default function Newsletter() {
           </div>
         </div>
       </div>
+      <FAQSection />
+      <FooterSection />
     </div>
   );
 }
