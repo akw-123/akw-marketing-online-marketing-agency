@@ -1,0 +1,115 @@
+import React, { useState } from "react";
+import { ArrowUpRight, Loader2, CheckCircle } from "lucide-react";
+import { base44 } from "@/api/base44Client";
+
+export default function Newsletter() {
+  const [form, setForm] = useState({ first_name: "", email: "" });
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    await base44.integrations.Core.SendEmail({
+      to: "andre@akwmarketing.com",
+      subject: `New Newsletter Subscriber: ${form.first_name}`,
+      body: `New newsletter signup:\n\nFirst Name: ${form.first_name}\nEmail: ${form.email}`,
+    });
+
+    setLoading(false);
+    setSubmitted(true);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#F5F0EB]">
+      {/* Navbar */}
+      <nav className="border-b border-stone-200/60 px-6">
+        <div className="max-w-7xl mx-auto h-16 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-2">
+            <img
+              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69aa2d66169a7c4374014381/adfe82e85_Logo_official1.png"
+              alt="AKW Marketing Logo"
+              className="w-8 h-8 rounded-md object-contain"
+            />
+            <span className="text-lg font-semibold tracking-tight text-stone-900">AKW Marketing</span>
+          </a>
+          <a
+            href="https://calendar.app.google/B2umMiNgAUYvewSN6"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-stone-900 hover:bg-stone-800 text-white rounded-full px-5 h-9 text-sm font-medium flex items-center gap-2 transition-colors"
+          >
+            Book Free Call
+          </a>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-6 py-16 md:py-28">
+        <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
+
+          {/* Left: Headline + Description */}
+          <div>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-stone-900 leading-[1.05] tracking-tight">
+              THE Newsletter To Grow Your Business.
+            </h1>
+            <p className="mt-8 text-stone-500 text-base leading-relaxed">
+              Simple marketing tactics that actually work for local businesses.
+            </p>
+            <p className="mt-4 text-stone-500 text-base leading-relaxed">
+              No fluff, no theory — just proven strategies you can use this week to bring more customers through your door.
+            </p>
+          </div>
+
+          {/* Right: Form */}
+          <div className="md:pt-4">
+            {submitted ? (
+              <div className="flex flex-col items-start gap-4 py-8">
+                <CheckCircle className="w-10 h-10 text-green-500" />
+                <h2 className="text-2xl font-bold text-stone-900">You're in!</h2>
+                <p className="text-stone-500 text-sm leading-relaxed">
+                  Welcome aboard, {form.first_name}. Expect actionable tips straight to your inbox.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <div>
+                  <input
+                    required
+                    type="text"
+                    placeholder="First Name *"
+                    value={form.first_name}
+                    onChange={(e) => setForm({ ...form, first_name: e.target.value })}
+                    className="w-full bg-transparent border-0 border-b border-stone-300 py-4 text-stone-900 placeholder-stone-400 text-base focus:outline-none focus:border-stone-900 transition-colors"
+                  />
+                </div>
+                <div>
+                  <input
+                    required
+                    type="email"
+                    placeholder="Business Email *"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    className="w-full bg-transparent border-0 border-b border-stone-300 py-4 text-stone-900 placeholder-stone-400 text-base focus:outline-none focus:border-stone-900 transition-colors"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="mt-2 w-full bg-stone-900 hover:bg-stone-800 disabled:opacity-60 text-white font-semibold py-4 rounded-full text-sm transition-colors flex items-center justify-center gap-2"
+                >
+                  {loading ? (
+                    <><Loader2 className="w-4 h-4 animate-spin" /> Subscribing…</>
+                  ) : (
+                    <>Send Value To Your Inbox <ArrowUpRight className="w-4 h-4" /></>
+                  )}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
