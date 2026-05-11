@@ -91,7 +91,7 @@ export default function FooterSection() {
 
         <div className="pt-8 border-t border-stone-200/60 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-stone-400 text-center sm:text-left">
-            © {new Date().getFullYear()} All rights reserved by AKW Marketing Agency Kitchener. Legal information upon request at{" "}
+            © {new Date().getFullYear()} All rights reserved by AKW Marketing Agency. Legal information upon request at{" "}
             <a href="mailto:contact@akwmarketing.com" className="underline hover:text-stone-600 transition-colors">contact@akwmarketing.com</a>.
           </p>
           <div className="flex items-center gap-6">
