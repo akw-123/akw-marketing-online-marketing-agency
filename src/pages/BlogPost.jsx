@@ -130,16 +130,23 @@ export default function BlogPostPage() {
               </div>
 
               {/* CTA */}
-              <div className="mt-16 bg-stone-900 rounded-2xl p-8 text-center">
-                <h3 className="text-xl font-bold text-white mb-2">Ready to rank higher on Google?</h3>
-                <p className="text-stone-400 text-sm mb-6">Book a free strategy call and find out how we can get your business into the top 3.</p>
+              <div className="mt-16 py-12 text-center border-t border-stone-200">
+                <span className="inline-block text-xs font-semibold uppercase tracking-widest text-stone-500 border border-stone-300 rounded-full px-4 py-1.5 mb-6">
+                  Free stuff
+                </span>
+                <h3 className="text-3xl font-black text-stone-900 mb-4">3 Tips to Rank Higher on Google</h3>
+                <p className="text-stone-500 max-w-lg mx-auto mb-2">
+                  Get a free video showing you the first three things we do when we start working with a local business to get them ranking in the top 3.
+                </p>
+                <p className="text-stone-500 mb-2">No technical know-how needed.</p>
+                <p className="text-stone-500 mb-8">Enter your email and you'll get instant access.</p>
                 <a
                   href="https://calendly.com/akwmarketing/strategy-call"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Button className="bg-white text-stone-900 hover:bg-stone-100 rounded-full px-8 h-10 font-semibold">
-                    Book a Free Strategy Call
+                  <Button className="bg-stone-900 hover:bg-stone-800 text-white rounded-full px-8 h-12 text-base font-semibold">
+                    Book a Free Strategy Call →
                   </Button>
                 </a>
               </div>
