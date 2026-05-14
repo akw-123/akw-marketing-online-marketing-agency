@@ -1,0 +1,48 @@
+{
+  "name": "BlogPost",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Blog post title"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL-friendly slug"
+    },
+    "excerpt": {
+      "type": "string",
+      "description": "Short preview text shown on the blog listing"
+    },
+    "content": {
+      "type": "string",
+      "description": "Full blog post content (markdown)"
+    },
+    "cover_image_url": {
+      "type": "string",
+      "description": "URL of the cover image"
+    },
+    "category": {
+      "type": "string",
+      "description": "Post category tag"
+    },
+    "published": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the post is publicly visible"
+    },
+    "published_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of publication"
+    },
+    "read_time_minutes": {
+      "type": "number",
+      "description": "Estimated reading time in minutes"
+    }
+  },
+  "required": [
+    "title",
+    "slug"
+  ]
+}
