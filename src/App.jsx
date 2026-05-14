@@ -12,6 +12,7 @@ import MetaAds from './pages/MetaAds';
 import Kitchener from './pages/Kitchener';
 import Newsletter from './pages/Newsletter';
 import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -65,6 +66,7 @@ const AuthenticatedApp = () => {
       <Route path="/kitchener" element={<Kitchener />} />
       <Route path="/newsletter" element={<Newsletter />} />
       <Route path="/blog" element={<Blog />} />
+      <Route path="/blog/:slug" element={<BlogPost />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
