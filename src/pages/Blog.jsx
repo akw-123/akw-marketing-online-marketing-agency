@@ -69,10 +69,10 @@ export default function Blog() {
       <div className="px-6 pb-24">
         <div className="max-w-7xl mx-auto">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="bg-white rounded-2xl overflow-hidden border border-stone-200/60 animate-pulse">
-                  <div className="aspect-[4/3] bg-stone-200" />
+                  <div className="aspect-[16/9] bg-stone-200" />
                   <div className="p-6 space-y-3">
                     <div className="h-3 bg-stone-200 rounded w-1/4" />
                     <div className="h-5 bg-stone-200 rounded w-3/4" />
@@ -87,7 +87,7 @@ export default function Blog() {
               <p className="text-stone-400 text-lg">No posts yet. Check back soon.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               {posts.map((post, i) => (
                 <motion.div
                   key={post.id}

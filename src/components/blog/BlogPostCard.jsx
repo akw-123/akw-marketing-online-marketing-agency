@@ -10,7 +10,7 @@ export default function BlogPostCard({ post }) {
       className="group block bg-white rounded-2xl overflow-hidden border border-stone-200/60 hover:shadow-lg transition-all duration-300"
     >
       {post.cover_image_url && (
-        <div className="aspect-[4/3] overflow-hidden bg-stone-100">
+        <div className="aspect-[16/9] overflow-hidden bg-stone-100">
           <img
             src={post.cover_image_url}
             alt={post.title}
