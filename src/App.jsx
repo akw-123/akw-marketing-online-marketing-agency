@@ -13,6 +13,7 @@ import Kitchener from './pages/Kitchener';
 import Newsletter from './pages/Newsletter';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
+import Landing from './pages/Landing';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -67,6 +68,7 @@ const AuthenticatedApp = () => {
       <Route path="/newsletter" element={<Newsletter />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:slug" element={<BlogPost />} />
+      <Route path="/landing" element={<Landing />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
