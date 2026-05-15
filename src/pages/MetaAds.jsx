@@ -229,6 +229,10 @@ ${form.additional_info || "N/A"}
 }
 
 export default function MetaAds() {
+  React.useEffect(() => {
+    document.title = "AKW Marketing | Online Marketing Agency";
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#F5F0EB]">
       {/* Navbar */}
