@@ -19,10 +19,9 @@ function BlogNavbar() {
           />
           <span className="text-lg font-semibold tracking-tight text-stone-900">AKW Marketing</span>
         </a>
-        <a href="tel:+14374750076">
+        <a href="https://akwmarketing.com/landing">
           <Button className="bg-stone-900 hover:bg-stone-800 text-white rounded-full px-5 h-9 text-sm font-medium">
-            <Phone className="w-3.5 h-3.5 mr-2" />
-            +1 437 475 0076
+            Sign Up
           </Button>
         </a>
       </div>
