@@ -5,6 +5,7 @@ import FAQSection from "@/components/landing/FAQSection";
 import FooterSection from "@/components/landing/FooterSection";
 
 export default function Newsletter() {
+  React.useEffect(() => { document.title = "AKW Marketing | Newsletter Sign-Up"; }, []);
   const [form, setForm] = useState({ first_name: "", email: "" });
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
