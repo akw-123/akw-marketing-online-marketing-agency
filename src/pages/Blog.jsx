@@ -34,6 +34,8 @@ export default function Blog() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => { document.title = "AKW Marketing | Blog"; }, []);
+
   useEffect(() => {
     base44.entities.BlogPost.filter({ published: true }, "-published_date", 50)
       .then(setPosts)
