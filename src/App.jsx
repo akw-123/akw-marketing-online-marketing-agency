@@ -14,6 +14,7 @@ import Newsletter from './pages/Newsletter';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import Landing from './pages/Landing';
+import OnlineMarketingAgency from './pages/OnlineMarketingAgency';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -49,7 +50,7 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      <Route path="/" element={<MetaAds />} />
+      <Route path="/" element={<OnlineMarketingAgency />} />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}
