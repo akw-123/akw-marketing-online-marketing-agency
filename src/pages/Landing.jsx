@@ -15,9 +15,19 @@ const clients = [
 
 const team = [
   {
-    name: "Andre Kadjo",
+    name: "Andre Kwon",
     role: "Founder & CEO",
-    img: "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c080ba885_1570675559675.jpeg",
+    img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop&crop=face",
+  },
+  {
+    name: "Marketing Lead",
+    role: "Head of Strategy",
+    img: "https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?w=400&h=400&fit=crop&crop=face",
+  },
+  {
+    name: "Client Success",
+    role: "Customer Success Manager",
+    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
   },
 ];
 
