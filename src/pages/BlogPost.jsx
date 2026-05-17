@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
-import { ArrowLeft, Phone, Clock } from "lucide-react";
+import { ArrowLeft, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
@@ -20,10 +20,9 @@ function BlogNavbar() {
           />
           <span className="text-lg font-semibold tracking-tight text-stone-900">AKW Marketing</span>
         </a>
-        <a href="tel:+14374750076">
+        <a href="https://akwmarketing.com/landing">
           <Button className="bg-stone-900 hover:bg-stone-800 text-white rounded-full px-5 h-9 text-sm font-medium">
-            <Phone className="w-3.5 h-3.5 mr-2" />
-            +1 437 475 0076
+            Sign Up
           </Button>
         </a>
       </div>

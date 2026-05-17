@@ -100,9 +100,9 @@ export default function Landing() {
           />
           <span className="text-lg font-semibold tracking-tight text-stone-900">AKW Marketing</span>
         </a>
-        <a href="https://calendar.app.google/B2umMiNgAUYvewSN6" target="_blank" rel="noopener noreferrer">
+        <a href="https://akwmarketing.com/landing">
           <button className="bg-stone-900 hover:bg-stone-800 text-white rounded-full px-5 h-9 text-sm font-medium transition-colors">
-            Book Free Call
+            Sign Up
           </button>
         </a>
       </nav>
