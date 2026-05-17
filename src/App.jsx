@@ -13,7 +13,6 @@ import Kitchener from './pages/Kitchener';
 import Newsletter from './pages/Newsletter';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
-import Landing from './pages/Landing';
 import OnlineMarketingAgency from './pages/OnlineMarketingAgency';
 import Home from './pages/Home';
 
@@ -51,8 +50,10 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/landing" replace />} />
-      <Route path="/Home" element={<Home />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/Home" element={<Navigate to="/" replace />} />
+      <Route path="/landing" element={<Navigate to="/" replace />} />
+      <Route path="/Landing" element={<Navigate to="/" replace />} />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}
@@ -71,7 +72,7 @@ const AuthenticatedApp = () => {
       <Route path="/newsletter" element={<Newsletter />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:slug" element={<BlogPost />} />
-      <Route path="/landing" element={<Landing />} />
+      <Route path="/landing" element={<Navigate to="/" replace />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
