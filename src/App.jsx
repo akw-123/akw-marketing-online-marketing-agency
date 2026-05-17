@@ -50,7 +50,7 @@ const AuthenticatedApp = () => {
   // Render the main app
   return (
     <Routes>
-      <Route path="/" element={<OnlineMarketingAgency />} />
+      <Route path="/" element={<Landing />} />
       {Object.entries(Pages).map(([path, Page]) => (
         <Route
           key={path}
