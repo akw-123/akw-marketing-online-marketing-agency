@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
-const BASE_URL = 'https://akwmarketing.com';
+const BASE_URL = 'https://akwmarketing.com'; // v2
 
 const STATIC_URLS = [
   { loc: '/',               priority: '1.0', changefreq: 'weekly'  },
