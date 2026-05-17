@@ -4,7 +4,6 @@ const BASE_URL = 'https://akwmarketing.com'; // v2
 
 const STATIC_URLS = [
   { loc: '/',               priority: '1.0', changefreq: 'weekly'  },
-  { loc: '/Home',           priority: '1.0', changefreq: 'weekly'  },
   { loc: '/gbp',            priority: '1.0', changefreq: 'weekly'  },
   { loc: '/kitchener',      priority: '0.9', changefreq: 'weekly'  },
   { loc: '/newsletter',     priority: '0.7', changefreq: 'monthly' },
