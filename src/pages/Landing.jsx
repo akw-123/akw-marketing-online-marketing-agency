@@ -81,6 +81,13 @@ function EmailForm() {
 }
 
 export default function Landing() {
+  React.useEffect(() => {
+    document.title = "AKW Marketing | Online Marketing Agency";
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
+    meta.content = "AKW Marketing is the online marketing agency in the Kitchener-Waterloo area that helps local businesses rank higher on Google and get more customers.";
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#F5F0EB]">
       {/* Navbar */}

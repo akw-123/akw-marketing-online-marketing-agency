@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowUpRight, Loader2, CheckCircle } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import FAQSection from "@/components/landing/FAQSection";
 import FooterSection from "@/components/landing/FooterSection";
 
 export default function Newsletter() {
-  React.useEffect(() => { document.title = "AKW Marketing | Newsletter Sign-Up"; }, []);
+  useEffect(() => {
+    document.title = "AKW Marketing | Newsletter Sign-Up";
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
+    meta.content = "AKW Marketing is the online marketing agency in the Kitchener-Waterloo area that helps local businesses grow. Subscribe to our newsletter for proven marketing tactics.";
+  }, []);
   const [form, setForm] = useState({ first_name: "", email: "" });
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);

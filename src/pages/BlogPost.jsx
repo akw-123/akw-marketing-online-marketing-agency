@@ -41,7 +41,16 @@ export default function BlogPostPage() {
     base44.entities.BlogPost.filter({ slug, published: true })
       .then((results) => {
         if (results.length === 0) setNotFound(true);
-        else setPost(results[0]);
+        else {
+          const p = results[0];
+          setPost(p);
+          document.title = `${p.title} | AKW Marketing`;
+          let meta = document.querySelector('meta[name="description"]');
+          if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
+          meta.content = p.excerpt
+            ? p.excerpt
+            : `AKW Marketing is the online marketing agency in the Kitchener-Waterloo area that helps local businesses rank higher on Google. ${p.title}`;
+        }
       })
       .finally(() => setLoading(false));
   }, [slug]);
