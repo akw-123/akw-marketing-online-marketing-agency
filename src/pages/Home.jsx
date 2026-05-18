@@ -116,7 +116,7 @@ export default function Home() {
         {/* Video */}
         <div className="rounded-2xl overflow-hidden shadow-xl shadow-stone-900/10" style={{ paddingTop: "56.25%", position: "relative" }}>
           <iframe
-            src="https://fast.wistia.net/embed/iframe/rpkp3l7mfn?videoFoam=true&playButton=true&controlsVisibleOnLoad=true&volumeControl=true&fullscreenButton=true&playbar=true"
+            src="https://fast.wistia.net/embed/iframe/g8bkx9vdzr?videoFoam=true&playButton=true&controlsVisibleOnLoad=true&volumeControl=true&fullscreenButton=true&playbar=true"
             title="AKW Marketing Video"
             allow="autoplay; fullscreen"
             allowFullScreen
