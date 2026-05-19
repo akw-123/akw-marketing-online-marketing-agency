@@ -160,17 +160,9 @@ export default function Home() {
         </div>
 
         {/* Video */}
-        <div className="rounded-2xl overflow-hidden shadow-xl shadow-stone-900/10" style={{ paddingTop: "56.25%", position: "relative" }}>
-          <iframe
-            src="https://fast.wistia.net/embed/iframe/g8bkx9vdzr?videoFoam=true&playButton=true&controlsVisibleOnLoad=true&volumeControl=true&fullscreenButton=true&playbar=true"
-            title="AKW Marketing Video"
-            allow="autoplay; fullscreen"
-            allowFullScreen
-            frameBorder="0"
-            scrolling="no"
-            className="absolute inset-0 w-full h-full"
-            style={{ border: "none" }}
-          />
+        <div className="rounded-2xl overflow-hidden shadow-xl shadow-stone-900/10">
+          <style>{`wistia-player[media-id='aekmn6ipn3']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/aekmn6ipn3/swatch');display:block;filter:blur(5px);padding-top:56.25%;}`}</style>
+          <wistia-player media-id="aekmn6ipn3" aspect="1.7777777777777777"></wistia-player>
         </div>
       </section>
 
