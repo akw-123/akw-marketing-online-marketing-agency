@@ -15,6 +15,7 @@ import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import OnlineMarketingAgency from './pages/OnlineMarketingAgency';
 import Home from './pages/Home';
+import FreeAnalysis from './pages/FreeAnalysis';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -72,6 +73,7 @@ const AuthenticatedApp = () => {
       <Route path="/newsletter" element={<Newsletter />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:slug" element={<BlogPost />} />
+      <Route path="/free-analysis" element={<FreeAnalysis />} />
       <Route path="/landing" element={<Navigate to="/" replace />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
