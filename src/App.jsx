@@ -53,8 +53,6 @@ const AuthenticatedApp = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/Home" element={<NoIndexRedirect to="/" />} />
-      <Route path="/home" element={<NoIndexRedirect to="/" />} />
       <Route path="/landing" element={<NoIndexRedirect to="/" />} />
       <Route path="/Landing" element={<NoIndexRedirect to="/" />} />
       {Object.entries(Pages).map(([path, Page]) => (
