@@ -1,4 +1,18 @@
 import React, { useEffect } from "react";
+
+// Load Wistia scripts
+if (typeof window !== 'undefined') {
+  const script1 = document.createElement('script');
+  script1.src = 'https://fast.wistia.com/player.js';
+  script1.async = true;
+  document.head.appendChild(script1);
+  
+  const script2 = document.createElement('script');
+  script2.src = 'https://fast.wistia.com/embed/9ikdkbbamh.js';
+  script2.async = true;
+  script2.type = 'module';
+  document.head.appendChild(script2);
+}
 import { motion } from "framer-motion";
 import { Users, Clock, Zap, Phone, ArrowRight } from "lucide-react";
 import AdvantagesSection from "@/components/landing/AdvantagesSection";
@@ -71,17 +85,9 @@ function KitchenerHero() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="relative"
           >
-            <div className="rounded-2xl overflow-hidden shadow-2xl shadow-stone-900/20 relative" style={{ paddingTop: "56.25%" }}>
-              <iframe
-                src="https://fast.wistia.net/embed/iframe/g8bkx9vdzr?videoFoam=true&playButton=true&controlsVisibleOnLoad=true&volumeControl=true&fullscreenButton=true&playbar=true"
-                title="AKW Marketing Video"
-                allow="autoplay; fullscreen"
-                allowFullScreen
-                frameBorder="0"
-                scrolling="no"
-                className="absolute inset-0 w-full h-full"
-                style={{ border: "none" }}
-              />
+            <div className="rounded-2xl overflow-hidden shadow-2xl shadow-stone-900/20">
+              <style>{`wistia-player[media-id='9ikdkbbamh']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/9ikdkbbamh/swatch');display:block;filter:blur(5px);padding-top:56.25%;}`}</style>
+              <wistia-player media-id="9ikdkbbamh" aspect="1.7777777777777777"></wistia-player>
             </div>
           </motion.div>
         </div>
