@@ -230,7 +230,10 @@ ${form.additional_info || "N/A"}
 
 export default function MetaAds() {
   React.useEffect(() => {
-    document.title = "AKW Marketing | Online Marketing Agency";
+    document.title = "Online Marketing Agency in Kitchener-Waterloo | AKW Marketing";
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
+    meta.content = "AKW Marketing is an online marketing agency serving the Kitchener-Waterloo area. We run Google Ads, Meta Ads, and SEO as your on-demand marketing department — every metric tracked, strategy adjusted to results. Get more customers; book a free introductory consultation.";
 
     const schema = {
       "@context": "https://schema.org",

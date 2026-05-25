@@ -153,7 +153,10 @@ function KitchenerCTA() {
 
 export default function Kitchener() {
   useEffect(() => {
-    document.title = "Best Internet Marketing Service in Kitchener - AKW Marketing Agency is your internet marketing service in Kitchener";
+    document.title = "Internet Marketing Service in Kitchener | Marketing Agency | AKW Marketing";
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
+    meta.content = "Need an internet marketing service in Kitchener that delivers real results? AKW Marketing helps local businesses rank higher on Google and win more customers through SEO, Google Ads, and Meta Ads. Your on-demand marketing department in Kitchener-Waterloo — free consultation available.";
 
     const schema = {
       "@context": "https://schema.org",
