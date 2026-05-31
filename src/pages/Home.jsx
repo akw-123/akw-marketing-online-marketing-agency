@@ -99,7 +99,7 @@ export default function Home() {
       "url": "https://akwmarketing.com",
       "logo": "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c8e3cd9e0_Logo_official1.png",
       "sameAs": [
-        "https://www.instagram.com/akw_marketing",
+        "https://www.instagram.com/akw_marketing/",
         "https://www.youtube.com/@AKWMarketing",
         "https://www.tiktok.com/@akw_marketing",
         "https://www.linkedin.com/company/akw-marketing/",
@@ -111,9 +111,57 @@ export default function Home() {
     orgScript.id = 'organization-schema';
     orgScript.textContent = JSON.stringify(orgSchema);
     document.head.appendChild(orgScript);
+
+    const psSchema = {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "AKW Marketing Agency",
+      "description": "AKW Marketing Agency helps local businesses in the Kitchener-Waterloo area rank in the top 3 on Google in 90 days.",
+      "url": "https://akwmarketing.com/",
+      "telephone": "+1-437-475-0076",
+      "email": "contact@akwmarketing.com",
+      "image": "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c8e3cd9e0_Logo_official1.png",
+      "logo": "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c8e3cd9e0_Logo_official1.png",
+      "areaServed": [
+        {"@type":"City","name":"Kitchener","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
+        {"@type":"City","name":"Waterloo","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
+        {"@type":"City","name":"Cambridge","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
+        {"@type":"City","name":"Guelph","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
+        {"@type":"City","name":"Hamilton","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
+        {"@type":"City","name":"Listowel","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
+        {"@type":"City","name":"Brantford","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
+        {"@type":"City","name":"Stratford","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
+        {"@type":"City","name":"Woodstock","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
+        {"@type":"City","name":"Burlington","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
+        {"@type":"City","name":"Orangeville","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
+        {"@type":"City","name":"Mount Forest","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}}
+      ],
+      "openingHours": "Mo-Su 00:00-23:59",
+      "priceRange": "$$",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "reviewCount": "6",
+        "bestRating": "5",
+        "worstRating": "1"
+      },
+      "sameAs": [
+        "https://www.instagram.com/akw_marketing/",
+        "https://www.youtube.com/@AKWMarketing",
+        "https://www.tiktok.com/@akw_marketing",
+        "https://www.linkedin.com/company/akw-marketing/",
+        "https://x.com/akw_marketing"
+      ]
+    };
+    const psScript = document.createElement('script');
+    psScript.type = 'application/ld+json';
+    psScript.id = 'professional-service-schema';
+    psScript.textContent = JSON.stringify(psSchema);
+    document.head.appendChild(psScript);
     return () => {
       const ws = document.getElementById('website-schema'); if (ws) ws.remove();
       const org = document.getElementById('organization-schema'); if (org) org.remove();
+      const ps = document.getElementById('professional-service-schema'); if (ps) ps.remove();
     };
   }, []);
 
