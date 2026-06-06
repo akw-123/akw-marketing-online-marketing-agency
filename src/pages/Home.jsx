@@ -80,10 +80,6 @@ export default function Home() {
     if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
     meta.content = "AKW Marketing is the online marketing agency in Kitchener-Waterloo area that helps local businesses grow. As your on-demand marketing department, we drive more customers your way through Google Ads, Meta Ads, and SEO. We track every metric and adjust our strategy based on results. Looking for a reliable online marketing agency in Kitchener-Waterloo that delivers real results? Contact us for a free introductory consultation";
 
-    let canonical = document.querySelector('link[rel="canonical"]');
-    if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical); }
-    canonical.href = 'https://akwmarketing.com';
-
     const websiteSchema = {
       "@context": "https://schema.org",
       "@type": "WebSite",
@@ -166,7 +162,6 @@ export default function Home() {
       const ws = document.getElementById('website-schema'); if (ws) ws.remove();
       const org = document.getElementById('organization-schema'); if (org) org.remove();
       const ps = document.getElementById('professional-service-schema'); if (ps) ps.remove();
-      const can = document.querySelector('link[rel="canonical"]'); if (can) can.remove();
     };
   }, []);
 
