@@ -322,22 +322,14 @@ export default function MetaAds() {
         </section>
 
         {/* Video */}
-        <section className="pb-10">
-          <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-            <div className="rounded-2xl overflow-hidden shadow-lg" style={{ paddingTop: "56.25%", position: "relative" }}>
-              <iframe
-                src="https://fast.wistia.net/embed/iframe/g8bkx9vdzr?videoFoam=true&playButton=true&controlsVisibleOnLoad=true&volumeControl=true&fullscreenButton=true&playbar=true"
-                title="AKW Marketing Video"
-                allow="autoplay; fullscreen"
-                allowFullScreen
-                frameBorder="0"
-                scrolling="no"
-                className="absolute inset-0 w-full h-full"
-                style={{ border: "none" }}
-              />
-            </div>
-          </motion.div>
-        </section>
+         <section className="pb-10">
+           <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+             <div className="rounded-2xl overflow-hidden shadow-lg">
+               <style>{`wistia-player[media-id='w99ol7hw7u']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/w99ol7hw7u/swatch');display:block;filter:blur(5px);padding-top:56.25%;}`}</style>
+               <wistia-player media-id="w99ol7hw7u" aspect="1.7777777777777777"></wistia-player>
+             </div>
+           </motion.div>
+         </section>
 
         {/* Trust Stats */}
         <section className="pb-16">
