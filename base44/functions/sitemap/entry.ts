@@ -8,6 +8,7 @@ const STATIC_URLS = [
   { loc: '/kitchener',      priority: '0.9', changefreq: 'weekly'  },
   { loc: '/blog',           priority: '0.8', changefreq: 'weekly'  },
   { loc: '/case-studies',   priority: '0.8', changefreq: 'weekly'  },
+  { loc: '/free-analysis',  priority: '0.7', changefreq: 'monthly' },
   { loc: '/newsletter',     priority: '0.7', changefreq: 'monthly' },
   { loc: '/PrivacyPolicy',  priority: '0.3', changefreq: 'yearly'  },
   { loc: '/TermsOfService', priority: '0.3', changefreq: 'yearly'  },
@@ -24,8 +25,8 @@ Deno.serve(async (req) => {
     'hamilton-accountant-google-ads',
   ];
 
-  // Fetch all published blog posts
-  const posts = await base44.asServiceRole.entities.BlogPost.filter({ published: true });
+  // Fetch all published blog posts (no limit)
+  const posts = await base44.asServiceRole.entities.BlogPost.filter({ published: true }, 'published_date', 500);
 
   const urlEntries = [
     ...STATIC_URLS.map(({ loc, priority, changefreq }) => `
