@@ -113,6 +113,60 @@ function KitchenerHero() {
   );
 }
 
+function RecentResults() {
+  const cards = [
+    {
+      href: "/case-studies/cambridge-hvac-local-seo",
+      tag: "HVAC, Cambridge",
+      headline: "How a Cambridge HVAC Company Hit Google's Top 3 in 12 Weeks",
+      metric: "Rank #43 to #2. Calls from search: 6 to 41 per month.",
+    },
+    {
+      href: "/case-studies/waterloo-dental-reviews",
+      tag: "Dentistry, Waterloo",
+      headline: "How a Waterloo Dental Practice Went from 8 Reviews to 64 in 4 Months",
+      metric: "8 reviews to 64 in 4 months. New patient calls tripled.",
+    },
+    {
+      href: "/case-studies/hamilton-accountant-google-ads",
+      tag: "Accounting, Hamilton",
+      headline: "How a Hamilton Accounting Firm Cut Cost-Per-Lead 54% on Google Ads",
+      metric: "Cost per qualified lead: $467 to $215. Leads: 9 to 24 per month.",
+    },
+  ];
+
+  return (
+    <section className="py-20 md:py-24 px-6 border-t border-stone-200/60">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-stone-900 tracking-tight">Recent Results</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {cards.map((card) => (
+            <a
+              key={card.href}
+              href={card.href}
+              className="group bg-white rounded-2xl border border-stone-100 p-6 hover:shadow-md transition-shadow flex flex-col"
+            >
+              <span className="text-xs font-semibold text-stone-400 uppercase tracking-wide mb-2">{card.tag}</span>
+              <h3 className="text-sm font-semibold text-stone-900 leading-snug mb-3">{card.headline}</h3>
+              <p className="text-xs text-stone-500 leading-relaxed flex-1"><strong>{card.metric}</strong></p>
+              <span className="mt-4 text-xs font-semibold text-stone-900 flex items-center gap-1 group-hover:gap-2 transition-all">
+                Read full story <ArrowRight className="w-3 h-3" />
+              </span>
+            </a>
+          ))}
+        </div>
+        <div className="text-center">
+          <a href="/case-studies" className="text-sm font-semibold text-stone-600 hover:text-stone-900 underline underline-offset-4 transition-colors">
+            See all case studies
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function KitchenerCTA() {
   return (
     <section className="py-20 md:py-28 px-6">
@@ -215,6 +269,7 @@ export default function Kitchener() {
       <KitchenerProcessSection />
       <TestimonialsSection />
       <FAQSection />
+      <RecentResults />
       <KitchenerCTA />
       <KitchenerFooter />
     </div>

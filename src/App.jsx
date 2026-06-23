@@ -18,6 +18,12 @@ import OnlineMarketingAgency from './pages/OnlineMarketingAgency';
 import Home from './pages/Home';
 import FreeAnalysis from './pages/FreeAnalysis';
 import NoIndexRedirect from './components/NoIndexRedirect';
+import CaseStudies from './pages/CaseStudies';
+import CaseStudyCambridgeHvac from './pages/CaseStudyCambridgeHvac';
+import CaseStudyWaterlooDental from './pages/CaseStudyWaterlooDental';
+import CaseStudyBurlingtonRealtor from './pages/CaseStudyBurlingtonRealtor';
+import CaseStudyGuelphCafe from './pages/CaseStudyGuelphCafe';
+import CaseStudyHamiltonAccountant from './pages/CaseStudyHamiltonAccountant';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -87,6 +93,12 @@ const AuthenticatedApp = () => {
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:slug" element={<BlogPost />} />
       <Route path="/free-analysis" element={<FreeAnalysis />} />
+      <Route path="/case-studies" element={<CaseStudies />} />
+      <Route path="/case-studies/cambridge-hvac-local-seo" element={<CaseStudyCambridgeHvac />} />
+      <Route path="/case-studies/waterloo-dental-reviews" element={<CaseStudyWaterlooDental />} />
+      <Route path="/case-studies/burlington-realtor-full-funnel" element={<CaseStudyBurlingtonRealtor />} />
+      <Route path="/case-studies/guelph-cafe-gbp" element={<CaseStudyGuelphCafe />} />
+      <Route path="/case-studies/hamilton-accountant-google-ads" element={<CaseStudyHamiltonAccountant />} />
       <Route path="/landing" element={<Navigate to="/" replace />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
