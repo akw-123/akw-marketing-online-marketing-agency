@@ -135,10 +135,10 @@ export default function FreeAnalysis() {
               Get Your<br />Profile<br />Analyzed
             </h1>
             <p className="text-stone-600 text-base md:text-lg leading-relaxed mb-6 max-w-sm">
-              Fill out the form and we will record your personalized analysis with the exact things that need to happen so you can rank in the top 3 within your area.
+              Fill out the form and we will record your personalized analysis with the exact things that need to happen so you can rank in the top 3 within your area. <a href="/kitchener" className="text-stone-800 underline underline-offset-2 hover:text-stone-900">We work specifically with Kitchener-Waterloo businesses</a> and know exactly what it takes to rank in this market.
             </p>
             <p className="text-stone-500 text-base leading-relaxed font-medium">
-              No costs, no obligations, no annoying sales pitch. Guaranteed.
+              No costs, no obligations, no annoying sales pitch. Guaranteed. <a href="/blog" className="text-stone-600 underline underline-offset-2 hover:text-stone-800">Browse our case studies and blog</a> to see how we've done it for others.
             </p>
           </div>
 
