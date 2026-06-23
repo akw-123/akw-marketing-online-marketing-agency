@@ -147,10 +147,9 @@ export default function Home() {
       },
       "sameAs": [
         "https://www.instagram.com/akw_marketing/",
-        "https://www.youtube.com/@AKWMarketing",
+        "https://x.com/akw_marketing",
         "https://www.tiktok.com/@akw_marketing",
-        "https://www.linkedin.com/company/akw-marketing/",
-        "https://x.com/akw_marketing"
+        "https://www.linkedin.com/company/akw-marketing/"
       ]
     };
     const psScript = document.createElement('script');

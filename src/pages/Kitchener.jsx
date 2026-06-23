@@ -194,7 +194,8 @@ export default function Kitchener() {
       "sameAs": [
         "https://www.instagram.com/akw_marketing/",
         "https://x.com/akw_marketing",
-        "https://www.tiktok.com/@akw_marketing"
+        "https://www.tiktok.com/@akw_marketing",
+        "https://www.linkedin.com/company/akw-marketing/"
       ]
     };
     const script = document.createElement('script');
