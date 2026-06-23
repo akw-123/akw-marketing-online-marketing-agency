@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
-import { ArrowLeft, Clock } from "lucide-react";
+import { ArrowLeft, Clock, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
@@ -33,22 +33,26 @@ function BlogNavbar() {
 export default function BlogPostPage() {
   const { slug } = useParams();
   const [post, setPost] = useState(null);
+  const [relatedPosts, setRelatedPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     base44.entities.BlogPost.filter({ slug, published: true })
-      .then((results) => {
-        if (results.length === 0) setNotFound(true);
-        else {
-          const p = results[0];
-          setPost(p);
-          document.title = `${p.title} | AKW Marketing`;
-          let meta = document.querySelector('meta[name="description"]');
-          if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
-          meta.content = p.excerpt
-            ? p.excerpt
-            : `AKW Marketing is the online marketing agency in the Kitchener-Waterloo area that helps local businesses rank higher on Google. ${p.title}`;
+      .then(async (results) => {
+        if (results.length === 0) { setNotFound(true); return; }
+        const p = results[0];
+        setPost(p);
+        document.title = `${p.title} | AKW Marketing`;
+        let meta = document.querySelector('meta[name="description"]');
+        if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
+        meta.content = p.excerpt
+          ? p.excerpt
+          : `AKW Marketing is the online marketing agency in the Kitchener-Waterloo area that helps local businesses rank higher on Google. ${p.title}`;
+
+        if (p.category) {
+          const related = await base44.entities.BlogPost.filter({ category: p.category, published: true }, '-published_date', 10);
+          setRelatedPosts(related.filter(r => r.id !== p.id).slice(0, 3));
         }
       })
       .finally(() => setLoading(false));
@@ -137,8 +141,51 @@ export default function BlogPostPage() {
                 <ReactMarkdown>{post.content}</ReactMarkdown>
               </div>
 
+              {/* Related Posts */}
+              {relatedPosts.length > 0 && (
+                <div className="mt-16 pt-10 border-t border-stone-200">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-stone-400 mb-6">Related from AKW Marketing</p>
+                  <div className="space-y-4">
+                    {relatedPosts.map((rp) => (
+                      <Link
+                        key={rp.id}
+                        to={`/blog/${rp.slug}`}
+                        className="flex items-start gap-4 group"
+                      >
+                        {rp.cover_image_url && (
+                          <img src={rp.cover_image_url} alt={rp.title} className="w-16 h-16 rounded-xl object-cover flex-shrink-0" />
+                        )}
+                        <div>
+                          <p className="text-sm font-semibold text-stone-900 group-hover:underline leading-snug">{rp.title}</p>
+                          {rp.excerpt && <p className="text-xs text-stone-400 mt-1 line-clamp-2">{rp.excerpt}</p>}
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Ready to start? */}
+              <div className="mt-10 py-8 px-6 bg-white rounded-2xl border border-stone-200">
+                <p className="text-xs font-semibold uppercase tracking-widest text-stone-400 mb-4">Ready to start?</p>
+                <div className="space-y-2">
+                  <Link to="/free-analysis" className="flex items-center gap-2 text-sm font-medium text-stone-900 hover:underline">
+                    <ArrowRight className="w-4 h-4 text-stone-400" />
+                    Request a free analysis
+                  </Link>
+                  <Link to="/kitchener" className="flex items-center gap-2 text-sm font-medium text-stone-900 hover:underline">
+                    <ArrowRight className="w-4 h-4 text-stone-400" />
+                    See our Kitchener-Waterloo SEO services
+                  </Link>
+                  <Link to="/blog" className="flex items-center gap-2 text-sm font-medium text-stone-900 hover:underline">
+                    <ArrowRight className="w-4 h-4 text-stone-400" />
+                    Read more on our blog
+                  </Link>
+                </div>
+              </div>
+
               {/* CTA */}
-              <div className="mt-16 py-12 text-center border-t border-stone-200">
+              <div className="mt-10 py-12 text-center border-t border-stone-200">
                 <span className="inline-block text-xs font-semibold uppercase tracking-widest text-stone-500 border border-stone-300 rounded-full px-4 py-1.5 mb-6">
                   Free stuff
                 </span>
