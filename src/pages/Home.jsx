@@ -190,7 +190,7 @@ export default function Home() {
             Is Your Business<br />Invisible on Google?
           </h1>
           <p className="mt-5 text-stone-500 text-base leading-relaxed max-w-md">
-            Watch this short video to learn why you're not ranking in the top 3.
+            Watch this short video to learn why you're not ranking in the top 3. We specialize in <a href="/kitchener" className="text-stone-700 underline underline-offset-2 hover:text-stone-900">internet marketing in Kitchener-Waterloo</a> and surrounding areas.
           </p>
           <p className="mt-4 text-stone-900 font-semibold text-base leading-relaxed max-w-md">
             Sign up below to get three FREE tips you can implement today to start climbing ⬇️
@@ -252,10 +252,10 @@ export default function Home() {
             3 Tips to Rank Higher on Google
           </h2>
           <p className="text-stone-500 text-base leading-relaxed mb-2">
-            Get a free video showing you the first three things we do when we start working with a local business to get them ranking in the top 3.
+            Get a free video showing you the first three things we do when we start working with a local business to get them ranking in the top 3. You can also <a href="/free-analysis" className="text-stone-700 underline underline-offset-2 hover:text-stone-900">get a free analysis of your business</a> to see exactly where you stand.
           </p>
-          <p className="text-stone-500 text-sm mb-2">No technical know-how needed.</p>
-          <p className="text-stone-500 text-sm mb-8">Enter your email and you'll get instant access.</p>
+          <p className="text-stone-500 text-sm mb-2">No technical know-how needed. <a href="/blog" className="text-stone-700 underline underline-offset-2 hover:text-stone-900">Read our latest insights</a> for more marketing strategies.</p>
+          <p className="text-stone-500 text-sm mb-8">Enter your email and you'll get instant access, or <a href="/newsletter" className="text-stone-700 underline underline-offset-2 hover:text-stone-900">subscribe to our weekly newsletter</a> for ongoing tips.</p>
           <a
             href="https://calendar.app.google/B2umMiNgAUYvewSN6"
             target="_blank"
