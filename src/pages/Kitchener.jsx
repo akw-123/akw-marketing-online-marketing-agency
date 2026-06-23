@@ -75,7 +75,10 @@ function KitchenerHero() {
             <p className="mt-6 text-stone-600 leading-relaxed max-w-lg">
               75% of all search requests go to the top 3 results on Google Maps.
               <br /><br />
-              If your Kitchener business isn't there, those customers are going to your competitors.
+              If your Kitchener business isn't there, those customers are going to your competitors. Want to see how this applies to your business? <a href="/free-analysis" className="text-stone-800 underline underline-offset-2 hover:text-stone-900">Request a free analysis</a> and we'll show you exactly where you stand.
+            </p>
+            <p className="mt-4 text-stone-600 leading-relaxed max-w-lg">
+              <a href="/blog" className="text-stone-800 underline underline-offset-2 hover:text-stone-900">Learn more about how local SEO works in Kitchener-Waterloo</a> in our resource library.
             </p>
           </motion.div>
 
@@ -162,6 +165,33 @@ function RecentResults() {
             See all case studies
           </a>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function ExploreInsights() {
+  const posts = [
+    { href: "/blog/why-bother", title: "Why Bother Ranking in the Top 3 on Google?" },
+    { href: "/blog/the-google-ruse", title: "The Google Ruse: Why Customers Can't Find You" },
+    { href: "/blog/quick-way-to-get-higher-in-google", title: "Quick Way to Get Higher in Google" },
+    { href: "/blog/how-to-rank-higher-in-google-tomorrow", title: "How to Rank Higher in Google Tomorrow" },
+    { href: "/blog/easy-wins", title: "Easy Wins: Why Local Businesses Have a Hidden Edge" },
+  ];
+
+  return (
+    <section className="py-16 px-6 border-t border-stone-200/60">
+      <div className="max-w-3xl mx-auto">
+        <h2 className="text-2xl font-bold text-stone-900 tracking-tight mb-6">Explore our insights</h2>
+        <ul className="space-y-3">
+          {posts.map((post) => (
+            <li key={post.href}>
+              <a href={post.href} className="text-stone-700 underline underline-offset-2 hover:text-stone-900 text-base">
+                {post.title}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
@@ -270,6 +300,7 @@ export default function Kitchener() {
       <TestimonialsSection />
       <FAQSection />
       <RecentResults />
+      <ExploreInsights />
       <KitchenerCTA />
       <KitchenerFooter />
     </div>
