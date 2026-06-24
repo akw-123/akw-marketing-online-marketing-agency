@@ -50,10 +50,18 @@ export default function BlogPostPage() {
           ? p.excerpt
           : `AKW Marketing is the online marketing agency in the Kitchener-Waterloo area that helps local businesses rank higher on Google. ${p.title}`;
 
+        // Try same-category first, fall back to most recent
+        let related = [];
         if (p.category) {
-          const related = await base44.entities.BlogPost.filter({ category: p.category, published: true }, '-published_date', 10);
-          setRelatedPosts(related.filter(r => r.id !== p.id).slice(0, 3));
+          const byCat = await base44.entities.BlogPost.filter({ category: p.category, published: true }, '-published_date', 10);
+          related = byCat.filter(r => r.id !== p.id).slice(0, 3);
         }
+        if (related.length < 3) {
+          const recent = await base44.entities.BlogPost.filter({ published: true }, '-published_date', 10);
+          const extra = recent.filter(r => r.id !== p.id && !related.find(x => x.id === r.id));
+          related = [...related, ...extra].slice(0, 3);
+        }
+        setRelatedPosts(related);
       })
       .finally(() => setLoading(false));
   }, [slug]);
@@ -141,47 +149,41 @@ export default function BlogPostPage() {
                 <ReactMarkdown>{post.content}</ReactMarkdown>
               </div>
 
-              {/* Related Posts */}
-              {relatedPosts.length > 0 && (
-                <div className="mt-16 pt-10 border-t border-stone-200">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-stone-400 mb-6">Related from AKW Marketing</p>
-                  <div className="space-y-4">
-                    {relatedPosts.map((rp) => (
-                      <Link
-                        key={rp.id}
-                        to={`/blog/${rp.slug}`}
-                        className="flex items-start gap-4 group"
-                      >
-                        {rp.cover_image_url && (
-                          <img src={rp.cover_image_url} alt={rp.title} className="w-16 h-16 rounded-xl object-cover flex-shrink-0" />
-                        )}
-                        <div>
-                          <p className="text-sm font-semibold text-stone-900 group-hover:underline leading-snug">{rp.title}</p>
-                          {rp.excerpt && <p className="text-xs text-stone-400 mt-1 line-clamp-2">{rp.excerpt}</p>}
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              )}
+              {/* Related Section */}
+              <div className="mt-16 pt-10 border-t border-stone-200">
+                <h2 className="text-xl font-bold text-stone-900 mb-8">Related from AKW Marketing</h2>
 
-              {/* Ready to start? */}
-              <div className="mt-10 py-8 px-6 bg-white rounded-2xl border border-stone-200">
-                <p className="text-xs font-semibold uppercase tracking-widest text-stone-400 mb-4">Ready to start?</p>
-                <div className="space-y-2">
-                  <Link to="/free-analysis" className="flex items-center gap-2 text-sm font-medium text-stone-900 hover:underline">
-                    <ArrowRight className="w-4 h-4 text-stone-400" />
-                    Request a free analysis
-                  </Link>
-                  <Link to="/kitchener" className="flex items-center gap-2 text-sm font-medium text-stone-900 hover:underline">
-                    <ArrowRight className="w-4 h-4 text-stone-400" />
-                    See our Kitchener-Waterloo SEO services
-                  </Link>
-                  <Link to="/blog" className="flex items-center gap-2 text-sm font-medium text-stone-900 hover:underline">
-                    <ArrowRight className="w-4 h-4 text-stone-400" />
-                    Read more on our blog
-                  </Link>
-                </div>
+                <h3 className="text-sm font-semibold uppercase tracking-widest text-stone-400 mb-4">More on this topic</h3>
+                <ul className="space-y-3 mb-10">
+                  {relatedPosts.map((rp) => (
+                    <li key={rp.id}>
+                      <Link to={`/blog/${rp.slug}`} className="text-sm font-medium text-stone-900 hover:underline underline-offset-2">
+                        {rp.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+
+                <h3 className="text-sm font-semibold uppercase tracking-widest text-stone-400 mb-4">Proof from our local clients</h3>
+                <ul className="space-y-3 mb-10">
+                  <li>
+                    <Link to="/case-studies/cambridge-hvac-local-seo" className="text-sm font-medium text-stone-900 hover:underline underline-offset-2">
+                      How a Cambridge HVAC Company Reached the Top 3 on Google
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/case-studies/waterloo-dental-reviews" className="text-sm font-medium text-stone-900 hover:underline underline-offset-2">
+                      How a Waterloo Dental Clinic Doubled Their Reviews in 60 Days
+                    </Link>
+                  </li>
+                </ul>
+
+                <h3 className="text-sm font-semibold uppercase tracking-widest text-stone-400 mb-4">Ready to start?</h3>
+                <ul className="space-y-3 mb-10">
+                  <li><Link to="/free-analysis" className="text-sm font-medium text-stone-900 hover:underline underline-offset-2">Request a free analysis</Link></li>
+                  <li><Link to="/kitchener" className="text-sm font-medium text-stone-900 hover:underline underline-offset-2">See our Kitchener-Waterloo SEO services</Link></li>
+                  <li><Link to="/blog" className="text-sm font-medium text-stone-900 hover:underline underline-offset-2">Read more from our blog</Link></li>
+                </ul>
               </div>
 
               {/* CTA */}
