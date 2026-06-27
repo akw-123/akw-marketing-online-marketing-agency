@@ -116,6 +116,11 @@ export default function Home() {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
       "name": "AKW Marketing Agency",
+      "alternateName": [
+        "AKW Marketing Kitchener-Waterloo",
+        "AKW Marketing Kitchener",
+        "AKW Marketing KW"
+      ],
       "description": "AKW Marketing Agency helps local businesses in the Kitchener-Waterloo area rank in the top 3 on Google in 90 days.",
       "url": "https://akwmarketing.com/",
       "telephone": "+1-437-475-0076",
