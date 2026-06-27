@@ -115,7 +115,7 @@ export default function Home() {
     const psSchema = {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
-      "name": "AKW Marketing Agency",
+      "name": "AKW Marketing",
       "alternateName": [
         "AKW Marketing Kitchener-Waterloo",
         "AKW Marketing Kitchener",
