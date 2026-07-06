@@ -1,5 +1,6 @@
 import React from "react";
 import { Phone, Mail, ArrowUpRight } from "lucide-react";
+import ExploreInsights from "@/components/landing/ExploreInsights";
 
 const InstagramIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -25,8 +26,9 @@ const XIcon = () => (
 
 export default function FooterSection() {
   return (
-    <footer className="border-t border-stone-200/60 pt-12 px-6 pb-8">
-      <div className="max-w-7xl mx-auto">
+    <footer className="border-t border-stone-200/60">
+      <ExploreInsights />
+      <div className="max-w-7xl mx-auto px-6 pt-12 pb-8">
 
         {/* Google Map */}
         <div className="mb-10 rounded-2xl overflow-hidden border border-stone-200/60 shadow-sm" style={{ height: "280px" }}>
