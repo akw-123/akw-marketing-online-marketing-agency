@@ -325,10 +325,12 @@ export default function MetaAds() {
         {/* Video */}
          <section className="pb-10">
            <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}>
-             <div className="rounded-2xl overflow-hidden shadow-lg">
-               <style>{`wistia-player[media-id='w99ol7hw7u']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/w99ol7hw7u/swatch');display:block;filter:blur(5px);padding-top:56.25%;}`}</style>
-               <wistia-player media-id="w99ol7hw7u" aspect="1.7777777777777777"></wistia-player>
-             </div>
+              <style>{`wistia-player[media-id='w99ol7hw7u']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/w99ol7hw7u/swatch');display:block;filter:blur(5px);padding-top:56.25%;}`}</style>
+              <div className="wistia-wrapper" style={{ maxWidth: "960px", margin: "0 auto" }}>
+                <div className="rounded-2xl overflow-hidden shadow-lg">
+                  <wistia-player media-id="w99ol7hw7u" aspect="1.7777777777777777"></wistia-player>
+                </div>
+              </div>
            </motion.div>
          </section>
 
