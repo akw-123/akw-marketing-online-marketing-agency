@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Users, Zap, TrendingUp, CheckCircle, ChevronDown, ArrowRight, Clock, Loader2 } from "lucide-react";
 import FooterSection from "@/components/landing/FooterSection";
+import SimplifiedApplicationForm from "@/components/SimplifiedApplicationForm";
 import { base44 } from "@/api/base44Client";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -70,161 +71,6 @@ function FAQItem({ q, a }) {
         )}
       </AnimatePresence>
     </div>
-  );
-}
-
-const inputClass = "w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 text-sm focus:outline-none focus:ring-2 focus:ring-stone-400";
-const selectClass = "w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 text-sm focus:outline-none focus:ring-2 focus:ring-stone-400 appearance-none cursor-pointer";
-
-const emptyForm = {
-  full_name: "", business_name: "", email: "", phone: "", website: "",
-  gbp_status: "", primary_goal: "", monthly_budget: "", start_timeline: "",
-  referral_source: "", additional_info: ""
-};
-
-function ApplicationForm() {
-  const [form, setForm] = useState(emptyForm);
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  const set = (field) => (e) => setForm({ ...form, [field]: e.target.value });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-
-    await base44.entities.StrategyApplication.create(form);
-
-    const emailBody = `
-New GBP Strategy Application
-
-Full Name: ${form.full_name}
-Business Name: ${form.business_name}
-Email: ${form.email}
-Phone: ${form.phone}
-Website: ${form.website || "N/A"}
-
-GBP Status: ${form.gbp_status || "N/A"}
-Primary Goal: ${form.primary_goal || "N/A"}
-Monthly Budget: ${form.monthly_budget || "N/A"}
-Start Timeline: ${form.start_timeline || "N/A"}
-How They Heard: ${form.referral_source || "N/A"}
-
-Additional Info:
-${form.additional_info || "N/A"}
-    `.trim();
-
-    await base44.integrations.Core.SendEmail({
-      to: "andre@akwmarketing.com",
-      subject: `New GBP Application: ${form.business_name} (${form.full_name})`,
-      body: emailBody,
-    });
-
-    setLoading(false);
-    setSubmitted(true);
-  };
-
-  if (submitted) {
-    return (
-      <div className="text-center py-12">
-        <CheckCircle className="w-14 h-14 text-green-500 mx-auto mb-5" />
-        <h3 className="text-2xl font-bold text-stone-900 mb-2">Application Received!</h3>
-        <p className="text-stone-500 text-sm max-w-sm mx-auto leading-relaxed">
-          Thank you, <strong>{form.full_name}</strong>! We'll review your application and reach out within 24–48 hours to schedule your free GBP strategy session.
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-stone-700 mb-1.5">Full Name <span className="text-red-400">*</span></label>
-          <input required type="text" placeholder="John Smith" value={form.full_name} onChange={set("full_name")} className={inputClass} />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-stone-700 mb-1.5">Business Name <span className="text-red-400">*</span></label>
-          <input required type="text" placeholder="Your Business LLC" value={form.business_name} onChange={set("business_name")} className={inputClass} />
-        </div>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-stone-700 mb-1.5">Email Address <span className="text-red-400">*</span></label>
-          <input required type="email" placeholder="you@yourbusiness.com" value={form.email} onChange={set("email")} className={inputClass} />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-stone-700 mb-1.5">Phone Number <span className="text-red-400">*</span></label>
-          <input required type="tel" placeholder="+1 (555) 000-0000" value={form.phone} onChange={set("phone")} className={inputClass} />
-        </div>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-stone-700 mb-1.5">Business Website URL</label>
-        <input type="url" placeholder="https://yourbusiness.com" value={form.website} onChange={set("website")} className={inputClass} />
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-stone-700 mb-1.5">Current Google Business Profile Status</label>
-        <select value={form.gbp_status} onChange={set("gbp_status")} className={selectClass}>
-          <option value="">Select an option…</option>
-          <option>Not set up yet</option>
-          <option>Set up but not optimized</option>
-          <option>Suspended/Penalized</option>
-          <option>Already optimized but want more</option>
-        </select>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-stone-700 mb-1.5">Primary Goal</label>
-        <select value={form.primary_goal} onChange={set("primary_goal")} className={selectClass}>
-          <option value="">Select an option…</option>
-          <option>Get more calls</option>
-          <option>Get more foot traffic</option>
-          <option>Rank higher in local search</option>
-          <option>Improve reviews &amp; reputation</option>
-          <option>All of the above</option>
-        </select>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-stone-700 mb-1.5">Monthly Marketing Budget</label>
-          <select value={form.monthly_budget} onChange={set("monthly_budget")} className={selectClass}>
-            <option value="">Select a range…</option>
-            <option>Under $500</option>
-            <option>$500–$1,000</option>
-            <option>$1,000–$2,500</option>
-            <option>$2,500–$5,000</option>
-            <option>$5,000+</option>
-          </select>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-stone-700 mb-1.5">How soon to start?</label>
-          <select value={form.start_timeline} onChange={set("start_timeline")} className={selectClass}>
-            <option value="">Select a timeline…</option>
-            <option>Immediately</option>
-            <option>Within 30 days</option>
-            <option>1–3 months</option>
-            <option>Just exploring</option>
-          </select>
-        </div>
-      </div>
-      <div>
-        <label className="block text-sm font-medium text-stone-700 mb-1.5">Anything else? <span className="text-stone-400 font-normal">(optional)</span></label>
-        <textarea
-          rows={4}
-          placeholder="Tell us about your business, current challenges, or any questions…"
-          value={form.additional_info}
-          onChange={set("additional_info")}
-          className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-stone-900 text-sm focus:outline-none focus:ring-2 focus:ring-stone-400 resize-none"
-        />
-      </div>
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full bg-stone-900 hover:bg-stone-800 disabled:opacity-60 text-white font-semibold py-4 rounded-xl text-sm transition-colors flex items-center justify-center gap-2"
-      >
-        {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Submitting…</> : <>Submit Application <ArrowRight className="w-4 h-4" /></>}
-      </button>
-      <p className="text-xs text-stone-400 text-center">We review every application personally. Expect a reply within 24–48 hours.</p>
-    </form>
   );
 }
 
@@ -521,8 +367,8 @@ export default function MetaAds() {
             viewport={{ once: true }}
             className="bg-white rounded-2xl border border-stone-200 p-8"
           >
-            <ApplicationForm />
-          </motion.div>
+            <SimplifiedApplicationForm />
+            </motion.div>
 
         </section>
       </div>

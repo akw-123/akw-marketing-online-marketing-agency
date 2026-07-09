@@ -22,6 +22,10 @@
       "type": "string",
       "description": "Business website URL"
     },
+    "gbp_link": {
+      "type": "string",
+      "description": "Link to the applicant's Google Business Profile"
+    },
     "gbp_status": {
       "type": "string",
       "enum": [
