@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { GraduationCap, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import FooterSection from "@/components/landing/FooterSection";
 
 export default function NewsletterThankYou() {
   useEffect(() => {
@@ -92,6 +93,7 @@ export default function NewsletterThankYou() {
           </div>
         </motion.div>
       </div>
+      <FooterSection />
     </div>
   );
 }
