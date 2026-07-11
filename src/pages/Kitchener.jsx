@@ -73,7 +73,7 @@ function KitchenerHero() {
             </h1>
 
             <p className="mt-6 text-stone-600 leading-relaxed max-w-lg">
-              75% of all search requests go to the top 3 results on Google Maps.
+              77% of all search requests go to the top 3 results on Google Maps.
               <br /><br />
               If your Kitchener business isn't there, those customers are going to your competitors. Want to see how this applies to your business? <a href="/free-analysis" className="text-stone-800 underline underline-offset-2 hover:text-stone-900">Request a free analysis</a> and we'll show you exactly where you stand.
             </p>
