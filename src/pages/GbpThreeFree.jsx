@@ -56,7 +56,7 @@ export default function GbpThreeFree() {
             <wistia-player media-id="9ikdkbbamh" aspect="1.7777777777777777"></wistia-player>
           </div>
 
-          <SkipTheWorkCard />
+          <SkipTheWorkCard ctaHref="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3-OF5q-gJ76X212y9PZuHe2EBRoNqjed20SOVs1BzDPoEzoEDPmXH1r-rbisJjaFiWJzFGOUTT" />
         </div>
       </section>
 

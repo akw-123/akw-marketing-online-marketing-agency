@@ -1,7 +1,8 @@
 import React from "react";
 import { GraduationCap, ArrowRight } from "lucide-react";
 
-export default function SkipTheWorkCard() {
+export default function SkipTheWorkCard({ ctaHref = "/gbp" }) {
+  const isExternal = ctaHref.startsWith("http");
   const points = [
     "Google Business Profile optimization",
     "Backend website fixes",
@@ -42,7 +43,9 @@ export default function SkipTheWorkCard() {
       </p>
 
       <a
-        href="/gbp"
+        href={ctaHref}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
         className="inline-flex items-center gap-2 bg-stone-900 hover:bg-stone-800 text-white font-semibold px-8 py-4 rounded-full text-sm transition-colors"
       >
         See How We Get You to The Top 3
