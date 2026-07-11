@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { ArrowUpRight, Loader2, CheckCircle } from "lucide-react";
+import { ArrowUpRight, Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import FAQSection from "@/components/landing/FAQSection";
 import FooterSection from "@/components/landing/FooterSection";
@@ -13,7 +14,7 @@ export default function Newsletter() {
   }, []);
   const [form, setForm] = useState({ first_name: "", email: "" });
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +27,7 @@ export default function Newsletter() {
     });
 
     setLoading(false);
-    setSubmitted(true);
+    navigate("/newsletter-thank-you");
   };
 
   return (
@@ -70,15 +71,6 @@ export default function Newsletter() {
 
           {/* Right: Form */}
           <div className="md:pt-4">
-            {submitted ? (
-              <div className="flex flex-col items-start gap-4 py-8">
-                <CheckCircle className="w-10 h-10 text-green-500" />
-                <h2 className="text-2xl font-bold text-stone-900">You're in!</h2>
-                <p className="text-stone-500 text-sm leading-relaxed">
-                  Welcome aboard, {form.first_name}. Expect actionable tips straight to your inbox.
-                </p>
-              </div>
-            ) : (
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <div>
                   <input
@@ -112,7 +104,6 @@ export default function Newsletter() {
                   )}
                 </button>
               </form>
-            )}
           </div>
         </div>
       </div>

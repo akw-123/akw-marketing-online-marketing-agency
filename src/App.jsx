@@ -12,6 +12,7 @@ import TermsOfService from './pages/TermsOfService';
 import MetaAds from './pages/MetaAds';
 import Kitchener from './pages/Kitchener';
 import Newsletter from './pages/Newsletter';
+import NewsletterThankYou from './pages/NewsletterThankYou';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import OnlineMarketingAgency from './pages/OnlineMarketingAgency';
@@ -90,6 +91,7 @@ const AuthenticatedApp = () => {
       <Route path="/gbp" element={<MetaAds />} />
       <Route path="/kitchener" element={<Kitchener />} />
       <Route path="/newsletter" element={<Newsletter />} />
+      <Route path="/newsletter-thank-you" element={<NewsletterThankYou />} />
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:slug" element={<BlogPost />} />
       <Route path="/free-analysis" element={<FreeAnalysis />} />
