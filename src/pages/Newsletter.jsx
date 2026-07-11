@@ -20,6 +20,17 @@ export default function Newsletter() {
     e.preventDefault();
     setLoading(true);
 
+    // Add subscriber to Brevo Newsletter list #14 (SOURCE=inbound) via Make webhook
+    try {
+      await fetch("https://hook.us2.make.com/45wtmbr89f94ixnzmgctrfo38v1kyrld", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: form.email, first_name: form.first_name }),
+      });
+    } catch (err) {
+      // non-blocking: signup still succeeds if the webhook hiccups
+    }
+
     await base44.integrations.Core.SendEmail({
       to: "andre@akwmarketing.com",
       subject: `New Newsletter Subscriber: ${form.first_name}`,
