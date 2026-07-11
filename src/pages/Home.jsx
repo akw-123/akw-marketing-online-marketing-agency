@@ -34,6 +34,15 @@ function EmailForm() {
       subject: `New Free Tips Subscriber: ${email}`,
       body: `A new subscriber signed up for the 3 Free Tips:\n\nEmail: ${email}`,
     });
+    try {
+      await fetch("https://hook.us2.make.com/45wtmbr89f94ixnzmgctrfo38v1kyrld", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, first_name: "" }),
+      });
+    } catch (err) {
+      // non-blocking: signup still succeeds if the webhook fails
+    }
     setLoading(false);
     setSubmitted(true);
   };
