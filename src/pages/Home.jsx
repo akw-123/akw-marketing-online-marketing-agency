@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { ArrowRight, Loader2, CheckCircle } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import FooterSection from "@/components/landing/FooterSection";
-import PricingSection from "@/components/landing/PricingSection";
 
 const clients = [
   "Simpson Drew",
@@ -256,9 +255,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Pricing */}
-      <PricingSection />
 
       {/* Free Tips CTA */}
       <section className="py-20 px-6 border-t border-stone-200/60">
