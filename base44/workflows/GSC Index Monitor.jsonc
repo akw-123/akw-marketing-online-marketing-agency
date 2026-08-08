@@ -1,0 +1,48 @@
+{
+  "name": "GSC Index Monitor",
+  "description": "Daily check of Google Search Console indexing health for akwmarketing.com, posting a digest to the #local-seo Slack channel.",
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 9 * * *",
+      "one_time_date": null,
+      "timezone": "America/Toronto",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "gsc_index_monitor",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "run_monitor": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "gsc-index-monitor",
+            "args": {
+              "siteUrl": "sc-domain:akwmarketing.com",
+              "channel": "C0BJ2ESTKL5"
+            }
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Check indexing & post to Slack",
+            "description": "Fetch GSC sitemap health and post digest to #local-seo"
+          }
+        }
+      }
+    ]
+  }
+}
