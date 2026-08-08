@@ -5,6 +5,7 @@ import KpiCard from "@/components/dashboard/KpiCard";
 import TrafficLineChart from "@/components/dashboard/TrafficLineChart";
 import TrafficSourcesBar from "@/components/dashboard/TrafficSourcesBar";
 import TopPagesTable from "@/components/dashboard/TopPagesTable";
+import TopQueriesTable from "@/components/dashboard/TopQueriesTable";
 
 const pctChange = (curr, prev) => {
   if (prev === 0 || prev == null) return null;
@@ -26,6 +27,8 @@ export default function Dashboard() {
   const [propertyId, setPropertyId] = useState(null);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  const [queries, setQueries] = useState(null);
+  const [queriesLoading, setQueriesLoading] = useState(true);
 
   const handleRes = useCallback((res) => {
     if (res.status === 401) { setAuthState("login"); return false; }
@@ -55,6 +58,12 @@ export default function Dashboard() {
 
   useEffect(() => { loadProperties(); }, [loadProperties]);
   useEffect(() => { if (propertyId) loadData(propertyId); }, [propertyId, loadData]);
+  useEffect(() => {
+    base44.functions.invoke("gsc-search-queries", {}).then((res) => {
+      setQueriesLoading(false);
+      if (res.status === 200) setQueries(res.data);
+    }).catch(() => setQueriesLoading(false));
+  }, []);
 
   if (authState === "login") {
     return (
@@ -128,6 +137,10 @@ export default function Dashboard() {
             <p>{properties.length === 0 ? "No Google Analytics properties found in your account." : "Select a property above."}</p>
           </div>
         )}
+
+        <div className="mt-6">
+          <TopQueriesTable data={queries} loading={queriesLoading} />
+        </div>
       </div>
     </div>
   );
