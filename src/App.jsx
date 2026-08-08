@@ -26,6 +26,7 @@ import CaseStudyWaterlooDental from './pages/CaseStudyWaterlooDental';
 import CaseStudyBurlingtonRealtor from './pages/CaseStudyBurlingtonRealtor';
 import CaseStudyGuelphCafe from './pages/CaseStudyGuelphCafe';
 import CaseStudyHamiltonAccountant from './pages/CaseStudyHamiltonAccountant';
+import Dashboard from './pages/Dashboard';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -104,6 +105,7 @@ const AuthenticatedApp = () => {
       <Route path="/case-studies/guelph-cafe-gbp" element={<CaseStudyGuelphCafe />} />
       <Route path="/case-studies/hamilton-accountant-google-ads" element={<CaseStudyHamiltonAccountant />} />
       <Route path="/landing" element={<Navigate to="/" replace />} />
+      <Route path="/dashboard" element={<Dashboard />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
     </>
