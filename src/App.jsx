@@ -11,6 +11,8 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import MetaAds from './pages/MetaAds';
 import Kitchener from './pages/Kitchener';
+import SeoServicesKitchener from './pages/SeoServicesKitchener';
+import Waterloo from './pages/Waterloo';
 import Newsletter from './pages/Newsletter';
 import NewsletterThankYou from './pages/NewsletterThankYou';
 import GbpThreeFree from './pages/GbpThreeFree';
@@ -92,6 +94,8 @@ const AuthenticatedApp = () => {
       <Route path="/TermsOfService" element={<TermsOfService />} />
       <Route path="/gbp" element={<MetaAds />} />
       <Route path="/kitchener" element={<Kitchener />} />
+      <Route path="/seo-services-kitchener" element={<SeoServicesKitchener />} />
+      <Route path="/waterloo" element={<Waterloo />} />
       <Route path="/newsletter" element={<Newsletter />} />
       <Route path="/newsletter-thank-you" element={<NewsletterThankYou />} />
       <Route path="/gbp-three-free" element={<GbpThreeFree />} />
