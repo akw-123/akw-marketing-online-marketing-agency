@@ -19,6 +19,9 @@ import LocalSeoKitchener from './pages/LocalSeoKitchener';
 import Cambridge from './pages/Cambridge';
 import Guelph from './pages/Guelph';
 import Hamilton from './pages/Hamilton';
+import Burlington from './pages/Burlington';
+import Brantford from './pages/Brantford';
+import Stratford from './pages/Stratford';
 import Newsletter from './pages/Newsletter';
 import NewsletterThankYou from './pages/NewsletterThankYou';
 import GbpThreeFree from './pages/GbpThreeFree';
@@ -108,6 +111,9 @@ const AuthenticatedApp = () => {
       <Route path="/cambridge" element={<Cambridge />} />
       <Route path="/guelph" element={<Guelph />} />
       <Route path="/hamilton" element={<Hamilton />} />
+      <Route path="/burlington" element={<Burlington />} />
+      <Route path="/brantford" element={<Brantford />} />
+      <Route path="/stratford" element={<Stratford />} />
       <Route path="/newsletter" element={<Newsletter />} />
       <Route path="/newsletter-thank-you" element={<NewsletterThankYou />} />
       <Route path="/gbp-three-free" element={<GbpThreeFree />} />
