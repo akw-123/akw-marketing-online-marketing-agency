@@ -34,20 +34,6 @@ export default function KitchenerFooter() {
     <footer className="border-t border-stone-200/60 pt-12 px-6 pb-8">
       <div className="max-w-7xl mx-auto">
 
-        {/* Google Map */}
-        <div className="mb-10 rounded-2xl overflow-hidden border border-stone-200/60 shadow-sm" style={{ height: "280px" }}>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d92380.27710558447!2d-80.57403!3d43.45178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882bf48c03ee5105%3A0x9525f8e6df5f544b!2sKitchener%2C%20ON%2C%20Canada!5e0!3m2!1sen!2sca!4v1700000000000"
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="AKW Marketing Kitchener"
-          />
-        </div>
-
         {/* NAP + Info Row */}
         <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-8">
           <div>
@@ -97,6 +83,18 @@ export default function KitchenerFooter() {
               <Mail className="w-4 h-4" />
               contact@akwmarketing.com
             </a>
+            <div className="mt-4 w-full max-w-[400px] rounded-xl overflow-hidden border border-stone-200/60 shadow-sm">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d740616.2647010357!2d-80.98514244988174!3d43.52251949569433!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x42ce475ad0864a73%3A0x5367cff389646aaf!2sAKW%20Marketing%20Agency!5e0!3m2!1sen!2sus!4v1786410087018!5m2!1sen!2sus"
+                width="100%"
+                height="300"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+                title="AKW Marketing Agency"
+              />
+            </div>
           </div>
         </div>
 
