@@ -14,7 +14,7 @@ if (typeof window !== 'undefined') {
   document.head.appendChild(script2);
 }
 import { motion } from "framer-motion";
-import { Users, Clock, Zap, Phone, ArrowRight } from "lucide-react";
+import { Users, Clock, Zap, Phone, ArrowRight, MapPin } from "lucide-react";
 import AdvantagesSection from "@/components/landing/AdvantagesSection";
 import BeforeAfterSection from "@/components/landing/BeforeAfterSection";
 import KitchenerProcessSection from "@/components/landing/KitchenerProcessSection";
@@ -235,6 +235,64 @@ function KitchenerCTA() {
   );
 }
 
+function WhereWeWork() {
+  const areas = [
+    { name: "Waterloo", href: "/waterloo" },
+    { name: "Cambridge", href: "/cambridge" },
+    { name: "Guelph", href: "/guelph" },
+    { name: "Stratford", href: "/stratford" },
+    { name: "Brantford", href: "/brantford" },
+    { name: "Hamilton", href: "/hamilton" },
+    { name: "Burlington", href: "/burlington" },
+  ];
+
+  return (
+    <section className="py-20 md:py-28 px-6 border-t border-stone-200/60">
+      <div className="max-w-5xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-14"
+        >
+          <span className="inline-flex items-center gap-2 bg-white border border-stone-200 rounded-full px-4 py-1.5 text-xs font-medium text-stone-600 mb-6">
+            <MapPin className="w-3 h-3" />
+            Where We Work
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-stone-900 tracking-tight">
+            Ontario Cities We{" "}
+            <span
+              className="italic font-bold"
+              style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
+            >
+              Serve
+            </span>
+          </h2>
+          <p className="mt-4 text-stone-500 max-w-xl mx-auto text-sm">
+            Based in Kitchener, we deliver our Local SEO Top 3 Ranking playbook to businesses across the region.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {areas.map((area) => (
+            <a
+              key={area.href}
+              href={area.href}
+              className="group bg-white/70 backdrop-blur-sm border border-stone-200/60 rounded-xl px-5 py-4 flex items-center justify-between hover:shadow-md hover:border-stone-300 transition-all duration-300"
+            >
+              <span className="text-sm font-semibold text-stone-900 group-hover:text-stone-700 transition-colors">
+                {area.name}
+              </span>
+              <ArrowRight className="w-4 h-4 text-stone-400 group-hover:text-stone-900 group-hover:translate-x-0.5 transition-all" />
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function Kitchener() {
   useEffect(() => {
     document.title = "Internet Marketing Service in Kitchener | Marketing Agency | AKW Marketing";
@@ -299,6 +357,7 @@ export default function Kitchener() {
       <BeforeAfterSection />
       <KitchenerProcessSection />
       <TestimonialsSection />
+      <WhereWeWork />
       <FAQSection />
       <RecentResults />
       <ExploreInsights />
