@@ -69,7 +69,7 @@ function KitchenerHero() {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-stone-900 leading-[1.1] tracking-tight">
-              Internet Marketing Service in Kitchener
+              Digital Marketing Agency Kitchener
             </h1>
 
             <p className="mt-6 text-stone-600 leading-relaxed max-w-lg">
@@ -295,10 +295,10 @@ function WhereWeWork() {
 
 export default function Kitchener() {
   useEffect(() => {
-    document.title = "Internet Marketing Service in Kitchener | Marketing Agency | AKW Marketing";
+    document.title = "BEST Digital Marketing Agency Kitchener - if you're looking for an Internet Marketing Service near me or SEO & Local SEO Services near me - AKW Marketing is the place to be";
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
-    meta.content = "Need an internet marketing service in Kitchener that delivers real results? AKW Marketing helps local businesses rank higher on Google and win more customers through SEO, Google Ads, and Meta Ads. Your on-demand marketing department in Kitchener-Waterloo — free consultation available.";
+    meta.content = "Kitchener digital marketing agency offering SEO, Google Ads & Meta Ads. Get found, attract leads, scale revenue. Free analysis from AKW Marketing.";
 
     const schema = {
       "@context": "https://schema.org",
