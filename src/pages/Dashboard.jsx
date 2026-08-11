@@ -6,6 +6,7 @@ import TrafficLineChart from "@/components/dashboard/TrafficLineChart";
 import TrafficSourcesBar from "@/components/dashboard/TrafficSourcesBar";
 import TopPagesTable from "@/components/dashboard/TopPagesTable";
 import TopQueriesTable from "@/components/dashboard/TopQueriesTable";
+import MonthlyTrafficChart from "@/components/dashboard/MonthlyTrafficChart";
 
 const pctChange = (curr, prev) => {
   if (prev === 0 || prev == null) return null;
@@ -128,6 +129,10 @@ export default function Dashboard() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
               <TrafficLineChart data={data.series} />
               <TrafficSourcesBar data={data.trafficSources} />
+            </div>
+
+            <div className="mb-6">
+              <MonthlyTrafficChart data={data.monthlySeries} />
             </div>
 
             <TopPagesTable data={data.topPages} />

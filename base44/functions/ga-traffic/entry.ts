@@ -73,8 +73,9 @@ export default async function(req) {
     const startCurrent = fmt(new Date(today.getTime() - (days - 1) * 86400000));
     const endPrev = fmt(new Date(today.getTime() - days * 86400000));
     const startPrev = fmt(new Date(today.getTime() - (2 * days - 1) * 86400000));
+    const startMonthly = fmt(new Date(today.getFullYear(), today.getMonth() - 11, 1));
 
-    const [timeseries, current, previous, sources, pages] = await Promise.all([
+    const [timeseries, current, previous, sources, pages, monthly] = await Promise.all([
       runReport(accessToken, propertyId, {
         dateRanges: [{ startDate: startCurrent, endDate: end }],
         dimensions: [{ name: 'date' }],
@@ -102,6 +103,12 @@ export default async function(req) {
         metrics: [{ name: 'screenPageViews' }, { name: 'sessions' }],
         orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
         limit: 10
+      }),
+      runReport(accessToken, propertyId, {
+        dateRanges: [{ startDate: startMonthly, endDate: end }],
+        dimensions: [{ name: 'month' }],
+        metrics: [{ name: 'sessions' }, { name: 'totalUsers' }, { name: 'screenPageViews' }],
+        orderBys: [{ dimension: { dimensionName: 'month', orderType: 'ALPHANUMERIC' } }]
       })
     ]);
 
@@ -127,6 +134,16 @@ export default async function(req) {
       sessions: Number(r.metricValues[1].value) || 0
     }));
 
+    const monthlySeries = (monthly.rows || []).map((r) => {
+      const m = r.dimensionValues[0].value;
+      return {
+        month: `${m.slice(0, 4)}-${m.slice(4, 6)}`,
+        sessions: Number(r.metricValues[0].value) || 0,
+        users: Number(r.metricValues[1].value) || 0,
+        pageviews: Number(r.metricValues[2].value) || 0
+      };
+    });
+
     return Response.json({
       propertyId,
       days,
@@ -135,7 +152,8 @@ export default async function(req) {
       current: totals(current),
       previous: totals(previous),
       trafficSources,
-      topPages
+      topPages,
+      monthlySeries
     });
   } catch (error) {
     return Response.json({ error: error.message }, { status: 500 });
