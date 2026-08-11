@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import SeoArticlePage from "@/components/landing/SeoArticlePage";
+import WhereWeWork from "@/components/landing/WhereWeWork";
 
 export default function Brantford() {
   useEffect(() => {
@@ -10,7 +11,7 @@ export default function Brantford() {
   }, []);
 
   return (
-    <SeoArticlePage>
+    <SeoArticlePage belowArticle={<WhereWeWork currentCity="Brantford" />}>
       <h1>Marketing Agency Brantford</h1>
 
       <p>Brantford is a market that rewards genuine local presence. Sitting in Brant County along the Grand River, the city has evolved from a manufacturing hub (once home to Cockshutt, Massey-Ferguson, and the birthplace of the telephone) into a diversifying economy of healthcare, post-secondary education, trades, and small business. Buying behaviour here is community-referral-driven: a Brantford business earns its reputation on the street first, then online, and losing at either stage costs you customers.</p>

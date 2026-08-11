@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import SeoArticlePage from "@/components/landing/SeoArticlePage";
+import WhereWeWork from "@/components/landing/WhereWeWork";
 
 export default function Stratford() {
   useEffect(() => {
@@ -10,7 +11,7 @@ export default function Stratford() {
   }, []);
 
   return (
-    <SeoArticlePage>
+    <SeoArticlePage belowArticle={<WhereWeWork currentCity="Stratford" />}>
       <h1>Marketing Agency Stratford</h1>
 
       <p>Stratford is one of southwestern Ontario's most distinctive small-city markets. Home to the Stratford Festival, a nationally recognized culinary and arts scene, and a downtown retail core that punches well above its population weight, the city runs on a rhythm most Ontario markets do not have: festival-driven visitor traffic from April through November, then a quieter local-first winter economy. Marketing here means marketing to two audiences at once, and getting both right is what separates the businesses that thrive from the ones that stall.</p>

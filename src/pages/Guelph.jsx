@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import SeoArticlePage from "@/components/landing/SeoArticlePage";
+import WhereWeWork from "@/components/landing/WhereWeWork";
 
 export default function Guelph() {
   useEffect(() => {
@@ -10,7 +11,7 @@ export default function Guelph() {
   }, []);
 
   return (
-    <SeoArticlePage>
+    <SeoArticlePage belowArticle={<WhereWeWork currentCity="Guelph" />}>
       <h1>Marketing Agency Guelph</h1>
 
       <p>Guelph is one of Southern Ontario's most distinctive local markets: anchored by the University of Guelph, home to Canada's leading agri-food research cluster, and populated by a small-business plus independent-retail culture that runs deeper than most similarly-sized Canadian cities. Marketing to Guelph customers means understanding a market that supports local businesses aggressively, expects authenticity, and rewards businesses that connect to the community's actual identity rather than importing generic branding.</p>

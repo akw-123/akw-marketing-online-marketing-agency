@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import SeoArticlePage from "@/components/landing/SeoArticlePage";
+import WhereWeWork from "@/components/landing/WhereWeWork";
 
 export default function Hamilton() {
   useEffect(() => {
@@ -10,7 +11,7 @@ export default function Hamilton() {
   }, []);
 
   return (
-    <SeoArticlePage>
+    <SeoArticlePage belowArticle={<WhereWeWork currentCity="Hamilton" />}>
       <h1>Marketing Agency Hamilton</h1>
 
       <p>Hamilton is one of Southern Ontario's most distinctive markets: a working city built on steel, logistics, and healthcare, transformed since the mid-2010s by an inflow of creative-class professionals, tech startups, and specialty retail. Marketing to Hamilton (or reaching Hamilton customers for a business based elsewhere) means understanding a market that has strong local pride, meaningful demographic diversity across neighbourhoods, and a competitive local-search environment that rewards businesses that show up authentic.</p>

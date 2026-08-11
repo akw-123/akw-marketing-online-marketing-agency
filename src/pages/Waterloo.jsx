@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import SeoArticlePage from "@/components/landing/SeoArticlePage";
+import WhereWeWork from "@/components/landing/WhereWeWork";
 
 export default function Waterloo() {
   useEffect(() => {
@@ -10,7 +11,7 @@ export default function Waterloo() {
   }, []);
 
   return (
-    <SeoArticlePage>
+    <SeoArticlePage belowArticle={<WhereWeWork currentCity="Waterloo" />}>
       <h1>Marketing Agency Waterloo</h1>
 
       <p>Waterloo is not just Kitchener's twin city. It's Canada's tech corridor, home to the University of Waterloo, Wilfrid Laurier, Communitech, and hundreds of professional-services firms serving the region's insurance, financial, and technology sectors. Marketing to Waterloo businesses (or to Waterloo customers) means understanding a market that's more educated, more B2B, and more digitally sophisticated than the national average.</p>

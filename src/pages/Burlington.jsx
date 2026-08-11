@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import SeoArticlePage from "@/components/landing/SeoArticlePage";
+import WhereWeWork from "@/components/landing/WhereWeWork";
 
 export default function Burlington() {
   useEffect(() => {
@@ -10,7 +11,7 @@ export default function Burlington() {
   }, []);
 
   return (
-    <SeoArticlePage>
+    <SeoArticlePage belowArticle={<WhereWeWork currentCity="Burlington" />}>
       <h1>Marketing Agency Burlington</h1>
 
       <p>Burlington is one of Ontario's most competitive local search markets. Sitting at the western tip of the GTA and the eastern edge of Halton, the city serves a higher-income commuter demographic, a strong waterfront retail scene, and a growing base of professional services and manufacturing businesses along the QEW corridor. That competitive intensity is exactly why disciplined local SEO matters more here, not less.</p>

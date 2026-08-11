@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import SeoArticlePage from "@/components/landing/SeoArticlePage";
+import WhereWeWork from "@/components/landing/WhereWeWork";
 
 export default function Cambridge() {
   useEffect(() => {
@@ -10,7 +11,7 @@ export default function Cambridge() {
   }, []);
 
   return (
-    <SeoArticlePage>
+    <SeoArticlePage belowArticle={<WhereWeWork currentCity="Cambridge" />}>
       <h1>Marketing Agency Cambridge</h1>
 
       <p>Cambridge is the manufacturing and trades heart of the KW region. Home to Toyota Motor Manufacturing Canada, ATS Automation, Frito-Lay, and a dense base of skilled trades, contractors, and family-run service businesses that have anchored the local economy for decades. Marketing to Cambridge customers (or reaching Cambridge decision-makers on the B2B side) means understanding a market that values reliability, referrals, and long-standing relationships over flashy branding.</p>

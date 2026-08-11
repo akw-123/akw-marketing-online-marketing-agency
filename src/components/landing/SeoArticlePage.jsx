@@ -14,7 +14,7 @@ const articleClasses = [
   "[&_code]:bg-stone-200/60 [&_code]:text-stone-800 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-[0.9em] [&_code]:font-mono",
 ].join(" ");
 
-export default function SeoArticlePage({ children }) {
+export default function SeoArticlePage({ children, belowArticle }) {
   return (
     <div className="min-h-screen bg-[#F5F0EB]">
       <KitchenerNav />
@@ -23,6 +23,7 @@ export default function SeoArticlePage({ children }) {
           {children}
         </div>
       </article>
+      {belowArticle}
       <KitchenerFooter />
     </div>
   );
