@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ArrowRight, Loader2, CheckCircle } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import FooterSection from "@/components/landing/FooterSection";
+import WhereWeWork from "@/components/landing/WhereWeWork";
 
 const clients = [
   "Simpson Drew",
@@ -283,6 +284,7 @@ export default function Home() {
         </div>
       </section>
 
+      <WhereWeWork />
       <FooterSection />
     </div>
   );
