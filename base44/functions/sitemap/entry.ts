@@ -1,11 +1,19 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
 const BASE_URL = 'https://akwmarketing.com'; // v2
+const TODAY = new Date().toISOString().split('T')[0];
 
 const STATIC_URLS = [
   { loc: '/',               priority: '1.0', changefreq: 'weekly'  },
   { loc: '/gbp',            priority: '1.0', changefreq: 'weekly'  },
-  { loc: '/kitchener',      priority: '0.9', changefreq: 'weekly'  },
+  { loc: '/kitchener',      priority: '0.9', changefreq: 'weekly', lastmod: TODAY },
+  { loc: '/waterloo',       priority: '0.9', changefreq: 'weekly', lastmod: TODAY },
+  { loc: '/cambridge',      priority: '0.9', changefreq: 'weekly', lastmod: TODAY },
+  { loc: '/guelph',         priority: '0.9', changefreq: 'weekly', lastmod: TODAY },
+  { loc: '/hamilton',       priority: '0.9', changefreq: 'weekly', lastmod: TODAY },
+  { loc: '/burlington',     priority: '0.9', changefreq: 'weekly', lastmod: TODAY },
+  { loc: '/brantford',      priority: '0.9', changefreq: 'weekly', lastmod: TODAY },
+  { loc: '/stratford',      priority: '0.9', changefreq: 'weekly', lastmod: TODAY },
   { loc: '/blog',           priority: '0.8', changefreq: 'weekly'  },
   { loc: '/case-studies',   priority: '0.8', changefreq: 'weekly'  },
   { loc: '/free-analysis',  priority: '0.7', changefreq: 'monthly' },
@@ -29,9 +37,10 @@ Deno.serve(async (req) => {
   const posts = await base44.asServiceRole.entities.BlogPost.filter({ published: true }, 'published_date', 500);
 
   const urlEntries = [
-    ...STATIC_URLS.map(({ loc, priority, changefreq }) => `
+    ...STATIC_URLS.map(({ loc, priority, changefreq, lastmod }) => `
   <url>
     <loc>${BASE_URL}${loc}</loc>
+    ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
   </url>`),
