@@ -250,7 +250,14 @@ export default function Kitchener() {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
       "name": "AKW Marketing Agency",
+      "alternateName": ["AKW Marketing", "AKW Marketing Kitchener"],
       "description": "Digital marketing agency helping local businesses in Kitchener and the Kitchener-Waterloo area rank in the top 3 on Google.",
+      "founder": {
+        "@type": "Person",
+        "name": "Andre Kadjo",
+        "jobTitle": "Founder",
+        "worksFor": { "@type": "Organization", "name": "AKW Marketing" }
+      },
       "url": "https://akwmarketing.com/kitchener",
       "telephone": "+1-437-475-0076",
       "email": "contact@akwmarketing.com",
