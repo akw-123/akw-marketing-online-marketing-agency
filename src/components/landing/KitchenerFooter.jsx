@@ -104,6 +104,9 @@ export default function KitchenerFooter() {
             <a href="mailto:contact@akwmarketing.com" className="underline hover:text-stone-600 transition-colors">contact@akwmarketing.com</a>.
           </p>
           <div className="flex items-center gap-6">
+            <a href="/about" className="text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1">
+              About <ArrowUpRight className="w-3 h-3" />
+            </a>
             <a href="/PrivacyPolicy" className="text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1">
               Privacy Policy <ArrowUpRight className="w-3 h-3" />
             </a>
