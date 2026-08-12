@@ -241,7 +241,7 @@ function WhereWeWork() {
 
 export default function Kitchener() {
   useEffect(() => {
-    document.title = "BEST Digital Marketing Agency Kitchener - if you're looking for an Internet Marketing Service near me or SEO & Local SEO Services near me - AKW Marketing is the place to be";
+    document.title = "Digital Marketing Agency Kitchener | SEO, Google Ads & Local SEO for Kitchener Businesses | AKW Marketing";
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
     meta.content = "Kitchener digital marketing agency offering SEO, Google Ads & Meta Ads. Get found, attract leads, scale revenue. Free analysis from AKW Marketing.";
@@ -250,7 +250,7 @@ export default function Kitchener() {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
       "name": "AKW Marketing Agency",
-      "description": "Internet marketing service helping local businesses in Kitchener and the Kitchener-Waterloo area rank in the top 3 on Google.",
+      "description": "Digital marketing agency helping local businesses in Kitchener and the Kitchener-Waterloo area rank in the top 3 on Google.",
       "url": "https://akwmarketing.com/kitchener",
       "telephone": "+1-437-475-0076",
       "email": "contact@akwmarketing.com",
