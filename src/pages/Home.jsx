@@ -206,7 +206,7 @@ export default function Home() {
             Is Your Business<br />Invisible on Google?
           </h1>
           <p className="mt-5 text-stone-500 text-base leading-relaxed max-w-md">
-            Watch this short video to learn why you're not ranking in the top 3. We specialize in <a href="/kitchener" className="text-stone-700 underline underline-offset-2 hover:text-stone-900">internet marketing in Kitchener-Waterloo</a> and surrounding areas.
+            Watch this short video to learn why you're not ranking in the top 3. We specialize in <a href="/kitchener" className="text-stone-700 underline underline-offset-2 hover:text-stone-900">digital marketing in Kitchener-Waterloo</a> and surrounding areas.
           </p>
           <p className="mt-4 text-stone-900 font-semibold text-base leading-relaxed max-w-md">
             Sign up below to get three FREE tips you can implement today to start climbing ⬇️
