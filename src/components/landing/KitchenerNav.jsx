@@ -12,11 +12,16 @@ export default function KitchenerNav() {
           />
           <span className="text-lg font-semibold tracking-tight text-stone-900">AKW Marketing</span>
         </a>
-        <a href="https://akwmarketing.com/landing">
-          <button className="bg-stone-900 hover:bg-stone-800 text-white rounded-full px-5 h-9 text-sm font-medium flex items-center gap-2 transition-colors">
-            Sign Up
-          </button>
-        </a>
+        <div className="flex items-center gap-5">
+          <a href="/about" className="hidden sm:inline text-sm font-medium text-stone-700 hover:text-stone-900 transition-colors">
+            About
+          </a>
+          <a href="https://akwmarketing.com/landing">
+            <button className="bg-stone-900 hover:bg-stone-800 text-white rounded-full px-5 h-9 text-sm font-medium flex items-center gap-2 transition-colors">
+              Sign Up
+            </button>
+          </a>
+        </div>
       </div>
     </nav>
   );
