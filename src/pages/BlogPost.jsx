@@ -164,20 +164,6 @@ export default function BlogPostPage() {
                   ))}
                 </ul>
 
-                <h3 className="text-sm font-semibold uppercase tracking-widest text-stone-400 mb-4">Proof from our local clients</h3>
-                <ul className="space-y-3 mb-10">
-                  <li>
-                    <Link to="/case-studies/cambridge-hvac-local-seo" className="text-sm font-medium text-stone-900 hover:underline underline-offset-2">
-                      How a Cambridge HVAC Company Reached the Top 3 on Google
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/case-studies/waterloo-dental-reviews" className="text-sm font-medium text-stone-900 hover:underline underline-offset-2">
-                      How a Waterloo Dental Clinic Doubled Their Reviews in 60 Days
-                    </Link>
-                  </li>
-                </ul>
-
                 <h3 className="text-sm font-semibold uppercase tracking-widest text-stone-400 mb-4">Ready to start?</h3>
                 <ul className="space-y-3 mb-10">
                   <li><Link to="/free-analysis" className="text-sm font-medium text-stone-900 hover:underline underline-offset-2">Request a free analysis</Link></li>

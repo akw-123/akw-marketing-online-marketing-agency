@@ -15,7 +15,6 @@ const STATIC_URLS = [
   { loc: '/brantford',      priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
   { loc: '/stratford',      priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
   { loc: '/blog',           priority: '0.8', changefreq: 'weekly',  lastmod: TODAY },
-  { loc: '/case-studies',   priority: '0.8', changefreq: 'weekly',  lastmod: TODAY },
   { loc: '/free-analysis',  priority: '0.7', changefreq: 'monthly', lastmod: TODAY },
   { loc: '/newsletter',     priority: '0.7', changefreq: 'monthly', lastmod: TODAY },
   { loc: '/PrivacyPolicy',  priority: '0.3', changefreq: 'yearly',  lastmod: TODAY },
@@ -24,14 +23,6 @@ const STATIC_URLS = [
 
 Deno.serve(async (req) => {
   const base44 = createClientFromRequest(req);
-
-  const caseStudySlugs = [
-    'cambridge-hvac-local-seo',
-    'waterloo-dental-reviews',
-    'burlington-realtor-full-funnel',
-    'guelph-cafe-gbp',
-    'hamilton-accountant-google-ads',
-  ];
 
   // Fetch all published blog posts (no limit)
   const posts = await base44.asServiceRole.entities.BlogPost.filter({ published: true }, 'published_date', 500);
@@ -43,13 +34,6 @@ Deno.serve(async (req) => {
     ${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
-  </url>`),
-    ...caseStudySlugs.map((slug) => `
-  <url>
-    <loc>${BASE_URL}/case-studies/${slug}</loc>
-    <lastmod>${TODAY}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>`),
     ...posts.map((post) => `
   <url>

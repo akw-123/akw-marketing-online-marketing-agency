@@ -39,7 +39,7 @@ export default function Hamilton() {
       <p>We optimize your Google Business Profile with Hamilton-specific service listings, build citations on Hamilton-relevant directories (Hamilton Chamber of Commerce, Hamilton Small Business Enterprise Centre, Hamilton BIA associations for each neighbourhood, industry-specific for trades/healthcare/professional services), acquire authentic reviews from Hamilton customers, and post weekly geotagged updates. See our full Local SEO Kitchener page (<a href="/local-seo-kitchener">/local-seo-kitchener</a>) for the underlying playbook — every step applies equally to Hamilton.</p>
 
       <h3>Google Ads for Hamilton trades and services</h3>
-      <p>Hamilton's competitive dynamics for Google Ads sit between Kitchener (moderate) and Toronto (high). For trades, healthcare, and professional-services searches, both search campaigns and Local Service Ads produce strong results with disciplined geotargeting that respects Hamilton's boundary (excluding Burlington, Stoney Creek, and Toronto unless you actually service those markets). See our Hamilton Accountant case study (<a href="/case-studies/hamilton-accountant-google-ads">/case-studies/hamilton-accountant-google-ads</a>) for a concrete example.</p>
+      <p>Hamilton's competitive dynamics for Google Ads sit between Kitchener (moderate) and Toronto (high). For trades, healthcare, and professional-services searches, both search campaigns and Local Service Ads produce strong results with disciplined geotargeting that respects Hamilton's boundary (excluding Burlington, Stoney Creek, and Toronto unless you actually service those markets).</p>
 
       <h3>Meta Ads for Hamilton consumer businesses</h3>
       <p>Hamilton's neighbourhood-specific consumer segments respond exceptionally well to targeted Meta campaigns. <code>Homeowners in Westdale</code>, <code>Young professionals in James Street North district</code>, <code>Families in Ancaster</code> each represent distinct audience segments we can target and message differently.</p>
@@ -59,9 +59,7 @@ export default function Hamilton() {
 
       <h2>Hamilton client work</h2>
 
-      <p>Our Hamilton Accountant case study (<a href="/case-studies/hamilton-accountant-google-ads">/case-studies/hamilton-accountant-google-ads</a>) is one example of what disciplined marketing looks like in Hamilton: an accounting firm competing against larger regional and Toronto-based competitors, produced a scalable Google Ads channel that lowered cost per client acquisition by 40%+ through geotargeting refinement, keyword restructure, and landing page optimization.</p>
-
-      <p>If you're a Hamilton business looking for something similar, book a free analysis at <a href="/free-analysis">/free-analysis</a> and we'll walk through what the same approach would look like for your specific situation.</p>
+      <p>If you're a Hamilton business looking to build a scalable Google Ads channel that lowers cost per client acquisition through geotargeting refinement, keyword restructure, and landing page optimization, book a free analysis at <a href="/free-analysis">/free-analysis</a> and we'll walk through what the same approach would look like for your specific situation.</p>
 
       <h2>Frequently asked questions</h2>
 

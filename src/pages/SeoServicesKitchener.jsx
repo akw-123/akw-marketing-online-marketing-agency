@@ -64,7 +64,6 @@ export default function SeoServicesKitchener() {
         <li>We follow a documented playbook. Our Local SEO Top 3 Ranking SOP (see <a href="/kitchener">/kitchener</a>) is a real, versioned document that governs every engagement. Every step, every phase, every check is written down. You aren't buying "SEO magic," you're buying disciplined execution.</li>
         <li>We report honestly. If a keyword isn't moving, we tell you and we explain why. If a tactic works better than expected, we double down. No fluff reports designed to hide inaction.</li>
         <li>We charge fairly. Small business budgets, real results. Monthly engagements sized to the work required, not to how much you'll pay.</li>
-        <li>We have proof. See our case studies on Cambridge HVAC (<a href="/case-studies/cambridge-hvac-local-seo">/case-studies/cambridge-hvac-local-seo</a>) and Waterloo Dental (<a href="/case-studies/waterloo-dental-reviews">/case-studies/waterloo-dental-reviews</a>) for two examples of local businesses we've helped rank in the top three of Google for their primary service in their primary city.</li>
       </ul>
 
       <h2>The AKW Marketing SEO process</h2>

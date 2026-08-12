@@ -65,9 +65,7 @@ export default function Waterloo() {
 
       <h2>Waterloo client work</h2>
 
-      <p>Our Waterloo Dental case study (<a href="/case-studies/waterloo-dental-reviews">/case-studies/waterloo-dental-reviews</a>) is one example of what disciplined local SEO looks like in Waterloo: a professional-services practice competing against larger consolidated dental groups, moved into the top three of Google's map pack for its primary service keyword through a combination of GBP optimization, on-page rebuilding, and consistent citation work over 90 days.</p>
-
-      <p>If you're a Waterloo business looking for something similar, book a free analysis at <a href="/free-analysis">/free-analysis</a> and we'll walk through what the same playbook would look like for your specific situation.</p>
+      <p>If you're a Waterloo business looking to move into the top three of Google's map pack for your primary service keyword, book a free analysis at <a href="/free-analysis">/free-analysis</a> and we'll walk through what the same playbook would look like for your specific situation.</p>
 
       <h2>Frequently asked questions</h2>
 

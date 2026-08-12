@@ -59,9 +59,7 @@ export default function Guelph() {
 
       <h2>Guelph client work</h2>
 
-      <p>Our Guelph Cafe case study (<a href="/case-studies/guelph-cafe-gbp">/case-studies/guelph-cafe-gbp</a>) is one example of local SEO in Guelph: an independent downtown cafe competing against national chain locations and other downtown independents, moved into the top 3 of Guelph's map pack for its primary category through GBP optimization, review acquisition, and neighbourhood-specific content.</p>
-
-      <p>If you're a Guelph business looking for something similar, book a free analysis at <a href="/free-analysis">/free-analysis</a> and we'll walk through what the same approach would look like for your specific situation.</p>
+      <p>If you're a Guelph business looking to move into the top 3 of Guelph's map pack for your primary category through GBP optimization, review acquisition, and neighbourhood-specific content, book a free analysis at <a href="/free-analysis">/free-analysis</a> and we'll walk through what the same approach would look like for your specific situation.</p>
 
       <h2>Frequently asked questions</h2>
 

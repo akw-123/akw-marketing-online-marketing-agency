@@ -25,7 +25,7 @@ export default function Cambridge() {
       <p>Cambridge's search market has characteristics that shape how a competent agency approaches it:</p>
 
       <ol>
-        <li>Trades and home services dominate local search volume. <code>HVAC Cambridge</code>, <code>plumber Cambridge</code>, <code>roofer Cambridge</code>, <code>electrician Cambridge</code> are among the highest-volume local keywords in the market. Winning these means map-pack dominance plus review velocity, not clever brand campaigns. Our Cambridge HVAC case study (<a href="/case-studies/cambridge-hvac-local-seo">/case-studies/cambridge-hvac-local-seo</a>) is exactly this playbook in action.</li>
+        <li>Trades and home services dominate local search volume. <code>HVAC Cambridge</code>, <code>plumber Cambridge</code>, <code>roofer Cambridge</code>, <code>electrician Cambridge</code> are among the highest-volume local keywords in the market. Winning these means map-pack dominance plus review velocity, not clever brand campaigns.</li>
         <li>B2B manufacturing supply chain. Cambridge's manufacturing base means a real segment of local B2B activity — machining shops, industrial suppliers, safety equipment, logistics providers, commercial contractors. These businesses need LinkedIn presence plus Google search visibility plus industry-directory citations, not consumer-facing social media.</li>
         <li>Multi-generational family businesses. A meaningful share of Cambridge businesses are 20 to 60 years old, family-owned, and built on word-of-mouth. When they invest in marketing, they want it to protect and extend that reputation, not replace it with a corporate-agency polish that feels off-brand. We build for continuity, not disruption.</li>
         <li>Cross-city competition from Kitchener and Waterloo. Cambridge businesses often compete for the same customers as Kitchener and Waterloo counterparts. Ranking well in Cambridge requires local citations, city-specific content, and (ideally) a Cambridge GBP address — not a Kitchener GBP trying to cover Cambridge from a distance.</li>
@@ -59,9 +59,7 @@ export default function Cambridge() {
 
       <h2>Cambridge client work</h2>
 
-      <p>Our Cambridge HVAC case study (<a href="/case-studies/cambridge-hvac-local-seo">/case-studies/cambridge-hvac-local-seo</a>) is a concrete example of local SEO in Cambridge: a family-run HVAC company competing against larger regional players, moved into the top 3 of Cambridge's map pack for its primary service keyword through GBP optimization, targeted citation building, and consistent review acquisition. This is the pattern that works for Cambridge trades and service businesses.</p>
-
-      <p>If you're a Cambridge business looking for something similar, book a free analysis at <a href="/free-analysis">/free-analysis</a> and we'll walk through what the same approach would look like for your specific situation.</p>
+      <p>If you're a Cambridge business looking to move into the top 3 of Cambridge's map pack for your primary service keyword through GBP optimization, targeted citation building, and consistent review acquisition, book a free analysis at <a href="/free-analysis">/free-analysis</a> and we'll walk through what the same approach would look like for your specific situation.</p>
 
       <h2>Frequently asked questions</h2>
 
