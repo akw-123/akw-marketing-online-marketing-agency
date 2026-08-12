@@ -30,6 +30,9 @@ import BlogPost from './pages/BlogPost';
 import OnlineMarketingAgency from './pages/OnlineMarketingAgency';
 import Home from './pages/Home';
 import FreeAnalysis from './pages/FreeAnalysis';
+import About from './pages/About';
+import WebsiteDesignKitchener from './pages/WebsiteDesignKitchener';
+import ContentMarketingKitchener from './pages/ContentMarketingKitchener';
 import NoIndexRedirect from './components/NoIndexRedirect';
 import Dashboard from './pages/Dashboard';
 
@@ -114,6 +117,9 @@ const AuthenticatedApp = () => {
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:slug" element={<BlogPost />} />
       <Route path="/free-analysis" element={<FreeAnalysis />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/website-design-kitchener" element={<WebsiteDesignKitchener />} />
+      <Route path="/content-marketing-kitchener" element={<ContentMarketingKitchener />} />
       <Route path="/landing" element={<Navigate to="/" replace />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="*" element={<PageNotFound />} />
