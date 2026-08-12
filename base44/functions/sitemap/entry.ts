@@ -4,22 +4,22 @@ const BASE_URL = 'https://akwmarketing.com'; // v2
 const TODAY = new Date().toISOString().split('T')[0];
 
 const STATIC_URLS = [
-  { loc: '/',               priority: '1.0', changefreq: 'weekly'  },
-  { loc: '/gbp',            priority: '1.0', changefreq: 'weekly'  },
-  { loc: '/kitchener',      priority: '0.9', changefreq: 'weekly', lastmod: TODAY },
-  { loc: '/waterloo',       priority: '0.9', changefreq: 'weekly', lastmod: TODAY },
-  { loc: '/cambridge',      priority: '0.9', changefreq: 'weekly', lastmod: TODAY },
-  { loc: '/guelph',         priority: '0.9', changefreq: 'weekly', lastmod: TODAY },
-  { loc: '/hamilton',       priority: '0.9', changefreq: 'weekly', lastmod: TODAY },
-  { loc: '/burlington',     priority: '0.9', changefreq: 'weekly', lastmod: TODAY },
-  { loc: '/brantford',      priority: '0.9', changefreq: 'weekly', lastmod: TODAY },
-  { loc: '/stratford',      priority: '0.9', changefreq: 'weekly', lastmod: TODAY },
-  { loc: '/blog',           priority: '0.8', changefreq: 'weekly'  },
-  { loc: '/case-studies',   priority: '0.8', changefreq: 'weekly'  },
-  { loc: '/free-analysis',  priority: '0.7', changefreq: 'monthly' },
-  { loc: '/newsletter',     priority: '0.7', changefreq: 'monthly' },
-  { loc: '/PrivacyPolicy',  priority: '0.3', changefreq: 'yearly'  },
-  { loc: '/TermsOfService', priority: '0.3', changefreq: 'yearly'  },
+  { loc: '/',               priority: '1.0', changefreq: 'weekly',  lastmod: TODAY },
+  { loc: '/gbp',            priority: '1.0', changefreq: 'weekly',  lastmod: TODAY },
+  { loc: '/kitchener',      priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
+  { loc: '/waterloo',       priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
+  { loc: '/cambridge',      priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
+  { loc: '/guelph',         priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
+  { loc: '/hamilton',       priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
+  { loc: '/burlington',     priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
+  { loc: '/brantford',      priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
+  { loc: '/stratford',      priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
+  { loc: '/blog',           priority: '0.8', changefreq: 'weekly',  lastmod: TODAY },
+  { loc: '/case-studies',   priority: '0.8', changefreq: 'weekly',  lastmod: TODAY },
+  { loc: '/free-analysis',  priority: '0.7', changefreq: 'monthly', lastmod: TODAY },
+  { loc: '/newsletter',     priority: '0.7', changefreq: 'monthly', lastmod: TODAY },
+  { loc: '/PrivacyPolicy',  priority: '0.3', changefreq: 'yearly',  lastmod: TODAY },
+  { loc: '/TermsOfService', priority: '0.3', changefreq: 'yearly',  lastmod: TODAY },
 ];
 
 Deno.serve(async (req) => {
@@ -47,6 +47,7 @@ Deno.serve(async (req) => {
     ...caseStudySlugs.map((slug) => `
   <url>
     <loc>${BASE_URL}/case-studies/${slug}</loc>
+    <lastmod>${TODAY}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>`),
