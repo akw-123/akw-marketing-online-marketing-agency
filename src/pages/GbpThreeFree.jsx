@@ -10,7 +10,7 @@ if (typeof window !== 'undefined') {
   document.head.appendChild(script1);
 
   const script2 = document.createElement('script');
-  script2.src = 'https://fast.wistia.com/embed/9ikdkbbamh.js';
+  script2.src = 'https://fast.wistia.com/embed/wj3p7msfk8.js';
   script2.async = true;
   script2.type = 'module';
   document.head.appendChild(script2);
@@ -52,8 +52,8 @@ export default function GbpThreeFree() {
           </h1>
 
           <div className="rounded-2xl overflow-hidden shadow-2xl shadow-stone-900/20 mb-14">
-            <style>{`wistia-player[media-id='9ikdkbbamh']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/9ikdkbbamh/swatch');display:block;filter:blur(5px);padding-top:56.25%;}`}</style>
-            <wistia-player media-id="9ikdkbbamh" aspect="1.7777777777777777"></wistia-player>
+            <style>{`wistia-player[media-id='wj3p7msfk8']:not(:defined){background:center/contain no-repeat url('https://fast.wistia.com/embed/medias/wj3p7msfk8/swatch');display:block;filter:blur(5px);padding-top:56.25%;}`}</style>
+            <wistia-player media-id="wj3p7msfk8" aspect="1.7777777777777777"></wistia-player>
           </div>
 
           <SkipTheWorkCard ctaHref="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3-OF5q-gJ76X212y9PZuHe2EBRoNqjed20SOVs1BzDPoEzoEDPmXH1r-rbisJjaFiWJzFGOUTT" />
