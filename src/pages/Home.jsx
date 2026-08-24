@@ -4,6 +4,7 @@ import { base44 } from "@/api/base44Client";
 import FooterSection from "@/components/landing/FooterSection";
 import WhereWeWork from "@/components/landing/WhereWeWork";
 import ProcessSection from "@/components/landing/ProcessSection";
+import BeforeAfterSection from "@/components/landing/BeforeAfterSection";
 import PricingSection from "@/components/landing/PricingSection";
 
 const clients = [
@@ -287,6 +288,7 @@ export default function Home() {
       </section>
 
       <ProcessSection />
+      <BeforeAfterSection />
       <PricingSection />
       <WhereWeWork />
       <FooterSection />
