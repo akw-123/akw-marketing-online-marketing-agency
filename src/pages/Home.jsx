@@ -280,7 +280,7 @@ export default function Home() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 bg-stone-900 hover:bg-stone-800 text-white font-semibold px-8 py-4 rounded-full text-sm transition-colors"
           >
-            Book a Free Strategy Call
+            Get 3 Free Tips
             <ArrowRight className="w-4 h-4" />
           </a>
         </div>
