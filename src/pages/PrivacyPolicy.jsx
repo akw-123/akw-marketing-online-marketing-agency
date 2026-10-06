@@ -9,7 +9,7 @@ export default function PrivacyPolicy() {
       <div className="pt-28 pb-16 px-6">
         <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-stone-200 p-8 md:p-12">
           <h1 className="text-4xl font-bold text-stone-900 mb-4">Privacy Policy</h1>
-          <p className="text-sm text-stone-500 mb-8">Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+          <p className="text-sm text-stone-500 mb-8">Last updated: October 6, 2026</p>
 
           <div className="prose prose-stone max-w-none">
             <section className="mb-8">
@@ -94,14 +94,27 @@ export default function PrivacyPolicy() {
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-stone-900 mb-4">9. Changes to This Privacy Policy</h2>
+              <h2 className="text-2xl font-semibold text-stone-900 mb-4">9. Google User Data and Google Business Profile Access</h2>
+              <p className="text-stone-600 leading-relaxed mb-4">
+                AKW Marketing accesses Google Business Profile data only for business locations whose owners have added us as a manager, and only to audit profile completeness, apply edits those owners have approved, and publish approved posts. We use this data solely to provide these services to the owner of that profile.
+              </p>
+              <p className="text-stone-600 leading-relaxed mb-4">
+                We do not sell Google user data, share it with third parties for advertising, or use it to train artificial intelligence models. We retain it only as long as needed to provide the service. Owners can revoke our access at any time from their Google Business Profile settings, and can ask us to delete related data by emailing contact@akwmarketing.com.
+              </p>
+              <p className="text-stone-600 leading-relaxed mb-4">
+                AKW Marketing's use of information received from Google APIs adheres to the Google API Services User Data Policy, including the Limited Use requirements.
+              </p>
+            </section>
+
+            <section className="mb-8">
+              <h2 className="text-2xl font-semibold text-stone-900 mb-4">10. Changes to This Privacy Policy</h2>
               <p className="text-stone-600 leading-relaxed mb-4">
                 We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last updated" date at the top of this Privacy Policy.
               </p>
             </section>
 
             <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-stone-900 mb-4">10. Contact Us</h2>
+              <h2 className="text-2xl font-semibold text-stone-900 mb-4">11. Contact Us</h2>
               <p className="text-stone-600 leading-relaxed mb-4">
                 If you have any questions about this Privacy Policy, please contact us:
               </p>
