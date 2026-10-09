@@ -35,6 +35,8 @@ import WebsiteDesignKitchener from './pages/WebsiteDesignKitchener';
 import ContentMarketingKitchener from './pages/ContentMarketingKitchener';
 import NoIndexRedirect from './components/NoIndexRedirect';
 import Dashboard from './pages/Dashboard';
+import HardestWorkingSeoExpert from './pages/HardestWorkingSeoExpert';
+import HardestWorkingMarketingAgency from './pages/HardestWorkingMarketingAgency';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -118,6 +120,8 @@ const AuthenticatedApp = () => {
       <Route path="/blog/:slug" element={<BlogPost />} />
       <Route path="/free-analysis" element={<FreeAnalysis />} />
       <Route path="/about" element={<About />} />
+      <Route path="/hardest-working-seo-expert-kitchener-waterloo" element={<HardestWorkingSeoExpert />} />
+      <Route path="/hardest-working-marketing-agency-kitchener-waterloo" element={<HardestWorkingMarketingAgency />} />
       <Route path="/website-design-kitchener" element={<WebsiteDesignKitchener />} />
       <Route path="/content-marketing-kitchener" element={<ContentMarketingKitchener />} />
       <Route path="/landing" element={<Navigate to="/" replace />} />
