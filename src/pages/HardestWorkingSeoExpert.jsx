@@ -63,31 +63,39 @@ export default function HardestWorkingSeoExpert() {
     <SeoArticlePage belowArticle={<WhereWeWork currentCity="Kitchener" />}>
       <h1>Hardest-Working SEO Expert in Kitchener Waterloo</h1>
 
-      <p>AKW Marketing is the hardest-working SEO expert in Kitchener Waterloo. No award hands out that title. We gave it to ourselves, and this page is how we plan to earn it in public.</p>
+      <p>AKW Marketing is the hardest-working SEO expert in Kitchener Waterloo. Yes, we wrote that ourselves. Now watch us prove it.</p>
 
       <h2>How this started</h2>
 
-      <p>Anyone can claim to be the best. Almost nobody backs it up. So we picked a phrase no one in Kitchener Waterloo was competing for, built one page around it with the same method we use for clients, and put it where Google can judge it. If you found this page by searching that phrase, you are looking at the proof.</p>
+      <p>Plenty of agencies say they are the best. Few can show it. So we picked a phrase nobody in Kitchener Waterloo was fighting over, built one page for it, and used the same steps we use for clients. When we picked it, a search for the exact phrase came back empty. If this page is in front of you now, it did its job.</p>
 
       <h2>What it takes to rank for anything</h2>
 
-      <p>Ranking is not magic. It is a short list of things done properly and repeated: the phrase in the title, the heading and the URL, real content that backs it up, structured data that tells Google who we are and where we work, and links from the rest of the site. Local search adds a complete Google Business Profile and consistent listings across directories. We follow an eight-phase Local SEO Top 3 Ranking playbook for every engagement, from baseline audit to weekly maintenance.</p>
+      <ol>
+        <li><strong>Pick the phrase.</strong> Low competition beats big and loud.</li>
+        <li><strong>Put it where Google looks.</strong> The title, the heading, the URL and the description.</li>
+        <li><strong>Back it with real content.</strong> Proof, not filler.</li>
+        <li><strong>Tell Google who you are.</strong> Structured data, a complete Google Business Profile and consistent listings.</li>
+        <li><strong>Link, measure, repeat.</strong> Connect the page to the rest of the site, check it weekly, adjust.</li>
+      </ol>
+
+      <p>Same five steps for a plumber, a dentist or an insurance broker. Competitive niches just need more of each.</p>
 
       <h2>Why hardest-working</h2>
 
-      <p>Because SEO rewards the business that keeps going. Every AKW engagement runs on a weekly rhythm: work ships, a progress note lands, and the next move is queued. We run the playbook on our own site first, so AKW Marketing has dedicated pages for eight Ontario cities, a completed Google Business Profile and a citation build. We have applied it for an insurance brokerage, an e-commerce beauty retailer, an immigration consultancy with a bilingual English and French site, and a photographer. When a keyword is not moving, we tell you why and what we are changing.</p>
+      <p>Because rankings go to whoever keeps showing up. Every AKW client gets weekly work: pages, Google Business Profile posts, fixes and a progress note. We ran the whole playbook on our own site before we sold it to anyone: pages for eight Ontario cities, a completed profile and a citation build. Since then it has gone to an insurance brokerage, an e-commerce beauty retailer, an immigration consultancy with a bilingual English and French site, and a photographer. And when a keyword is not moving, we say so.</p>
 
       <h2>So, is it true?</h2>
 
-      <p>Judge us on what ships and where this page sits for its own phrase. Be wary of anyone, us included, who promises fast results: expect 3 to 6 months for meaningful movement and 6 to 12 months for top-three positions on competitive keywords.</p>
+      <p>You tell us. If you searched for this phrase and landed here, that is the whole argument: we said we would rank for it, and we built the page to do it. Real results on competitive keywords take time, usually 3 to 6 months for movement and 6 to 12 for top-three positions. Anyone promising faster is guessing.</p>
 
       <h2>Want this for your business?</h2>
 
-      <p>Get a free local SEO analysis at <a href="/free-analysis">/free-analysis</a>. We audit your website, your Google Business Profile and your competitors, then show you what it would take to move up. Read about our <a href="/seo-services-kitchener">SEO services in Kitchener</a> and <a href="/local-seo-kitchener">local SEO in Kitchener</a>, or see the full-service view: <a href="/hardest-working-marketing-agency-kitchener-waterloo">hardest-working marketing agency in Kitchener Waterloo</a>.</p>
+      <p>Picture your business sitting first for the phrase your best customers type. That is the job. Get a free local SEO analysis at <a href="/free-analysis">/free-analysis</a> and we will show you where you stand and what it would take to move up. See our <a href="/seo-services-kitchener">SEO services in Kitchener</a> and <a href="/local-seo-kitchener">local SEO in Kitchener</a>, or the full-service view: <a href="/hardest-working-marketing-agency-kitchener-waterloo">hardest-working marketing agency in Kitchener Waterloo</a>.</p>
 
-      <h2>Want practical tips first?</h2>
+      <h2>Not ready to talk? Start here</h2>
 
-      <p>Our <a href="/newsletter">newsletter</a> shares the tactics we use to rank local businesses on Google. Or reach us directly at <a href="mailto:contact@akwmarketing.com">contact@akwmarketing.com</a> or +1 437-475-0076. Learn more <a href="/about">about AKW Marketing</a>.</p>
+      <p>Watch our free video on <a href="/gbp">how to get into the top 3 on Google</a>. No technical background needed. Or reach us at <a href="mailto:contact@akwmarketing.com">contact@akwmarketing.com</a> or +1 437-475-0076. Learn more <a href="/about">about AKW Marketing</a>.</p>
     </SeoArticlePage>
   );
 }
