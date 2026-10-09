@@ -20,6 +20,8 @@ const STATIC_URLS = [
   { loc: '/meta-ads-kitchener',         priority: '0.8', changefreq: 'monthly', lastmod: TODAY },
   { loc: '/website-design-kitchener',   priority: '0.8', changefreq: 'monthly', lastmod: TODAY },
   { loc: '/content-marketing-kitchener',priority: '0.8', changefreq: 'monthly', lastmod: TODAY },
+  { loc: '/hardest-working-seo-expert-kitchener-waterloo',       priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
+  { loc: '/hardest-working-marketing-agency-kitchener-waterloo',  priority: '0.9', changefreq: 'weekly',  lastmod: TODAY },
   { loc: '/about',          priority: '0.7', changefreq: 'monthly', lastmod: TODAY },
   { loc: '/blog',           priority: '0.8', changefreq: 'weekly',  lastmod: TODAY },
   { loc: '/free-analysis',  priority: '0.7', changefreq: 'monthly', lastmod: TODAY },
