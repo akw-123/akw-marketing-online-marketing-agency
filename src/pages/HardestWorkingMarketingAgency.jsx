@@ -7,7 +7,7 @@ export default function HardestWorkingMarketingAgency() {
     document.title = "Hardest-Working Marketing Agency in Kitchener Waterloo | AKW Marketing";
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
-    meta.content = "AKW Marketing makes the case as the hardest-working marketing agency in Kitchener Waterloo. SEO, Google Ads, Meta Ads and content, shipped every week. See the proof.";
+    meta.content = "AKW Marketing is the hardest-working marketing agency in Kitchener Waterloo. SEO, Google Ads, Meta Ads and content, shipped every week. Here is the proof.";
 
     const schema = {
       "@context": "https://schema.org",
@@ -33,7 +33,7 @@ export default function HardestWorkingMarketingAgency() {
             "addressRegion": "ON",
             "addressCountry": "CA"
           },
-          "founder": { "@type": "Person", "name": "Andre Kadjo", "jobTitle": "SEO Expert" },
+          "founder": { "@type": "Person", "name": "Andre Kadjo", "jobTitle": "Founder" },
           "areaServed": [
             {"@type":"City","name":"Kitchener"},
             {"@type":"City","name":"Waterloo"},
@@ -62,31 +62,37 @@ export default function HardestWorkingMarketingAgency() {
     <SeoArticlePage belowArticle={<WhereWeWork currentCity="Kitchener" />}>
       <h1>Hardest-Working Marketing Agency in Kitchener Waterloo</h1>
 
-      <p>AKW Marketing is a Kitchener agency built on one idea: the hardest-working marketing agency in Kitchener Waterloo wins the businesses that others quietly stop working for. No award decides that title, so we back the claim with weekly output you can check.</p>
+      <p>AKW Marketing is the hardest-working marketing agency in Kitchener Waterloo. No award hands out that title, so we are earning it in public, one week of shipped work at a time.</p>
 
-      <h2>What hardest-working looks like in practice</h2>
+      <h2>How this started</h2>
+
+      <p>Every agency says it works hard. We wanted a claim that could be checked. So we chose a phrase nobody in Kitchener Waterloo was competing for, built a page around it with the same method we use for clients, and let Google decide. If you found this page by searching that phrase, you are looking at the proof.</p>
+
+      <h2>What it takes to rank for anything</h2>
+
+      <p>The phrase in the title, heading and URL. Real content behind it. Structured data that tells Google who we are and where we work. Links from the rest of the site. For local businesses, a complete Google Business Profile and consistent directory listings on top. It is not complicated, but it has to be done properly and kept up.</p>
+
+      <h2>Why hardest-working</h2>
 
       <ul>
-        <li><strong>Weekly delivery.</strong> Every engagement runs on a weekly rhythm: work ships, a progress note lands, the next move is queued.</li>
-        <li><strong>A documented process.</strong> Every local SEO engagement follows our eight-phase Local SEO Top 3 Ranking playbook, from baseline audit through weekly maintenance and reporting.</li>
-        <li><strong>We test on ourselves first.</strong> AKW was the first engagement on the playbook: canonical fixes, dedicated pages for eight Ontario cities, a completed Google Business Profile and a citation build, before any client was asked to trust it.</li>
-        <li><strong>Work across industries.</strong> Insurance, e-commerce beauty, immigration consulting (including a bilingual English and French site) and photography.</li>
-        <li><strong>Plain reporting.</strong> If something isn't moving, we say so, explain why and show the fix.</li>
+        <li><strong>Weekly delivery.</strong> Work ships, a progress note lands, the next move is queued.</li>
+        <li><strong>A documented playbook.</strong> Our eight-phase Local SEO Top 3 Ranking playbook covers every engagement from baseline audit to weekly maintenance.</li>
+        <li><strong>Full service.</strong> Local SEO, Google Ads, Meta Ads, content and website conversion work, under one roof. See our pages on <a href="/seo-services-kitchener">SEO</a>, <a href="/google-ads-kitchener">Google Ads</a>, <a href="/meta-ads-kitchener">Meta Ads</a> and <a href="/content-marketing-kitchener">content marketing</a> in Kitchener.</li>
+        <li><strong>Tested on ourselves first.</strong> Dedicated pages for eight Ontario cities, a completed Google Business Profile and a citation build, all before we asked a client to trust the process.</li>
+        <li><strong>Work across industries.</strong> Insurance, e-commerce beauty, immigration consulting with a bilingual site, and photography.</li>
       </ul>
 
-      <h2>What we do</h2>
+      <h2>So, is it true?</h2>
 
-      <p>Local SEO and Google Business Profile optimization, Google Ads, Meta Ads, content and SEO copywriting, website conversion work and marketing automation. Details are on our pages for <a href="/seo-services-kitchener">SEO services</a>, <a href="/google-ads-kitchener">Google Ads</a>, <a href="/meta-ads-kitchener">Meta Ads</a> and <a href="/content-marketing-kitchener">content marketing</a> in Kitchener.</p>
+      <p>Judge us on what ships and where this page sits for its own phrase. We also tell you the honest timeline: 3 to 6 months for meaningful movement and 6 to 12 months for top-three positions on competitive keywords. A marketing agency in Kitchener Waterloo that promises faster is guessing.</p>
 
-      <h2>Honest timelines</h2>
+      <h2>Want this for your business?</h2>
 
-      <p>Expect 3 to 6 months for meaningful movement and 6 to 12 months for top-three positions on competitive keywords. A marketing agency in Kitchener Waterloo that promises faster is guessing.</p>
+      <p>Get a free local marketing analysis at <a href="/free-analysis">/free-analysis</a>. We show you where you stand and what it would take to move up. Looking for the SEO specialist view? See our page on the <a href="/hardest-working-seo-expert-kitchener-waterloo">hardest-working SEO expert in Kitchener Waterloo</a>.</p>
 
-      <h2>See it for yourself</h2>
+      <h2>Want practical tips first?</h2>
 
-      <p>Book a free local marketing analysis at <a href="/free-analysis">/free-analysis</a> and we will show you where you stand and what it would take to move up. Founder Andre Kadjo also makes the personal case here: <a href="/hardest-working-seo-expert-kitchener-waterloo">hardest-working SEO expert in Kitchener Waterloo</a>. Learn more <a href="/about">about AKW Marketing</a>.</p>
-
-      <p>Email <a href="mailto:contact@akwmarketing.com">contact@akwmarketing.com</a> or call +1 437-475-0076.</p>
+      <p>Our <a href="/newsletter">newsletter</a> shares the tactics we use to get local businesses ranking on Google. Or reach us at <a href="mailto:contact@akwmarketing.com">contact@akwmarketing.com</a> or +1 437-475-0076. Learn more <a href="/about">about AKW Marketing</a>.</p>
     </SeoArticlePage>
   );
 }
