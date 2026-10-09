@@ -76,6 +76,14 @@ export default function HardestWorkingSeoExpert() {
 
       <p>I run AKW Marketing, a Kitchener agency that gets local businesses ranking on Google. Yes, I gave myself that title. Now let me prove it.</p>
 
+      <img
+        src="https://media.base44.com/images/public/69aa2d66169a7c4374014381/977b15f23_hardest-working-seo-expert-kitchener-waterloo.jpg"
+        alt="Hardest-working SEO expert in Kitchener Waterloo: Andre Kadjo of AKW Marketing"
+        width="717"
+        height="900"
+        className="w-full max-w-sm rounded-2xl my-8 mx-auto"
+      />
+
       <h2>How this started</h2>
 
       <p>Plenty of agencies say they are the best. Few can show it. So I picked a phrase nobody in Kitchener Waterloo was fighting over, built one page for it, and used the same steps I use for my clients. When I picked it, a search for the exact phrase came back empty. If you are reading this, the page did its job.</p>
