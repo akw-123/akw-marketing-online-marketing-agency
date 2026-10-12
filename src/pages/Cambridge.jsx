@@ -16,7 +16,7 @@ export default function Cambridge() {
 
       <p>Cambridge is the manufacturing and trades heart of the KW region. Home to Toyota Motor Manufacturing Canada, ATS Automation, Frito-Lay, and a dense base of skilled trades, contractors, and family-run service businesses that have anchored the local economy for decades. Marketing to Cambridge customers (or reaching Cambridge decision-makers on the B2B side) means understanding a market that values reliability, referrals, and long-standing relationships over flashy branding.</p>
 
-      <p>AKW Marketing works with Cambridge businesses across manufacturing, trades, professional services, retail, and hospitality. Same Local SEO Top 3 Ranking playbook (<a href="/kitchener">/kitchener</a>) we use across KW, applied to the specific competitive and cultural realities of Cambridge.</p>
+      <p><a href="/">AKW Marketing</a> works with Cambridge businesses across manufacturing, trades, professional services, retail, and hospitality. Same Local SEO Top 3 Ranking playbook (<a href="/kitchener">/kitchener</a>) we use across KW, applied to the specific competitive and cultural realities of Cambridge.</p>
 
       <p>Book a free local marketing analysis at <a href="/free-analysis">/free-analysis</a> and we'll show you where your Cambridge business stands in local search and what it would take to move up.</p>
 
