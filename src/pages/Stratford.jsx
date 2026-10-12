@@ -16,7 +16,7 @@ export default function Stratford() {
 
       <p>Stratford is one of southwestern Ontario's most distinctive small-city markets. Home to the Stratford Festival, a nationally recognized culinary and arts scene, and a downtown retail core that punches well above its population weight, the city runs on a rhythm most Ontario markets do not have: festival-driven visitor traffic from April through November, then a quieter local-first winter economy. Marketing here means marketing to two audiences at once, and getting both right is what separates the businesses that thrive from the ones that stall.</p>
 
-      <p>AKW Marketing works with Stratford businesses across every sector: downtown retailers, restaurants and B&Bs serving festival visitors, professional services rooted in Perth County, and specialty makers with regional or national reach. We use the same Local SEO Top 3 Ranking playbook (<a href="/kitchener">/kitchener</a>) we've refined across the KW region, adapted to Stratford's specific tourism-plus-local dual audience.</p>
+      <p><a href="/">AKW Marketing</a> works with Stratford businesses across every sector: downtown retailers, restaurants and B&Bs serving festival visitors, professional services rooted in Perth County, and specialty makers with regional or national reach. We use the same Local SEO Top 3 Ranking playbook (<a href="/kitchener">/kitchener</a>) we've refined across the KW region, adapted to Stratford's specific tourism-plus-local dual audience.</p>
 
       <p>Book a free local marketing analysis at <a href="/free-analysis">/free-analysis</a> and we'll show you exactly where your Stratford business stands in Google search results and what it would take to move up.</p>
 
