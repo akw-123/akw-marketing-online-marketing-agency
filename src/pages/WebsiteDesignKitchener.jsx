@@ -79,7 +79,7 @@ export default function WebsiteDesignKitchener() {
 
       <h2>Ready to rebuild?</h2>
 
-      <p>Book a free website audit at <a href="/free-analysis">akwmarketing.com/free-analysis</a>. We'll look at your current site's speed, mobile experience, SEO health, and conversion path, then walk you through the specific fixes that would move the needle for your Kitchener business. No obligation, no pressure. If a rebuild makes sense we scope from there; if targeted fixes get you the same result for less investment, we'll say so.</p>
+      <p>Book a free website audit at <a href="/free-analysis">akwmarketing.com/free-analysis</a>. We'll look at your current site's speed, mobile experience, SEO health, and conversion path, then walk you through the specific fixes that would move the needle for your Kitchener business. No obligation, no pressure. If a rebuild makes sense we scope from there; if targeted fixes get you the same result for less investment, we'll say so. See everything <a href="/">AKW Marketing</a> does on our <a href="/kitchener">Kitchener marketing services</a> page.</p>
     </SeoArticlePage>
   );
 }
