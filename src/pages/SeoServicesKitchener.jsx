@@ -97,7 +97,7 @@ export default function SeoServicesKitchener() {
 
       <p>Every month you wait, your competitors are compounding their SEO authority. The businesses ranking in the top three today invested in SEO 6 to 24 months ago. The ones ranking there in 12 months are the ones investing now.</p>
 
-      <p>Book your free local SEO analysis at <a href="/free-analysis">/free-analysis</a> and let's see what it would take to get your Kitchener business into the top three of Google.</p>
+      <p>Book your free local SEO analysis at <a href="/free-analysis">/free-analysis</a> and let's see what it would take to get your Kitchener business into the top three of Google. See everything <a href="/">AKW Marketing</a> does on our <a href="/kitchener">Kitchener marketing services</a> page.</p>
     </SeoArticlePage>
   );
 }
