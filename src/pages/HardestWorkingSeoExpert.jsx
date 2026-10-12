@@ -74,7 +74,7 @@ export default function HardestWorkingSeoExpert() {
 
       <p>My name is Andre Kadjo. If you just Googled "hardest-working SEO expert in Kitchener Waterloo", you found me. Hi.</p>
 
-      <p>I run AKW Marketing, a Kitchener agency that gets local businesses ranking on Google. Yes, I gave myself that title. Now let me prove it.</p>
+      <p>I run <a href="/">AKW Marketing</a>, a <a href="/kitchener">Kitchener marketing agency</a> that gets local businesses ranking on Google. Yes, I gave myself that title. Now let me prove it.</p>
 
       <img
         src="https://media.base44.com/images/public/69aa2d66169a7c4374014381/977b15f23_hardest-working-seo-expert-kitchener-waterloo.jpg"
@@ -114,7 +114,7 @@ export default function HardestWorkingSeoExpert() {
 
       <h2>Not ready to talk? Start here</h2>
 
-      <p>Watch my free video on <a href="/gbp">how to get into the top 3 on Google</a>. No technical background needed. Or reach me at <a href="mailto:contact@akwmarketing.com">contact@akwmarketing.com</a> or +1 437-475-0076. Learn more <a href="/about">about AKW Marketing</a>.</p>
+      <p>Watch my free video on <a href="/gbp">how to get into the top 3 on Google</a>. No technical background needed. Or reach me at <a href="mailto:contact@akwmarketing.com">contact@akwmarketing.com</a> or +1 437-475-0076. Learn more <a href="/about">about AKW Marketing</a>, see our <a href="/kitchener">marketing services in Kitchener</a>, or head back to the <a href="/">AKW Marketing homepage</a>.</p>
     </SeoArticlePage>
   );
 }
