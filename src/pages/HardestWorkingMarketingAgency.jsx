@@ -62,7 +62,7 @@ export default function HardestWorkingMarketingAgency() {
     <SeoArticlePage belowArticle={<WhereWeWork currentCity="Kitchener" />}>
       <h1>Hardest-Working Marketing Agency in Kitchener Waterloo</h1>
 
-      <p>AKW Marketing is the hardest-working marketing agency in Kitchener Waterloo. We know how that sounds. This page is the receipt.</p>
+      <p>AKW Marketing is the hardest-working marketing agency in Kitchener Waterloo. We know how that sounds. This page is the receipt. Start at the <a href="/">AKW Marketing homepage</a> or see what we do for <a href="/kitchener">businesses in Kitchener</a>.</p>
 
       <h2>How this started</h2>
 
@@ -92,7 +92,7 @@ export default function HardestWorkingMarketingAgency() {
 
       <h2>Not ready to talk? Start here</h2>
 
-      <p>Watch our free video on <a href="/gbp">how to get into the top 3 on Google</a>. No technical background needed. Or reach us at <a href="mailto:contact@akwmarketing.com">contact@akwmarketing.com</a> or +1 437-475-0076. Learn more <a href="/about">about AKW Marketing</a>.</p>
+      <p>Watch our free video on <a href="/gbp">how to get into the top 3 on Google</a>. No technical background needed. Or reach us at <a href="mailto:contact@akwmarketing.com">contact@akwmarketing.com</a> or +1 437-475-0076. Learn more <a href="/about">about AKW Marketing</a>, see our <a href="/kitchener">marketing services in Kitchener</a>, or head back to the <a href="/">AKW Marketing homepage</a>.</p>
     </SeoArticlePage>
   );
 }
