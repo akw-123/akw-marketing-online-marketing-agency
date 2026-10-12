@@ -86,7 +86,7 @@ export default function GoogleAdsKitchener() {
 
       <h2>Ready to lower your Google Ads cost per lead in Kitchener?</h2>
 
-      <p>Every month you overspend on poorly-targeted ads is a month your competitors are compounding their advantage. Book your free Google Ads audit at <a href="/free-analysis">/free-analysis</a> and let's see what your account looks like when it's tuned for Kitchener's actual competitive dynamics.</p>
+      <p>Every month you overspend on poorly-targeted ads is a month your competitors are compounding their advantage. Book your free Google Ads audit at <a href="/free-analysis">/free-analysis</a> and let's see what your account looks like when it's tuned for Kitchener's actual competitive dynamics. See everything <a href="/">AKW Marketing</a> does on our <a href="/kitchener">Kitchener marketing services</a> page.</p>
     </SeoArticlePage>
   );
 }
