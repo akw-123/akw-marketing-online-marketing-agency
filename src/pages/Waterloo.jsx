@@ -88,7 +88,7 @@ export default function Waterloo() {
 
       <p>The Waterloo businesses ranking in the top three of Google today started their SEO work 12 to 24 months ago. The ones ranking there next year are investing now.</p>
 
-      <p>Whether you're a tech startup building your first marketing engine or an established Waterloo firm ready to modernize how you get found online, we can help. Book your free local marketing analysis at <a href="/free-analysis">/free-analysis</a> and let's see what's possible.</p>
+      <p>Whether you're a tech startup building your first marketing engine or an established Waterloo firm ready to modernize how you get found online, we can help. Book your free local marketing analysis at <a href="/free-analysis">/free-analysis</a> and let's see what's possible. See everything <a href="/">AKW Marketing</a> does on our <a href="/kitchener">Kitchener marketing services</a> page.</p>
     </SeoArticlePage>
   );
 }
