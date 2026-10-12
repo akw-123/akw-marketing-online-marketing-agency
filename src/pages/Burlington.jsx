@@ -16,7 +16,7 @@ export default function Burlington() {
 
       <p>Burlington is one of Ontario's most competitive local search markets. Sitting at the western tip of the GTA and the eastern edge of Halton, the city serves a higher-income commuter demographic, a strong waterfront retail scene, and a growing base of professional services and manufacturing businesses along the QEW corridor. That competitive intensity is exactly why disciplined local SEO matters more here, not less.</p>
 
-      <p>AKW Marketing works with Burlington businesses that want to stop losing search traffic to Toronto-based agencies with bigger budgets and generic playbooks. We use the same Local SEO Top 3 Ranking playbook (<a href="/kitchener">/kitchener</a>) we've refined across the Kitchener-Waterloo region, adapted to the specific competitive dynamics of Burlington's local search landscape.</p>
+      <p><a href="/">AKW Marketing</a> works with Burlington businesses that want to stop losing search traffic to Toronto-based agencies with bigger budgets and generic playbooks. We use the same Local SEO Top 3 Ranking playbook (<a href="/kitchener">/kitchener</a>) we've refined across the Kitchener-Waterloo region, adapted to the specific competitive dynamics of Burlington's local search landscape.</p>
 
       <p>Book a free local marketing analysis at <a href="/free-analysis">/free-analysis</a> and we'll show you exactly where your Burlington business stands in Google search results and what it would take to move up.</p>
 
