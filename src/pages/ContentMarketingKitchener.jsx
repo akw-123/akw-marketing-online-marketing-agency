@@ -84,7 +84,7 @@ export default function ContentMarketingKitchener() {
 
       <h2>Ready to build a content engine?</h2>
 
-      <p>Book a free content audit at <a href="/free-analysis">akwmarketing.com/free-analysis</a>. We'll look at your current content (or lack of it), your competitors' content strategy, and the topic clusters your Kitchener business should own on Google. You'll leave the call with a specific plan for the first 3 clusters worth investing in, whether we build them together or you take the plan and run it yourself.</p>
+      <p>Book a free content audit at <a href="/free-analysis">akwmarketing.com/free-analysis</a>. We'll look at your current content (or lack of it), your competitors' content strategy, and the topic clusters your Kitchener business should own on Google. You'll leave the call with a specific plan for the first 3 clusters worth investing in, whether we build them together or you take the plan and run it yourself. See everything <a href="/">AKW Marketing</a> does on our <a href="/kitchener">Kitchener marketing services</a> page.</p>
     </SeoArticlePage>
   );
 }
