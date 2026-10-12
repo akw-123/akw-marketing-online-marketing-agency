@@ -115,7 +115,7 @@ export default function LocalSeoKitchener() {
 
       <p>Being in the top 3 of Kitchener's local map pack for your primary keyword is compounding advantage. Once you're there, click volume, review velocity, and citation authority all reinforce each other. Getting there is disciplined work over 3-6 months.</p>
 
-      <p>Book a free local SEO audit at <a href="/free-analysis">/free-analysis</a> and let's see exactly where your business stands in Kitchener's map pack today, and what it would take to move to the top 3.</p>
+      <p>Book a free local SEO audit at <a href="/free-analysis">/free-analysis</a> and let's see exactly where your business stands in Kitchener's map pack today, and what it would take to move to the top 3. See everything <a href="/">AKW Marketing</a> does on our <a href="/kitchener">Kitchener marketing services</a> page.</p>
     </SeoArticlePage>
   );
 }
