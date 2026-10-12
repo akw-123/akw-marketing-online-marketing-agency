@@ -62,7 +62,7 @@ export default function About() {
       <p>Every AKW engagement builds on the same core capabilities:</p>
 
       <ul>
-        <li><strong>Local SEO.</strong> Our signature service. Google Business Profile optimization, on-page rebuilding, citation work, review acquisition, and the weekly maintenance that moves local rankings. The full playbook is on the <a href="/kitchener">Kitchener page</a>.</li>
+        <li><strong>Local SEO.</strong> Our signature service. Google Business Profile optimization, on-page rebuilding, citation work, review acquisition, and the weekly maintenance that moves local rankings. The full playbook is on the <a href="/kitchener">Kitchener page</a>, and the <a href="/">AKW Marketing homepage</a> has the overview.</li>
         <li><strong>Google Ads and Meta Ads.</strong> Paid traffic that pays for itself. We build campaigns targeted to your city, write ad copy that speaks to your buyer's actual research question, and report cost per lead every month. See <a href="/google-ads-kitchener">Google Ads Kitchener</a> and <a href="/meta-ads-kitchener">Meta Ads Kitchener</a>.</li>
         <li><strong>Content and SEO copywriting.</strong> Blog clusters, service pages, and landing pages built for both search engines and buyers. Structured for topical authority, not keyword stuffing.</li>
         <li><strong>Website conversion optimization.</strong> Traffic without conversion is a waste. We audit and rebuild landing pages, forms, and CTAs so that a higher share of your visitors becomes actual inquiries.</li>
