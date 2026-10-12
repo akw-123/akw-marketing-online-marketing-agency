@@ -84,7 +84,7 @@ export default function MetaAdsKitchener() {
 
       <h2>Ready to make Meta Ads actually work for your Kitchener business?</h2>
 
-      <p>If you've tried Meta Ads before and been disappointed, the diagnosis is almost never that Meta doesn't work for Kitchener businesses. It's almost always structure, creative, or tracking. Book a free Meta Ads audit at <a href="/free-analysis">/free-analysis</a> and we'll show you exactly which of the three is holding your account back.</p>
+      <p>If you've tried Meta Ads before and been disappointed, the diagnosis is almost never that Meta doesn't work for Kitchener businesses. It's almost always structure, creative, or tracking. Book a free Meta Ads audit at <a href="/free-analysis">/free-analysis</a> and we'll show you exactly which of the three is holding your account back. See everything <a href="/">AKW Marketing</a> does on our <a href="/kitchener">Kitchener marketing services</a> page.</p>
     </SeoArticlePage>
   );
 }
