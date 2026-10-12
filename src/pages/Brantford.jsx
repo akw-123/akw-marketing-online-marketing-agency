@@ -16,7 +16,7 @@ export default function Brantford() {
 
       <p>Brantford is a market that rewards genuine local presence. Sitting in Brant County along the Grand River, the city has evolved from a manufacturing hub (once home to Cockshutt, Massey-Ferguson, and the birthplace of the telephone) into a diversifying economy of healthcare, post-secondary education, trades, and small business. Buying behaviour here is community-referral-driven: a Brantford business earns its reputation on the street first, then online, and losing at either stage costs you customers.</p>
 
-      <p>AKW Marketing works with Brantford businesses that want their online visibility to match the reputation they've already earned locally. We use the same Local SEO Top 3 Ranking playbook (<a href="/kitchener">/kitchener</a>) we've refined across the KW region and its surrounding markets, adapted to the specific dynamics of Brantford's community-driven buying culture.</p>
+      <p><a href="/">AKW Marketing</a> works with Brantford businesses that want their online visibility to match the reputation they've already earned locally. We use the same Local SEO Top 3 Ranking playbook (<a href="/kitchener">/kitchener</a>) we've refined across the KW region and its surrounding markets, adapted to the specific dynamics of Brantford's community-driven buying culture.</p>
 
       <p>Book a free local marketing analysis at <a href="/free-analysis">/free-analysis</a> and we'll show you exactly where your Brantford business stands in Google search results and what it would take to move up.</p>
 
