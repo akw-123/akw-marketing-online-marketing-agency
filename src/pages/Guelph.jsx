@@ -16,7 +16,7 @@ export default function Guelph() {
 
       <p>Guelph is one of Southern Ontario's most distinctive local markets: anchored by the University of Guelph, home to Canada's leading agri-food research cluster, and populated by a small-business plus independent-retail culture that runs deeper than most similarly-sized Canadian cities. Marketing to Guelph customers means understanding a market that supports local businesses aggressively, expects authenticity, and rewards businesses that connect to the community's actual identity rather than importing generic branding.</p>
 
-      <p>AKW Marketing works with Guelph businesses across agri-food, professional services, restaurants and hospitality, retail, trades, and university-adjacent services. Same Local SEO Top 3 Ranking playbook (<a href="/kitchener">/kitchener</a>) we run across KW-Guelph, tuned to Guelph's specific community dynamics.</p>
+      <p><a href="/">AKW Marketing</a> works with Guelph businesses across agri-food, professional services, restaurants and hospitality, retail, trades, and university-adjacent services. Same Local SEO Top 3 Ranking playbook (<a href="/kitchener">/kitchener</a>) we run across KW-Guelph, tuned to Guelph's specific community dynamics.</p>
 
       <p>Book a free local marketing analysis at <a href="/free-analysis">/free-analysis</a> and we'll show you where your Guelph business stands and what it would take to move up.</p>
 
