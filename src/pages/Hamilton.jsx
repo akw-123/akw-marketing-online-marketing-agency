@@ -16,7 +16,7 @@ export default function Hamilton() {
 
       <p>Hamilton is one of Southern Ontario's most distinctive markets: a working city built on steel, logistics, and healthcare, transformed since the mid-2010s by an inflow of creative-class professionals, tech startups, and specialty retail. Marketing to Hamilton (or reaching Hamilton customers for a business based elsewhere) means understanding a market that has strong local pride, meaningful demographic diversity across neighbourhoods, and a competitive local-search environment that rewards businesses that show up authentic.</p>
 
-      <p>AKW Marketing works with Hamilton businesses across trades, healthcare-adjacent services, professional services, restaurants and hospitality, retail, and manufacturing. Same Local SEO Top 3 Ranking playbook (<a href="/kitchener">/kitchener</a>) we run across Southern Ontario, adapted to Hamilton's specific competitive and cultural realities.</p>
+      <p><a href="/">AKW Marketing</a> works with Hamilton businesses across trades, healthcare-adjacent services, professional services, restaurants and hospitality, retail, and manufacturing. Same Local SEO Top 3 Ranking playbook (<a href="/kitchener">/kitchener</a>) we run across Southern Ontario, adapted to Hamilton's specific competitive and cultural realities.</p>
 
       <p>Book a free local marketing analysis at <a href="/free-analysis">/free-analysis</a> and we'll show you exactly where your Hamilton business stands and what it would take to move up in local search.</p>
 
