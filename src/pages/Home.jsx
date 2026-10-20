@@ -5,7 +5,6 @@ import FooterSection from "@/components/landing/FooterSection";
 import WhereWeWork from "@/components/landing/WhereWeWork";
 import ProcessSection from "@/components/landing/ProcessSection";
 import BeforeAfterSection from "@/components/landing/BeforeAfterSection";
-import PricingSection from "@/components/landing/PricingSection";
 
 const clients = [
   "Simpson Drew",
@@ -289,7 +288,6 @@ export default function Home() {
 
       <ProcessSection />
       <BeforeAfterSection />
-      <PricingSection />
       <WhereWeWork />
       <FooterSection />
     </div>
