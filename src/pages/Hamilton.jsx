@@ -72,9 +72,6 @@ export default function Hamilton() {
       <h3>Can you help me rank in both Hamilton and Burlington/Stoney Creek?</h3>
       <p>Yes. Requires dedicated city or neighbourhood landing pages, separate citation work, and consistent local relevance signals for each. Hamilton core plus Ancaster or Dundas is a common bundling; Hamilton plus Burlington is typically treated as two separate markets due to different GBP addresses and competitor sets.</p>
 
-      <h3>How much does Hamilton local SEO cost?</h3>
-      <p>Similar to our KW pricing: $500 to $1,500 CAD per month for monthly local SEO retainer, sized to your business, keyword competition, and content/citation volume required. Free audit first, always.</p>
-
       <h3>What's a realistic timeline to rank in the Hamilton map pack?</h3>
       <p>Honest answer: 3 to 6 months for meaningful movement, 6 to 12 months for top-3 map-pack positions on competitive Hamilton keywords. Trades keywords often lean toward the 9-12 month end due to competitor depth. Niche services can be faster.</p>
 

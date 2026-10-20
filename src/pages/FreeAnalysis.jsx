@@ -9,10 +9,6 @@ const faqs = [
     a: "We've done this for dozens of local businesses across plumbing, legal, dental, landscaping, construction, and more. We only take on businesses we know we can rank — that's why we've never had to refund anyone. Before we take your money, we audit your market and only proceed if we're confident we can get you there. If we can't deliver top 3 in 90 days, you get every penny back.",
   },
   {
-    q: "What's this actually going to cost me?",
-    a: "We'll discuss pricing on the strategy call based on your market and competition. There are no hidden fees or monthly retainers unless we agree on it together. You only pay if we're confident we can deliver results.",
-  },
-  {
     q: "Will this work for my type of business?",
     a: "If you're a local service business with a physical service area, yes. We've ranked plumbers, dentists, electricians, lawyers, contractors, and many more. On our call, we'll tell you straight up if your market has any obstacles. We don't take your money if we can't deliver.",
   },

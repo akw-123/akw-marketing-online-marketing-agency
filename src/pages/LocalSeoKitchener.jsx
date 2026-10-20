@@ -88,12 +88,6 @@ export default function LocalSeoKitchener() {
 
       <p>Anyone promising "top 3 in the map pack in 30 days" is either lying or setting you up for a Google penalty when their shortcuts get caught (fake reviews, keyword-stuffed business names, PO-box addresses).</p>
 
-      <h2>Local SEO pricing in Kitchener</h2>
-
-      <p>Monthly local SEO engagements typically run $500 to $1,500 CAD depending on your business size, the number of cities you serve, and the volume of content plus citation work required. Every engagement includes a fixed-scope proposal. Free audit first, always.</p>
-
-      <p>Common add-ons: citation setup one-time ($300-800), review acquisition system setup one-time ($400-800), city landing page write and build (per page $400-800). All optional, all scoped separately.</p>
-
       <h2>Frequently asked questions</h2>
 
       <h3>What's the difference between local SEO and regular SEO?</h3>

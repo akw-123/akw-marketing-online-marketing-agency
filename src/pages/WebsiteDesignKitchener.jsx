@@ -71,9 +71,6 @@ export default function WebsiteDesignKitchener() {
       <h3>Will my SEO rankings drop when we launch the new site?</h3>
       <p>Not if the migration is done right. We map every existing URL, set up 301 redirects for any that change, preserve title tags and meta descriptions, and submit an updated sitemap to Google Search Console at launch. Done properly, rankings stay flat or improve within 30 days. Done badly, rankings can drop 30 to 50 percent temporarily. This is why the migration plan matters more than the design.</p>
 
-      <h3>What does a Kitchener website design engagement cost?</h3>
-      <p>Ranges from around $3,500 for a simple 5-page service site to $15,000+ for a larger site with custom integrations, blog architecture, and ongoing SEO work built in. We scope after the free audit so the number reflects your actual site, not a template pricing sheet.</p>
-
       <h3>Do you offer ongoing website maintenance?</h3>
       <p>Yes. Most clients continue on a monthly maintenance plan that covers plugin updates, security patches, backups, content refreshes, and SEO monitoring. This is typically bundled with our SEO retainer so you have one point of contact for the whole marketing operation.</p>
 
