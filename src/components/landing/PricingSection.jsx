@@ -15,7 +15,7 @@ const standardFeatures = [
 const plans = [
   {
     name: "Minimum",
-    price: "CA$499",
+    price: "CA$399",
     period: "/ Month",
     commitment: "3 month commitment. Cancellable monthly thereafter.",
     highlight: "First page on Google within 90 days.",
@@ -32,7 +32,7 @@ const plans = [
   },
   {
     name: "Standard",
-    price: "CA$599",
+    price: "CA$499",
     period: "/ Month",
     commitment: "3 month commitment. Cancellable monthly thereafter.",
     highlight: "Top 3 on Google within 90 days. Guaranteed or you don't pay.",
@@ -42,9 +42,9 @@ const plans = [
   },
   {
     name: "Best Value",
-    price: "CA$1,399",
+    price: "CA$1,299",
     period: "/ Quarter",
-    badge: "Save CA$398",
+    badge: "Save CA$198",
     commitment: "Cancellable every 3 months.",
     highlight: "Top 3 on Google within 90 days. Guaranteed or you don't pay.",
     visibility: "75%+",
