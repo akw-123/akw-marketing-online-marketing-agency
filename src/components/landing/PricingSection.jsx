@@ -3,22 +3,30 @@ import { motion } from "framer-motion";
 import { Check, X, Phone, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+const standardFeatures = [
+  { text: "Full Competitor's Analysis", included: true },
+  { text: "Updates Every Two Weeks", included: true },
+  { text: "Money-Back Guarantee", included: true },
+  { text: "Ranking For Main Search-Term", included: true },
+  { text: "Full Website Optimization", included: true },
+  { text: "High Quality Backlinks", included: true },
+];
+
 const plans = [
   {
     name: "Minimum",
-    price: "CA$500",
+    price: "CA$499",
     period: "/ Month",
     commitment: "3 month commitment. Cancellable monthly thereafter.",
     highlight: "First page on Google within 90 days.",
-    noGuarantee: true,
     visibility: "30%",
     features: [
       { text: "Full Competitor's Analysis", included: true },
       { text: "Updates Every Two Weeks", included: true },
-      { text: "No Money-Back-Guarantee", included: false },
       { text: "Ranking For Main Search-Term", included: true },
-      { text: "Limited Website Optimization", included: false },
       { text: "High Quality Backlinks", included: true },
+      { text: "Limited Website Optimization", included: true },
+      { text: "No Money-Back Guarantee", included: false },
     ],
     popular: false,
   },
@@ -28,35 +36,19 @@ const plans = [
     period: "/ Month",
     commitment: "3 month commitment. Cancellable monthly thereafter.",
     highlight: "Top 3 on Google within 90 days. Guaranteed or you don't pay.",
-    noGuarantee: false,
     visibility: "75%+",
-    features: [
-      { text: "Full Competitor's Analysis", included: true },
-      { text: "Updates Every Two Weeks", included: true },
-      { text: "Money-Back-Guarantee", included: true },
-      { text: "Ranking For Main Search-Term", included: true },
-      { text: "Full Website Optimization", included: true },
-      { text: "High Quality Backlinks", included: true },
-    ],
+    features: standardFeatures,
     popular: true,
   },
   {
     name: "Best Value",
-    price: "CA$999",
+    price: "CA$1,399",
     period: "/ Quarter",
-    badge: "Save CA$198",
+    badge: "Save CA$398",
     commitment: "Cancellable every 3 months.",
     highlight: "Top 3 on Google within 90 days. Guaranteed or you don't pay.",
-    noGuarantee: false,
     visibility: "75%+",
-    features: [
-      { text: "Full Competitor's Analysis", included: true },
-      { text: "Updates Every Two Weeks", included: true },
-      { text: "Money-Back-Guarantee", included: true },
-      { text: "Ranking For Main Search-Term", included: true },
-      { text: "Full Website Optimization", included: true },
-      { text: "High Quality Backlinks", included: true },
-    ],
+    features: standardFeatures,
     popular: false,
   },
 ];
