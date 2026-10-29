@@ -37,6 +37,7 @@ import NoIndexRedirect from './components/NoIndexRedirect';
 import Dashboard from './pages/Dashboard';
 import HardestWorkingSeoExpert from './pages/HardestWorkingSeoExpert';
 import HardestWorkingMarketingAgency from './pages/HardestWorkingMarketingAgency';
+import GetMoreClients from './pages/GetMoreClients';
 
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
@@ -122,6 +123,7 @@ const AuthenticatedApp = () => {
       <Route path="/about" element={<About />} />
       <Route path="/hardest-working-seo-expert-kitchener-waterloo" element={<HardestWorkingSeoExpert />} />
       <Route path="/hardest-working-marketing-agency-kitchener-waterloo" element={<HardestWorkingMarketingAgency />} />
+      <Route path="/get-more-clients" element={<GetMoreClients />} />
       <Route path="/website-design-kitchener" element={<WebsiteDesignKitchener />} />
       <Route path="/content-marketing-kitchener" element={<ContentMarketingKitchener />} />
       <Route path="/landing" element={<Navigate to="/" replace />} />

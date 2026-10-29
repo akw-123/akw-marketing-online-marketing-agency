@@ -25,6 +25,7 @@ const STATIC_URLS = [
   { loc: '/about',          priority: '0.7', changefreq: 'monthly', lastmod: TODAY },
   { loc: '/blog',           priority: '0.8', changefreq: 'weekly',  lastmod: TODAY },
   { loc: '/free-analysis',  priority: '0.7', changefreq: 'monthly', lastmod: TODAY },
+  { loc: '/get-more-clients', priority: '0.8', changefreq: 'monthly', lastmod: TODAY },
   { loc: '/newsletter',     priority: '0.7', changefreq: 'monthly', lastmod: TODAY },
   { loc: '/PrivacyPolicy',  priority: '0.3', changefreq: 'yearly',  lastmod: TODAY },
   { loc: '/TermsOfService', priority: '0.3', changefreq: 'yearly',  lastmod: TODAY },
