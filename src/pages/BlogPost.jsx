@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
 import { ArrowLeft, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import ReactMarkdown from "react-markdown";
 import FooterSection from "@/components/landing/FooterSection";
+import { getPublishedPost, relatedPosts } from "@/data/blog";
 
 function BlogNavbar() {
   return (
@@ -32,39 +32,19 @@ function BlogNavbar() {
 
 export default function BlogPostPage() {
   const { slug } = useParams();
-  const [post, setPost] = useState(null);
-  const [relatedPosts, setRelatedPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
+  const post = getPublishedPost(slug);
+  const related = post ? relatedPosts(post) : [];
+  const notFound = !post;
 
   useEffect(() => {
-    base44.entities.BlogPost.filter({ slug, published: true })
-      .then(async (results) => {
-        if (results.length === 0) { setNotFound(true); return; }
-        const p = results[0];
-        setPost(p);
-        document.title = `${p.title} | AKW Marketing`;
-        let meta = document.querySelector('meta[name="description"]');
-        if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
-        meta.content = p.excerpt
-          ? p.excerpt
-          : `AKW Marketing is the online marketing agency in the Kitchener-Waterloo area that helps local businesses rank higher on Google. ${p.title}`;
-
-        // Try same-category first, fall back to most recent
-        let related = [];
-        if (p.category) {
-          const byCat = await base44.entities.BlogPost.filter({ category: p.category, published: true }, '-published_date', 10);
-          related = byCat.filter(r => r.id !== p.id).slice(0, 3);
-        }
-        if (related.length < 3) {
-          const recent = await base44.entities.BlogPost.filter({ published: true }, '-published_date', 10);
-          const extra = recent.filter(r => r.id !== p.id && !related.find(x => x.id === r.id));
-          related = [...related, ...extra].slice(0, 3);
-        }
-        setRelatedPosts(related);
-      })
-      .finally(() => setLoading(false));
-  }, [slug]);
+    if (!post) return;
+    document.title = `${post.title} | AKW Marketing`;
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
+    meta.content = post.excerpt
+      ? post.excerpt
+      : `AKW Marketing is the online marketing agency in the Kitchener-Waterloo area that helps local businesses rank higher on Google. ${post.title}`;
+  }, [post]);
 
   return (
     <div className="min-h-screen bg-[#F5F0EB]">
@@ -79,19 +59,6 @@ export default function BlogPostPage() {
             <ArrowLeft className="w-4 h-4" />
             Back to Blog
           </Link>
-
-          {loading && (
-            <div className="space-y-4 animate-pulse">
-              <div className="h-10 bg-stone-200 rounded w-3/4" />
-              <div className="h-4 bg-stone-200 rounded w-1/4" />
-              <div className="aspect-[4/3] bg-stone-200 rounded-2xl mt-8" />
-              <div className="space-y-3 mt-8">
-                {[...Array(8)].map((_, i) => (
-                  <div key={i} className="h-4 bg-stone-200 rounded w-full" />
-                ))}
-              </div>
-            </div>
-          )}
 
           {notFound && (
             <div className="text-center py-24">
@@ -155,7 +122,7 @@ export default function BlogPostPage() {
 
                 <h3 className="text-sm font-semibold uppercase tracking-widest text-stone-400 mb-4">More on this topic</h3>
                 <ul className="space-y-3 mb-10">
-                  {relatedPosts.map((rp) => (
+                  {related.map((rp) => (
                     <li key={rp.id}>
                       <Link to={`/blog/${rp.slug}`} className="text-sm font-medium text-stone-900 hover:underline underline-offset-2">
                         {rp.title}

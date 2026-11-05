@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ArrowUpRight, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
 import FAQSection from "@/components/landing/FAQSection";
 import FooterSection from "@/components/landing/FooterSection";
 
@@ -30,12 +29,6 @@ export default function Newsletter() {
     } catch (err) {
       // non-blocking: signup still succeeds if the webhook hiccups
     }
-
-    await base44.integrations.Core.SendEmail({
-      to: "andre@akwmarketing.com",
-      subject: `New Newsletter Subscriber: ${form.first_name}`,
-      body: `New newsletter signup:\n\nFirst Name: ${form.first_name}\nEmail: ${form.email}`,
-    });
 
     setLoading(false);
     navigate("/newsletter-thank-you");

@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
-import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import BlogPostCard from "@/components/blog/BlogPostCard";
 import FooterSection from "@/components/landing/FooterSection";
+import { blogCatalog, listPublishedPosts } from "@/data/blog";
 
 function BlogNavbar() {
   return (
@@ -30,16 +28,9 @@ function BlogNavbar() {
 }
 
 export default function Blog() {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const posts = listPublishedPosts();
 
   useEffect(() => { document.title = "AKW Marketing | Blog"; }, []);
-
-  useEffect(() => {
-    base44.entities.BlogPost.filter({ published: true }, "-published_date", 50)
-      .then(setPosts)
-      .finally(() => setLoading(false));
-  }, []);
 
   return (
     <div className="min-h-screen bg-[#F5F0EB]">
@@ -69,23 +60,13 @@ export default function Blog() {
       {/* Posts Grid */}
       <div className="px-6 pb-24">
         <div className="max-w-7xl mx-auto">
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-white rounded-2xl overflow-hidden border border-stone-200/60 animate-pulse">
-                  <div className="aspect-[16/9] bg-stone-200" />
-                  <div className="p-6 space-y-3">
-                    <div className="h-3 bg-stone-200 rounded w-1/4" />
-                    <div className="h-5 bg-stone-200 rounded w-3/4" />
-                    <div className="h-4 bg-stone-200 rounded w-full" />
-                    <div className="h-4 bg-stone-200 rounded w-2/3" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : posts.length === 0 ? (
+          {posts.length === 0 ? (
             <div className="text-center py-24">
-              <p className="text-stone-400 text-lg">No posts yet. Check back soon.</p>
+              <p className="text-stone-400 text-lg">
+                {blogCatalog.unavailableReason
+                  ? "Blog posts could not be loaded into this build. Nothing was invented to fill this page."
+                  : "No posts yet. Check back soon."}
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">

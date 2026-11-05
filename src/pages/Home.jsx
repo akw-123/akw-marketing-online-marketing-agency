@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { ArrowRight, Loader2, CheckCircle } from "lucide-react";
-import { base44 } from "@/api/base44Client";
 import FooterSection from "@/components/landing/FooterSection";
 import WhereWeWork from "@/components/landing/WhereWeWork";
 import ProcessSection from "@/components/landing/ProcessSection";
@@ -32,11 +31,6 @@ function EmailForm() {
     e.preventDefault();
     if (!email) return;
     setLoading(true);
-    await base44.integrations.Core.SendEmail({
-      to: "andre@akwmarketing.com",
-      subject: `New Free Tips Subscriber: ${email}`,
-      body: `A new subscriber signed up for the 3 Free Tips:\n\nEmail: ${email}`,
-    });
     try {
       await fetch("https://hook.us2.make.com/45wtmbr89f94ixnzmgctrfo38v1kyrld", {
         method: "POST",

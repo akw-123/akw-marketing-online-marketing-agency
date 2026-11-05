@@ -1,0 +1,10 @@
+{
+  // Static Cloudflare Pages project for the akwmarketing.com Phase 1 preview.
+  // No Pages Functions, no routes, and no custom domain in this phase.
+  // Dashboard build settings (source of truth for Git deploys):
+  //   Build command: npm run build
+  //   Build output directory: dist
+  "name": "akwmarketing",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-11-05"
+}

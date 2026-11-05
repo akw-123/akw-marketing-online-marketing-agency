@@ -1,0 +1,5 @@
+# Phase 1 preview only. Remove this file before any production DNS cutover.
+# *.pages.dev already sends X-Robots-Tag: noindex. This rule makes noindex explicit
+# on every static response from this build, including the SPA shell.
+/*
+  X-Robots-Tag: noindex

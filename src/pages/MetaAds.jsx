@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Users, Zap, TrendingUp, CheckCircle, ChevronDown, ArrowRight, Clock, Loader2 } from "lucide-react";
 import FooterSection from "@/components/landing/FooterSection";
 import SimplifiedApplicationForm from "@/components/SimplifiedApplicationForm";
-import { base44 } from "@/api/base44Client";
 import { motion, AnimatePresence } from "framer-motion";
 
 const fadeUp = {

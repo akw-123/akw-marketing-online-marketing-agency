@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { ArrowUpRight, Loader2, CheckCircle, ChevronDown } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { LEAD_CAPTURE_UNAVAILABLE } from "@/lib/previewLeadCapture";
 
 const faqs = [
   {
@@ -72,32 +72,13 @@ export default function FreeAnalysis() {
   const [form, setForm] = useState({
     full_name: "", email: "", phone: "", website: "", business_name: "", google_maps_url: "", timeline: "Today",
   });
-  const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const set = (field) => (e) => setForm({ ...form, [field]: e.target.value });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    await base44.entities.StrategyApplication.create({
-      full_name: form.full_name,
-      email: form.email,
-      phone: form.phone,
-      website: form.website,
-      business_name: form.business_name,
-      additional_info: `Google Maps URL: ${form.google_maps_url}\nTimeline: ${form.timeline}`,
-    });
-
-    await base44.integrations.Core.SendEmail({
-      to: "andre@akwmarketing.com",
-      subject: `New Free Analysis Request: ${form.business_name} (${form.full_name})`,
-      body: `New Free Analysis Request\n\nFull Name: ${form.full_name}\nEmail: ${form.email}\nPhone: ${form.phone}\nWebsite: ${form.website || "N/A"}\nBusiness Name: ${form.business_name}\nGoogle Maps URL: ${form.google_maps_url || "N/A"}\nTimeline: ${form.timeline}`,
-    });
-
-    setLoading(false);
-    setSubmitted(true);
+    setSubmitError(LEAD_CAPTURE_UNAVAILABLE);
   };
 
   return (
@@ -140,16 +121,7 @@ export default function FreeAnalysis() {
 
           {/* Right — Form */}
           <div>
-            {submitted ? (
-              <div className="flex flex-col items-center justify-center py-20 text-center">
-                <CheckCircle className="w-14 h-14 text-green-500 mb-5" />
-                <h3 className="text-2xl font-bold text-stone-900 mb-2">Request Received!</h3>
-                <p className="text-stone-500 text-sm max-w-xs leading-relaxed">
-                  Thanks, <strong>{form.full_name}</strong>! We'll review your profile and send your personalized analysis within 24–48 hours.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-1">
+            <form onSubmit={handleSubmit} className="space-y-1">
                 <div>
                   <input
                     required
@@ -234,18 +206,17 @@ export default function FreeAnalysis() {
                 <div className="pt-4">
                   <button
                     type="submit"
-                    disabled={loading}
-                    className="w-full bg-stone-900 hover:bg-stone-800 disabled:opacity-60 text-white font-semibold py-4 rounded-xl text-sm transition-colors flex items-center justify-center gap-2"
+                    className="w-full bg-stone-900 hover:bg-stone-800 text-white font-semibold py-4 rounded-xl text-sm transition-colors flex items-center justify-center gap-2"
                   >
-                    {loading ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <>Submit <ArrowUpRight className="w-4 h-4" /></>
-                    )}
+                    Submit <ArrowUpRight className="w-4 h-4" />
                   </button>
+                  {submitError && (
+                    <p className="text-sm text-stone-600 leading-relaxed mt-4" role="alert">
+                      {submitError}
+                    </p>
+                  )}
                 </div>
               </form>
-            )}
           </div>
         </div>
       </section>
