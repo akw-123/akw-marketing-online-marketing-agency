@@ -77,7 +77,7 @@ export default function HardestWorkingSeoExpert() {
       <p>I run <a href="/">AKW Marketing</a>, a <a href="/kitchener">Kitchener marketing agency</a> that gets local businesses ranking on Google. Yes, I gave myself that title. Now let me prove it.</p>
 
       <img
-        src="https://media.base44.com/images/public/69aa2d66169a7c4374014381/977b15f23_hardest-working-seo-expert-kitchener-waterloo.jpg"
+        src="/assets/hardest-working-seo-expert-kitchener-waterloo.jpg"
         alt="Hardest-working SEO expert in Kitchener Waterloo: Andre Kadjo of AKW Marketing"
         width="717"
         height="900"

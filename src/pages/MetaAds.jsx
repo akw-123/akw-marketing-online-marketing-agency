@@ -88,8 +88,8 @@ export default function MetaAds() {
       "url": "https://akwmarketing.com/gbp",
       "telephone": "+1-437-475-0076",
       "email": "contact@akwmarketing.com",
-      "image": "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c8e3cd9e0_Logo_official1.png",
-      "logo": "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c8e3cd9e0_Logo_official1.png",
+      "image": "/assets/logo-official.png",
+      "logo": "/assets/logo-official.png",
       "areaServed": [
         {"@type":"City","name":"Kitchener","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
         {"@type":"City","name":"Waterloo","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},

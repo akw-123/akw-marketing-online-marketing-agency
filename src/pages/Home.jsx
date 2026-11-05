@@ -18,7 +18,7 @@ const team = [
   {
     name: "Andre Kadjo",
     role: "Founder & CEO",
-    img: "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c080ba885_1570675559675.jpeg",
+    img: "/assets/hero-1570675559675.jpeg",
   },
 ];
 
@@ -103,7 +103,7 @@ export default function Home() {
       "@type": "Organization",
       "name": "AKW Marketing",
       "url": "https://akwmarketing.com",
-      "logo": "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c8e3cd9e0_Logo_official1.png",
+      "logo": "/assets/logo-official.png",
       "sameAs": [
         "https://www.instagram.com/akw_marketing/",
         "https://www.youtube.com/@AKWMarketing",
@@ -131,8 +131,8 @@ export default function Home() {
       "url": "https://akwmarketing.com/",
       "telephone": "+1-437-475-0076",
       "email": "contact@akwmarketing.com",
-      "image": "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c8e3cd9e0_Logo_official1.png",
-      "logo": "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c8e3cd9e0_Logo_official1.png",
+      "image": "/assets/logo-official.png",
+      "logo": "/assets/logo-official.png",
       "areaServed": [
         {"@type":"City","name":"Kitchener","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
         {"@type":"City","name":"Waterloo","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},

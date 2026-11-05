@@ -16,7 +16,7 @@ const team = [
   {
     name: "Andre Kadjo",
     role: "Founder & CEO",
-    img: "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c080ba885_1570675559675.jpeg",
+    img: "/assets/hero-1570675559675.jpeg",
   },
 ];
 
