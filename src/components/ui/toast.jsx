@@ -3,19 +3,18 @@ import { cva } from "class-variance-authority";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const ToastProvider = React.forwardRef(({ ...props }, ref) => (
-  <div
-    ref={ref}
-    className="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]"
-    {...props}
-  />
+const ToastProvider = React.forwardRef(({ className, ...props }, ref) => (
+  <div ref={ref} className={className} {...props} />
 ));
 ToastProvider.displayName = "ToastProvider";
 
-const ToastViewport = React.forwardRef(({ ...props }, ref) => (
+const ToastViewport = React.forwardRef(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className="fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]"
+    className={cn(
+      "fixed inset-x-0 top-0 z-[100] flex max-h-screen flex-col-reverse p-4 sm:inset-x-auto sm:right-0 sm:bottom-0 sm:top-auto sm:w-full sm:max-w-[420px] sm:flex-col",
+      className,
+    )}
     {...props}
   />
 ));
