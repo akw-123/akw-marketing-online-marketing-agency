@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "@/components/landing/Navbar";
 import FooterSection from "@/components/landing/FooterSection";
 
 export default function PrivacyPolicy() {
+  useEffect(() => {
+    document.title = "Privacy Policy | AKW Marketing";
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) { meta = document.createElement("meta"); meta.name = "description"; document.head.appendChild(meta); }
+    meta.content = 'Welcome to AKW Marketing ("Company", "we", "our", "us"). We respect your privacy and are committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you.';
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#F5F0EB]">
       <Navbar />

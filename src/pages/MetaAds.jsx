@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { upsertJsonLd } from "@/lib/upsertJsonLd";
 import { Users, Zap, TrendingUp, CheckCircle, ChevronDown, ArrowRight, Clock, Loader2 } from "lucide-react";
 import FooterSection from "@/components/landing/FooterSection";
 import SimplifiedApplicationForm from "@/components/SimplifiedApplicationForm";
-import { base44 } from "@/api/base44Client";
 import { motion, AnimatePresence } from "framer-motion";
 
 const fadeUp = {
@@ -89,8 +89,8 @@ export default function MetaAds() {
       "url": "https://akwmarketing.com/gbp",
       "telephone": "+1-437-475-0076",
       "email": "contact@akwmarketing.com",
-      "image": "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c8e3cd9e0_Logo_official1.png",
-      "logo": "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c8e3cd9e0_Logo_official1.png",
+      "image": "/assets/logo-official.png",
+      "logo": "/assets/logo-official.png",
       "areaServed": [
         {"@type":"City","name":"Kitchener","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
         {"@type":"City","name":"Waterloo","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
@@ -107,13 +107,6 @@ export default function MetaAds() {
       ],
       "openingHours": "Mo-Su 00:00-23:59",
       "priceRange": "$$",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5.0",
-        "reviewCount": "3",
-        "bestRating": "5",
-        "worstRating": "1"
-      },
       "sameAs": [
         "https://www.instagram.com/akw_marketing/",
         "https://x.com/akw_marketing",
@@ -122,11 +115,7 @@ export default function MetaAds() {
         "https://www.youtube.com/@AKWMarketing"
       ]
     };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.id = 'professional-service-schema';
-    script.textContent = JSON.stringify(schema);
-    document.head.appendChild(script);
+    upsertJsonLd("professional-service-schema", schema);
     return () => { const el = document.getElementById('professional-service-schema'); if (el) el.remove(); };
   }, []);
 
@@ -137,7 +126,7 @@ export default function MetaAds() {
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2">
             <img
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69aa2d66169a7c4374014381/adfe82e85_Logo_official1.png"
+              src="/assets/logo-official.png"
               alt="AKW Marketing Logo"
               className="w-8 h-8 rounded-md object-contain"
             />

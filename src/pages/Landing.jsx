@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { ArrowRight, Loader2, CheckCircle } from "lucide-react";
-import { base44 } from "@/api/base44Client";
 import FooterSection from "@/components/landing/FooterSection";
 
 // Client logos (text-based since we don't have images)
@@ -17,7 +16,7 @@ const team = [
   {
     name: "Andre Kadjo",
     role: "Founder & CEO",
-    img: "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c080ba885_1570675559675.jpeg",
+    img: "/assets/hero-1570675559675.jpeg",
   },
 ];
 
@@ -30,11 +29,6 @@ function EmailForm() {
     e.preventDefault();
     if (!email) return;
     setLoading(true);
-    await base44.integrations.Core.SendEmail({
-      to: "andre@akwmarketing.com",
-      subject: `New Free Tips Subscriber: ${email}`,
-      body: `A new subscriber signed up for the 3 Free Tips:\n\nEmail: ${email}`,
-    });
     try {
       await fetch("https://hook.us2.make.com/45wtmbr89f94ixnzmgctrfo38v1kyrld", {
         method: "POST",
@@ -93,7 +87,7 @@ export default function Landing() {
       <nav className="border-b border-stone-200/60 px-6 h-16 flex items-center justify-between bg-[#F5F0EB]">
         <a href="/" className="flex items-center gap-2">
           <img
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69aa2d66169a7c4374014381/adfe82e85_Logo_official1.png"
+            src="/assets/logo-official.png"
             alt="AKW Marketing Logo"
             className="w-8 h-8 rounded-md object-contain"
           />

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ArrowUpRight, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
 import FAQSection from "@/components/landing/FAQSection";
 import FooterSection from "@/components/landing/FooterSection";
 
@@ -31,12 +30,6 @@ export default function Newsletter() {
       // non-blocking: signup still succeeds if the webhook hiccups
     }
 
-    await base44.integrations.Core.SendEmail({
-      to: "andre@akwmarketing.com",
-      subject: `New Newsletter Subscriber: ${form.first_name}`,
-      body: `New newsletter signup:\n\nFirst Name: ${form.first_name}\nEmail: ${form.email}`,
-    });
-
     setLoading(false);
     navigate("/newsletter-thank-you");
   };
@@ -48,7 +41,7 @@ export default function Newsletter() {
         <div className="max-w-7xl mx-auto h-16 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2">
             <img
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69aa2d66169a7c4374014381/adfe82e85_Logo_official1.png"
+              src="/assets/logo-official.png"
               alt="AKW Marketing Logo"
               className="w-8 h-8 rounded-md object-contain"
             />

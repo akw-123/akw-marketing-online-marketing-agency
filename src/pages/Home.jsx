@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { ArrowRight, Loader2, CheckCircle } from "lucide-react";
-import { base44 } from "@/api/base44Client";
 import FooterSection from "@/components/landing/FooterSection";
 import WhereWeWork from "@/components/landing/WhereWeWork";
 import ProcessSection from "@/components/landing/ProcessSection";
 import BeforeAfterSection from "@/components/landing/BeforeAfterSection";
+import { upsertJsonLd } from "@/lib/upsertJsonLd";
 
 const clients = [
   "Simpson Drew",
@@ -19,7 +20,7 @@ const team = [
   {
     name: "Andre Kadjo",
     role: "Founder & CEO",
-    img: "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c080ba885_1570675559675.jpeg",
+    img: "/assets/hero-1570675559675.jpeg",
   },
 ];
 
@@ -32,11 +33,6 @@ function EmailForm() {
     e.preventDefault();
     if (!email) return;
     setLoading(true);
-    await base44.integrations.Core.SendEmail({
-      to: "andre@akwmarketing.com",
-      subject: `New Free Tips Subscriber: ${email}`,
-      body: `A new subscriber signed up for the 3 Free Tips:\n\nEmail: ${email}`,
-    });
     try {
       await fetch("https://hook.us2.make.com/45wtmbr89f94ixnzmgctrfo38v1kyrld", {
         method: "POST",
@@ -82,8 +78,9 @@ function EmailForm() {
 }
 
 export default function Home() {
+  const { pathname } = useLocation();
   React.useEffect(() => {
-    const isHome = window.location.pathname.toLowerCase() === '/home';
+    const isHome = pathname.toLowerCase() === "/home";
     document.title = isHome
       ? "Top 3 on Google in 90 Days | AKW Marketing"
       : "Is Your Business Invisible on Google? | AKW Marketing";
@@ -98,18 +95,13 @@ export default function Home() {
       "name": "AKW Marketing",
       "url": "https://akwmarketing.com"
     };
-    const websiteScript = document.createElement('script');
-    websiteScript.type = 'application/ld+json';
-    websiteScript.id = 'website-schema';
-    websiteScript.textContent = JSON.stringify(websiteSchema);
-    document.head.appendChild(websiteScript);
-
+    upsertJsonLd("website-schema", websiteSchema);
     const orgSchema = {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "AKW Marketing",
       "url": "https://akwmarketing.com",
-      "logo": "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c8e3cd9e0_Logo_official1.png",
+      "logo": "/assets/logo-official.png",
       "sameAs": [
         "https://www.instagram.com/akw_marketing/",
         "https://www.youtube.com/@AKWMarketing",
@@ -118,12 +110,7 @@ export default function Home() {
         "https://x.com/akw_marketing"
       ]
     };
-    const orgScript = document.createElement('script');
-    orgScript.type = 'application/ld+json';
-    orgScript.id = 'organization-schema';
-    orgScript.textContent = JSON.stringify(orgSchema);
-    document.head.appendChild(orgScript);
-
+    upsertJsonLd("organization-schema", orgSchema);
     const psSchema = {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
@@ -137,8 +124,8 @@ export default function Home() {
       "url": "https://akwmarketing.com/",
       "telephone": "+1-437-475-0076",
       "email": "contact@akwmarketing.com",
-      "image": "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c8e3cd9e0_Logo_official1.png",
-      "logo": "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c8e3cd9e0_Logo_official1.png",
+      "image": "/assets/logo-official.png",
+      "logo": "/assets/logo-official.png",
       "areaServed": [
         {"@type":"City","name":"Kitchener","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
         {"@type":"City","name":"Waterloo","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
@@ -155,13 +142,6 @@ export default function Home() {
       ],
       "openingHours": "Mo-Su 00:00-23:59",
       "priceRange": "$$",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5.0",
-        "reviewCount": "6",
-        "bestRating": "5",
-        "worstRating": "1"
-      },
       "sameAs": [
         "https://www.instagram.com/akw_marketing/",
         "https://x.com/akw_marketing",
@@ -170,17 +150,13 @@ export default function Home() {
         "https://www.youtube.com/@AKWMarketing"
       ]
     };
-    const psScript = document.createElement('script');
-    psScript.type = 'application/ld+json';
-    psScript.id = 'professional-service-schema';
-    psScript.textContent = JSON.stringify(psSchema);
-    document.head.appendChild(psScript);
+    upsertJsonLd("professional-service-schema", psSchema);
     return () => {
       const ws = document.getElementById('website-schema'); if (ws) ws.remove();
       const org = document.getElementById('organization-schema'); if (org) org.remove();
       const ps = document.getElementById('professional-service-schema'); if (ps) ps.remove();
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <div className="min-h-screen bg-[#F5F0EB]">
@@ -188,7 +164,7 @@ export default function Home() {
       <nav className="border-b border-stone-200/60 px-6 h-16 flex items-center justify-between bg-[#F5F0EB]">
         <a href="/" className="flex items-center gap-2">
           <img
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69aa2d66169a7c4374014381/adfe82e85_Logo_official1.png"
+            src="/assets/logo-official.png"
             alt="AKW Marketing Logo"
             className="w-8 h-8 rounded-md object-contain"
           />

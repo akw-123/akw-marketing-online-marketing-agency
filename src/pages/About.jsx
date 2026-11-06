@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import SeoArticlePage from "@/components/landing/SeoArticlePage";
+import { upsertJsonLd } from "@/lib/upsertJsonLd";
 
 export default function About() {
   useEffect(() => {
@@ -35,11 +36,7 @@ export default function About() {
         ]
       }
     };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.id = 'about-page-schema';
-    script.textContent = JSON.stringify(schema);
-    document.head.appendChild(script);
+    upsertJsonLd("about-page-schema", schema);
     return () => { const el = document.getElementById('about-page-schema'); if (el) el.remove(); };
   }, []);
 

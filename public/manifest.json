@@ -1,0 +1,22 @@
+{
+  "name": "AKW Marketing | Online Marketing Agency",
+  "short_name": "AKW Marketing | Online Marketing Agency",
+  "description": "AKW Marketing is the online marketing agency in Kitchener-Waterloo area that helps local businesses grow. As your on-demand marketing department, we drive more customers your way through Google Ads, Meta Ads, and SEO. We track every metric and adjust our strategy based on results. Looking for a reliable online marketing agency in Kitchener-Waterloo that delivers real results? Contact us for a free introductory consultation",
+  "icons": [
+    {
+      "src": "/assets/logo-official-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/logo-official-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "scope": "/"
+}

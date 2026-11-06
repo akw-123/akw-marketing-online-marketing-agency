@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import SeoArticlePage from "@/components/landing/SeoArticlePage";
 import WhereWeWork from "@/components/landing/WhereWeWork";
+import { upsertJsonLd } from "@/lib/upsertJsonLd";
 
 export default function HardestWorkingSeoExpert() {
   useEffect(() => {
@@ -60,11 +61,7 @@ export default function HardestWorkingSeoExpert() {
         }
       ]
     };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.id = 'hardest-working-seo-expert-schema';
-    script.textContent = JSON.stringify(schema);
-    document.head.appendChild(script);
+    upsertJsonLd("hardest-working-seo-expert-schema", schema);
     return () => { const el = document.getElementById('hardest-working-seo-expert-schema'); if (el) el.remove(); };
   }, []);
 
@@ -77,7 +74,7 @@ export default function HardestWorkingSeoExpert() {
       <p>I run <a href="/">AKW Marketing</a>, a <a href="/kitchener">Kitchener marketing agency</a> that gets local businesses ranking on Google. Yes, I gave myself that title. Now let me prove it.</p>
 
       <img
-        src="https://media.base44.com/images/public/69aa2d66169a7c4374014381/977b15f23_hardest-working-seo-expert-kitchener-waterloo.jpg"
+        src="/assets/hardest-working-seo-expert-kitchener-waterloo.jpg"
         alt="Hardest-working SEO expert in Kitchener Waterloo: Andre Kadjo of AKW Marketing"
         width="717"
         height="900"
