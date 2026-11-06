@@ -1,5 +1,7 @@
 /**
- * HTTP adapter. Not deployed. Does not save a lead or send a notification.
+ * HTTP adapter. Not deployed from this repo.
+ * Saves a lead when SUPABASE_URL and the service role key are set.
+ * Does not post to Slack or email while those flags and sendImplemented stay off.
  */
 import { handleLeadRequest, corsHeaders } from "../_shared/leadIntake.mjs";
 
@@ -38,6 +40,11 @@ Deno.serve(async (req) => {
       TURNSTILE_HOSTNAMES: Deno.env.get("TURNSTILE_HOSTNAMES") ?? "",
       LEAD_NOTIFY_SLACK: Deno.env.get("LEAD_NOTIFY_SLACK") ?? "",
       LEAD_NOTIFY_EMAIL: Deno.env.get("LEAD_NOTIFY_EMAIL") ?? "",
+      LEAD_NOTIFY_EMAIL_TO: Deno.env.get("LEAD_NOTIFY_EMAIL_TO") ?? "",
+      SLACK_WEBHOOK_URL: Deno.env.get("SLACK_WEBHOOK_URL") ?? "",
+      SUPABASE_URL: Deno.env.get("SUPABASE_URL") ?? "",
+      SUPABASE_SERVICE_ROLE_KEY: Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
+      SUPABASE_SERVICE_KEY: Deno.env.get("SUPABASE_SERVICE_KEY") ?? "",
     },
     fetchImpl: globalThis.fetch,
     remoteIp: req.headers.get("cf-connecting-ip") ?? "",

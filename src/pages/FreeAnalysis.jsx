@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LEAD_CAPTURE_UNAVAILABLE } from "@/lib/previewLeadCapture";
+import { leadCaptureEnabled, submitFormLead } from "@/lib/previewLeadCapture";
 import TurnstileWidget from "@/components/TurnstileWidget";
 
 const faqs = [
@@ -74,12 +74,27 @@ export default function FreeAnalysis() {
     full_name: "", email: "", phone: "", website: "", business_name: "", google_maps_url: "", timeline: "Today",
   });
   const [submitError, setSubmitError] = useState("");
+  const [submitOk, setSubmitOk] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const captureReady = leadCaptureEnabled();
 
   const set = (field) => (e) => setForm({ ...form, [field]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitError(LEAD_CAPTURE_UNAVAILABLE);
+    if (submitting) return;
+    setSubmitError("");
+    setSubmitOk("");
+    setSubmitting(true);
+    const result = await submitFormLead({
+      source: "free-analysis",
+      payload: form,
+      formEl: e.currentTarget,
+      hostname: window.location.hostname,
+    });
+    setSubmitting(false);
+    if (result.ok) setSubmitOk(result.message);
+    else setSubmitError(result.message);
   };
 
   return (
@@ -122,7 +137,7 @@ export default function FreeAnalysis() {
 
           {/* Right — Form */}
           <div>
-            <form onSubmit={handleSubmit} className="space-y-1">
+            <form onSubmit={handleSubmit} className="space-y-1" data-lead-capture={captureReady ? "ready" : "unavailable"}>
                 <input
                   type="text"
                   name="honeypot"
@@ -217,13 +232,19 @@ export default function FreeAnalysis() {
                 <div className="pt-4">
                   <button
                     type="submit"
-                    className="w-full bg-stone-900 hover:bg-stone-800 text-white font-semibold py-4 rounded-xl text-sm transition-colors flex items-center justify-center gap-2"
+                    disabled={submitting}
+                    className="w-full bg-stone-900 hover:bg-stone-800 text-white font-semibold py-4 rounded-xl text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
                   >
-                    Submit <ArrowUpRight className="w-4 h-4" />
+                    {submitting ? "Submitting..." : "Submit"} <ArrowUpRight className="w-4 h-4" />
                   </button>
                   {submitError && (
                     <p className="text-sm text-stone-600 leading-relaxed mt-4" role="alert">
                       {submitError}
+                    </p>
+                  )}
+                  {submitOk && (
+                    <p className="text-sm text-stone-600 leading-relaxed mt-4" role="status">
+                      {submitOk}
                     </p>
                   )}
                 </div>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ArrowRight } from "lucide-react";
-import { LEAD_CAPTURE_UNAVAILABLE } from "@/lib/previewLeadCapture";
+import { leadCaptureEnabled, submitFormLead } from "@/lib/previewLeadCapture";
 import TurnstileWidget from "@/components/TurnstileWidget";
 
 const inputClass =
@@ -30,16 +30,31 @@ function Field({ required, placeholder, ...props }) {
 export default function SimplifiedApplicationForm() {
   const [form, setForm] = useState(emptyForm);
   const [submitError, setSubmitError] = useState("");
+  const [submitOk, setSubmitOk] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const captureReady = leadCaptureEnabled();
 
   const set = (field) => (e) => setForm({ ...form, [field]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitError(LEAD_CAPTURE_UNAVAILABLE);
+    if (submitting) return;
+    setSubmitError("");
+    setSubmitOk("");
+    setSubmitting(true);
+    const result = await submitFormLead({
+      source: "gbp",
+      payload: form,
+      formEl: e.currentTarget,
+      hostname: window.location.hostname,
+    });
+    setSubmitting(false);
+    if (result.ok) setSubmitOk(result.message);
+    else setSubmitError(result.message);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-8" data-lead-capture={captureReady ? "ready" : "unavailable"}>
       <input
         type="text"
         name="honeypot"
@@ -84,13 +99,19 @@ export default function SimplifiedApplicationForm() {
       {/* Submit */}
       <button
         type="submit"
-        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-stone-900 hover:bg-stone-800 text-white font-semibold px-8 py-3 rounded-lg text-sm transition-colors"
+        disabled={submitting}
+        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-stone-900 hover:bg-stone-800 text-white font-semibold px-8 py-3 rounded-lg text-sm transition-colors disabled:opacity-60"
       >
-        Submit <ArrowRight className="w-4 h-4" />
+        {submitting ? "Submitting..." : "Submit"} <ArrowRight className="w-4 h-4" />
       </button>
       {submitError && (
         <p className="text-sm text-stone-600 leading-relaxed" role="alert">
           {submitError}
+        </p>
+      )}
+      {submitOk && (
+        <p className="text-sm text-stone-600 leading-relaxed" role="status">
+          {submitOk}
         </p>
       )}
     </form>

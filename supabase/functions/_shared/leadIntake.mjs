@@ -1,9 +1,12 @@
 /**
  * Lead intake for /free-analysis and /gbp.
  *
- * This checks the fields those forms already collect. It does not name a CRM
- * table or RPC. Persistence stays blocked until a source-grounded contract
- * exists. Notifications do not send, even if their flags are set.
+ * After Turnstile and the honeypot pass, persistLead writes crm_lead,
+ * crm_contact, crm_contact_email, and crm_contact_phone on the live CRM
+ * project. It does not create a website-lead table and it does not write
+ * prospects. Slack and email stay off unless their flags are true and send
+ * is implemented. Mail transport is still unchosen, and sendImplemented is
+ * false, so this module does not post.
  */
 
 export const TURNSTILE_SITEVERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
@@ -41,29 +44,17 @@ export const MAIL_TRANSPORT = {
 };
 
 /**
- * Names below are from the Phase 1.2 brief. They are not a live schema
- * inspection. Do not insert into them until the Supabase connector or
- * dashboard confirms columns.
+ * Live schema verified 2026-11-05 on project hzllfwqnsiirlwacaitt.
+ * Hypothesis B: crm_lead plus contact, email, and phone.
+ * Do not create website_strategy_application or akw_website_lead.
  */
 export const CRM_SCHEMA = {
-  liveVerified: false,
-  doNotWrite: ["prospects"],
-  documentedTableNames: [
-    "crm_org",
-    "crm_member",
-    "crm_status",
-    "crm_lead",
-    "crm_contact",
-    "crm_contact_email",
-    "crm_contact_phone",
-    "crm_opportunity",
-    "crm_activity",
-    "crm_task",
-    "crm_smart_view",
-    "crm_suppression",
-    "crm_alert",
-  ],
-  hypotheses: ["website_lead_table", "crm_lead_plus_contact"],
+  liveVerified: true,
+  verifiedOn: "2026-11-05",
+  hypothesis: "crm_lead_plus_contact",
+  orgId: "0ba2a2de-e31d-4f41-8005-4edfadbaed98",
+  statusNewId: "640c5886-fe70-43c8-b71d-559c0c82295c",
+  doNotWrite: ["prospects", "website_strategy_application", "akw_website_lead"],
 };
 
 export const FREE_ANALYSIS_TIMELINES = ["Today", "Tomorrow", "In a few weeks"];
@@ -121,8 +112,8 @@ export function notificationFlags(env = {}) {
 }
 
 /**
- * Flags default off. Turning a flag on does not send. There is no Slack or
- * email client in this module.
+ * Flags default off. sendImplemented is false and mail transport is unset,
+ * so a true flag still does not post.
  */
 export function planNotifications(env = {}) {
   const flags = notificationFlags(env);
@@ -130,6 +121,85 @@ export function planNotifications(env = {}) {
     return { notified: false, code: "notifications_disabled" };
   }
   return { notified: false, code: "notify_not_implemented" };
+}
+
+export function slackInboundPayload({ leadId, source, businessName } = {}) {
+  const label = businessName ? `${businessName} ` : "";
+  return {
+    channel: SLACK_INBOUND_ALERTS.id,
+    text: `New website lead (${source || "unknown"}): ${label}${leadId || ""}`.trim(),
+  };
+}
+
+/**
+ * Incoming-webhook POST. Callers must keep this behind LEAD_NOTIFY_SLACK
+ * and SLACK_INBOUND_ALERTS.sendImplemented. The request path does not call
+ * it while sendImplemented is false.
+ */
+export async function postSlackWebhook({ webhookUrl, payload, fetchImpl }) {
+  if (!webhookUrl || typeof fetchImpl !== "function") {
+    return { sent: false, code: "slack_unconfigured" };
+  }
+  let response;
+  try {
+    response = await fetchImpl(webhookUrl, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    return { sent: false, code: "slack_failed" };
+  }
+  if (!response || !response.ok) return { sent: false, code: "slack_failed" };
+  return { sent: true, code: "slack_sent" };
+}
+
+export function planEmailNotification(env = {}) {
+  if (env.LEAD_NOTIFY_EMAIL !== "true") {
+    return { sent: false, code: "notifications_disabled" };
+  }
+  if (!MAIL_TRANSPORT.chosen) {
+    return { sent: false, code: "email_transport_unchosen" };
+  }
+  if (!env[MAIL_TRANSPORT.recipientEnv]) {
+    return { sent: false, code: "email_unconfigured" };
+  }
+  return { sent: false, code: "notify_not_implemented" };
+}
+
+export async function dispatchNotifications({ env = {}, fetchImpl, lead, leadId } = {}) {
+  const flags = notificationFlags(env);
+  if (!flags.slack && !flags.email) {
+    return { notified: false, code: "notifications_disabled" };
+  }
+
+  let slack = { sent: false, code: "notifications_disabled" };
+  if (flags.slack) {
+    if (!SLACK_INBOUND_ALERTS.sendImplemented) {
+      slack = { sent: false, code: "notify_not_implemented" };
+    } else {
+      slack = await postSlackWebhook({
+        webhookUrl: env.SLACK_WEBHOOK_URL || "",
+        payload: slackInboundPayload({
+          leadId,
+          source: lead && lead.source,
+          businessName: lead && lead.business_name,
+        }),
+        fetchImpl,
+      });
+    }
+  }
+
+  const email = flags.email
+    ? planEmailNotification(env)
+    : { sent: false, code: "notifications_disabled" };
+  const notified = Boolean(slack.sent || email.sent);
+  return {
+    notified,
+    code: notified ? "notified" : "notify_not_implemented",
+    slack: slack.code,
+    email: email.code,
+  };
 }
 
 export function turnstileSecret(env = {}) {
@@ -141,16 +211,236 @@ export function turnstileHostnames(env = {}) {
   return String(raw).split(",").map((item) => item.trim()).filter(Boolean);
 }
 
-export function persistLead() {
-  return {
-    ok: false,
-    stored: false,
-    code: "crm_schema_unverified",
-    schema: {
-      liveVerified: CRM_SCHEMA.liveVerified,
-      hypotheses: CRM_SCHEMA.hypotheses,
-    },
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+export function supabaseRestBase(env = {}) {
+  const raw = env.SUPABASE_URL;
+  if (typeof raw !== "string" || !raw.trim()) return "";
+  try {
+    const url = new URL(raw.trim());
+    if (url.protocol !== "https:") return "";
+    return url.origin;
+  } catch {
+    return "";
+  }
+}
+
+export function supabaseServiceKey(env = {}) {
+  return env.SUPABASE_SERVICE_ROLE_KEY || env.SUPABASE_SERVICE_KEY || "";
+}
+
+/**
+ * North American E.164. 10 digits become +1 plus those digits. 11 digits
+ * that already start with 1 keep that country code.
+ * Live columns (2026-11-05): phone_e164 is NOT NULL text. Constraints are
+ * the primary key, FKs to crm_contact and crm_org, and UNIQUE
+ * (org_id, phone_e164, contact_id). There is no format CHECK. Values that
+ * are not North American E.164 are left in crm_lead.custom.phone and the
+ * phone row is skipped so a later check cannot fail the lead.
+ */
+export function normalizePhoneE164(raw) {
+  if (typeof raw !== "string") return null;
+  const digits = raw.replace(/\D/g, "");
+  if (digits.length === 10) return `+1${digits}`;
+  if (digits.length === 11 && digits.startsWith("1")) return `+${digits}`;
+  return null;
+}
+
+export function domainFromWebsite(website) {
+  if (!website || typeof website !== "string") return null;
+  try {
+    const host = new URL(website).hostname.toLowerCase().replace(/\.$/, "").replace(/^www\./, "");
+    return host || null;
+  } catch {
+    return null;
+  }
+}
+
+export function leadSourceLabel(source) {
+  if (source === "gbp") return "website:gbp";
+  if (source === "free-analysis") return "website:free-analysis";
+  return null;
+}
+
+export function buildLeadInsert(lead) {
+  const custom = {
+    form_path: lead.source === "gbp" ? "/gbp" : "/free-analysis",
   };
+  if (lead.timeline) custom.timeline = lead.timeline;
+  if (lead.google_maps_url) custom.google_maps_url = lead.google_maps_url;
+  if (lead.gbp_link) custom.gbp_link = lead.gbp_link;
+  if (lead.phone) custom.phone = lead.phone;
+  const phoneE164 = normalizePhoneE164(lead.phone || "");
+  const contactName = lead.full_name || [lead.first_name, lead.last_name].filter(Boolean).join(" ");
+  return {
+    lead: {
+      org_id: CRM_SCHEMA.orgId,
+      name: lead.business_name,
+      status_id: CRM_SCHEMA.statusNewId,
+      source: leadSourceLabel(lead.source),
+      website: lead.website || null,
+      domain: domainFromWebsite(lead.website),
+      emailable: Boolean(lead.email),
+      callable: Boolean(lead.phone),
+      custom,
+    },
+    contact: {
+      org_id: CRM_SCHEMA.orgId,
+      name: contactName,
+      custom: {},
+    },
+    email: lead.email
+      ? {
+          org_id: CRM_SCHEMA.orgId,
+          email: lead.email,
+          unsubscribed: false,
+          bounced: false,
+        }
+      : null,
+    phone: phoneE164
+      ? {
+          org_id: CRM_SCHEMA.orgId,
+          phone_e164: phoneE164,
+          dnc: false,
+          sms_consent: false,
+          sms_optout: false,
+        }
+      : null,
+  };
+}
+
+function restHeaders(key, prefer) {
+  return {
+    apikey: key,
+    authorization: `Bearer ${key}`,
+    "content-type": "application/json",
+    accept: "application/json",
+    prefer,
+  };
+}
+
+async function restCall(fetchImpl, url, init) {
+  try {
+    return await fetchImpl(url, init);
+  } catch {
+    return null;
+  }
+}
+
+async function readJson(response) {
+  if (!response || typeof response.json !== "function") return null;
+  try {
+    return await response.json();
+  } catch {
+    return null;
+  }
+}
+
+function firstRow(payload) {
+  if (Array.isArray(payload)) return payload[0] || null;
+  if (isPlainObject(payload)) return payload;
+  return null;
+}
+
+function storeFailure() {
+  return { ok: false, stored: false, code: "store_failed" };
+}
+
+/**
+ * Inserts one website lead with the service role. Reads SUPABASE_URL and
+ * SUPABASE_SERVICE_ROLE_KEY or SUPABASE_SERVICE_KEY. Ignores VITE_* names.
+ * crm_recalc_flags overwrites emailable and callable after the child rows,
+ * and callable becomes false when the phone row is skipped. A final patch
+ * puts those flags back to "true when the form included email or phone".
+ */
+export async function persistLead(lead, deps = {}) {
+  const env = deps.env || {};
+  const base = supabaseRestBase(env);
+  const key = supabaseServiceKey(env);
+  if (!base || !key || typeof deps.fetchImpl !== "function") {
+    return { ok: false, stored: false, code: "store_unconfigured" };
+  }
+  if (!lead || !leadSourceLabel(lead.source) || !lead.business_name) {
+    return storeFailure();
+  }
+
+  const planned = buildLeadInsert(lead);
+  const fetchImpl = deps.fetchImpl;
+  const leadResponse = await restCall(fetchImpl, `${base}/rest/v1/crm_lead`, {
+    method: "POST",
+    headers: restHeaders(key, "return=representation"),
+    body: JSON.stringify(planned.lead),
+  });
+  if (!leadResponse || !leadResponse.ok) return storeFailure();
+  const leadRow = firstRow(await readJson(leadResponse));
+  const leadId = leadRow && typeof leadRow.id === "string" ? leadRow.id : "";
+  if (!UUID.test(leadId)) return storeFailure();
+
+  const cleanup = () => restCall(fetchImpl, `${base}/rest/v1/crm_lead?id=eq.${leadId}`, {
+    method: "DELETE",
+    headers: restHeaders(key, "return=minimal"),
+  });
+
+  const contactResponse = await restCall(fetchImpl, `${base}/rest/v1/crm_contact`, {
+    method: "POST",
+    headers: restHeaders(key, "return=representation"),
+    body: JSON.stringify({ ...planned.contact, lead_id: leadId }),
+  });
+  if (!contactResponse || !contactResponse.ok) {
+    await cleanup();
+    return storeFailure();
+  }
+  const contactRow = firstRow(await readJson(contactResponse));
+  const contactId = contactRow && typeof contactRow.id === "string" ? contactRow.id : "";
+  if (!UUID.test(contactId)) {
+    await cleanup();
+    return storeFailure();
+  }
+
+  if (planned.email) {
+    const emailResponse = await restCall(fetchImpl, `${base}/rest/v1/crm_contact_email`, {
+      method: "POST",
+      headers: restHeaders(key, "return=representation"),
+      body: JSON.stringify({ ...planned.email, contact_id: contactId }),
+    });
+    if (!emailResponse || !emailResponse.ok) {
+      await cleanup();
+      return storeFailure();
+    }
+  }
+
+  if (planned.phone) {
+    const phoneResponse = await restCall(fetchImpl, `${base}/rest/v1/crm_contact_phone`, {
+      method: "POST",
+      headers: restHeaders(key, "return=representation"),
+      body: JSON.stringify({ ...planned.phone, contact_id: contactId }),
+    });
+    if (!phoneResponse) {
+      await cleanup();
+      return storeFailure();
+    }
+    // 400 and 409 are constraint or uniqueness failures. Raw phone is already
+    // on crm_lead.custom. Other statuses mean the write did not land safely.
+    if (!phoneResponse.ok && phoneResponse.status !== 400 && phoneResponse.status !== 409) {
+      await cleanup();
+      return storeFailure();
+    }
+  }
+
+  const flagResponse = await restCall(fetchImpl, `${base}/rest/v1/crm_lead?id=eq.${leadId}`, {
+    method: "PATCH",
+    headers: restHeaders(key, "return=minimal"),
+    body: JSON.stringify({
+      emailable: Boolean(planned.email),
+      callable: Boolean(lead.phone),
+    }),
+  });
+  if (!flagResponse || !flagResponse.ok) {
+    await cleanup();
+    return storeFailure();
+  }
+
+  return { ok: true, stored: true, lead_id: leadId };
 }
 
 function invalid(field, reason) {
@@ -204,10 +494,14 @@ export function validateLead(body) {
       if (rule.required) return invalid(name, "required");
       continue;
     }
-    const problem = checkText(value, rule);
+    let text = value.trim();
+    if (rule.kind === "url" && text && !/^[a-z][a-z0-9+.-]*:/i.test(text)) {
+      text = `https://${text}`;
+    }
+    const problem = checkText(text, rule);
     if (problem === "empty") continue;
     if (problem) return invalid(name, problem);
-    lead[name] = value.trim();
+    lead[name] = text;
   }
   return { ok: true, lead };
 }
@@ -291,16 +585,30 @@ export async function handleLeadRequest(body, deps = {}) {
     return result(status, turnstile.code);
   }
 
-  const notifications = planNotifications(env);
-  const saved = persistLead(validated.lead);
+  const saved = await persistLead(validated.lead, { env, fetchImpl: deps.fetchImpl });
+  if (!saved.ok) {
+    const status = saved.code === "store_unconfigured" ? 503 : 500;
+    return result(status, saved.code);
+  }
+
+  try {
+    await dispatchNotifications({
+      env,
+      fetchImpl: deps.fetchImpl,
+      lead: validated.lead,
+      leadId: saved.lead_id,
+    });
+  } catch {
+    // A notify failure does not undo the stored lead.
+  }
+
   return {
-    status: 503,
+    status: 200,
     body: {
-      ok: false,
-      stored: false,
+      ok: true,
+      stored: true,
+      lead_id: saved.lead_id,
       notified: false,
-      code: saved.code,
-      notifications: notifications.code,
     },
   };
 }

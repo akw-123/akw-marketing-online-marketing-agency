@@ -4,7 +4,7 @@ import { TURNSTILE_SITE_KEY, turnstileAllowedHost } from "@/lib/leadCaptureContr
 /**
  * Renders the public Turnstile widget only on akwmarketing.pages.dev.
  * Other hosts skip it so local preview does not show a hostname error.
- * Submitting the form still does not send the token.
+ * The form reads the widget token when it submits.
  */
 export default function TurnstileWidget() {
   const [allowed, setAllowed] = useState(false);
