@@ -55,7 +55,7 @@ Verified before deletion. These pieces are Builder login scaffolding. The public
 - Public marketing routes in `src/App.jsx` (home, city pages, service pages, legal pages, newsletter thank-you, and so on).
 - `base44/functions`, `base44/entities`, and connectors. They document the live backend and are not part of the Vite bundle.
 - Make.com webhook on the home, landing, and newsletter email forms. That path is Brevo signup, not the Base44 SDK. The Base44 `SendEmail` notification that used to run beside it is removed.
-- Remote images on `media.base44.com` and the Base44 Supabase storage bucket. They still load while those hosts stay up.
+- `media.base44.com` images used by the marketing pages, and the Supabase `base44-prod` logo, now point at files in `public/assets`. The favicon is `/assets/logo-official.png` (same bytes as the old Supabase logo and the Base44 media logo).
 
 ## Blog
 
@@ -67,15 +67,21 @@ Internal fields such as `created_by_id` are not written into the snapshot.
 
 `/free-analysis` and the GBP form on `/gbp` only stored leads through `StrategyApplication.create` and `Core.SendEmail`. Those calls are removed. Submitting either form shows that this preview cannot store the application. Supabase lead capture is Phase 1.2 and is not implemented here.
 
-## Pre-render
+## Pre-render and sitemap
 
-The exit plan calls for React pre-render. This phase ships the static SPA shell (`dist/index.html` plus hashed assets). A follow-up should pre-render the public routes so crawlers see page HTML without executing the client bundle. Do not block the preview on that work.
+`npm run build` renders each public route to `dist/<route>/index.html` after the Vite build (`scripts/prerender.mjs`). The HTML is the React tree for that URL, with the title, description, canonical, and JSON-LD that the page already sets in the browser. `/sitemap.xml` is real XML: the static URLs from `base44/functions/sitemap`, `/gbp-three-free` (a public route that function did not list), and one URL per published post in `src/data/blog-posts.json`. Blog `lastmod` is `published_date`. Static `lastmod` is the build date, matching that function.
+
+There is still no `404.html`. Unknown paths fall back to `/`, which is now the prerendered home page, and the client router then shows the not-found page. Do not add `/* /index.html 200`.
+
+`vite preview` serves `kitchener/index.html` at `/kitchener/` and falls back to `/` for `/kitchener`. Cloudflare Pages serves that file for both URLs.
+
+Preview noindex stays: `_headers`, the robots meta copied into every prerendered file, and `robots.txt`.
 
 ## Blockers before parity with live akwmarketing.com
 
-1. **media.base44.com and Base44 Supabase storage.** Logos, the founder photo, the SEO hero image, manifest icons, and schema `logo` URLs are hotlinked. Cancelling Base44 breaks them until the files move (for example to R2 or Cloudflare Images). `index.html` in this repo still points the favicon at `https://base44.com/logo_v2.svg`; the live publish step rewrites that to the AKW logo on `media.base44.com`.
-2. **Blog source of truth.** The snapshot goes stale when someone publishes in Base44. After Base44 is cancelled, the public entity API goes away. Phase 1.3 needs a new store. The sitemap function (`base44/functions/sitemap`) is not deployed with this build, so `/sitemap.xml` is absent on Pages.
+1. **Blog source of truth.** Logos, the founder photo, the SEO hero, manifest icons, schema logos, and the favicon now use `public/assets`. The snapshot still goes stale when someone publishes in Base44. After Base44 is cancelled, the public entity API goes away.
+2. **Sitemap on the live host.** This build writes `dist/sitemap.xml`. The preview `robots.txt` still disallows crawling, and `_headers` still sends `noindex`, including on the sitemap. Remove those before any production cutover. The Base44 sitemap function is not deployed with this build.
 3. **Lead storage and notification email.** `StrategyApplication` and `Core.SendEmail` are unwired until Phase 1.2. Newsletter and tip signups still post to the existing Make.com webhook only.
 4. **Admin analytics.** `ga-traffic`, `gsc-search-queries`, and `gsc-index-monitor` need Base44 auth plus Google and Slack connectors. `/dashboard` does not show live numbers.
-5. **Base44 publish-time HTML.** The live response adds app-log beacons (`/api/app-logs/...`), visitor-tracking cookies, Open Graph tags, and a swapped favicon. This Vite build does not. Google Analytics (`G-2V59RJ0GT7`) and the Meta Pixel in `index.html` are unchanged.
+5. **Base44 publish-time HTML.** The live response adds app-log beacons (`/api/app-logs/...`), visitor-tracking cookies, and Open Graph tags. This build does not add those. The favicon is the rehosted logo. Google Analytics (`G-2V59RJ0GT7`) and the Meta Pixel in `index.html` are unchanged.
 6. **No custom domain and noindex.** `*.pages.dev` is the only target. Remove `_headers`, the robots meta, and `robots.txt` disallow before DNS.

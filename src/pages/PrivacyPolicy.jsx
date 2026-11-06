@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "@/components/landing/Navbar";
 import FooterSection from "@/components/landing/FooterSection";
 
 export default function PrivacyPolicy() {
+  useEffect(() => {
+    document.title = "Privacy Policy | AKW Marketing";
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#F5F0EB]">
       <Navbar />

@@ -55,7 +55,7 @@ const CanonicalUpdater = () => {
   return null;
 };
 
-const PublicApp = () => {
+export const PublicApp = () => {
   return (
     <>
     <CanonicalUpdater />

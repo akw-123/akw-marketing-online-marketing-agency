@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { upsertJsonLd } from "@/lib/upsertJsonLd";
 
 // Load Wistia scripts
 if (typeof window !== 'undefined') {
@@ -34,7 +35,7 @@ function KitchenerNav() {
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <a href="/" className="flex items-center gap-2 cursor-pointer">
           <img
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69aa2d66169a7c4374014381/adfe82e85_Logo_official1.png"
+            src="/assets/logo-official.png"
             alt="AKW Marketing Logo"
             className="w-8 h-8 rounded-md object-contain"
           />
@@ -294,11 +295,7 @@ export default function Kitchener() {
         "https://www.youtube.com/@AKWMarketing"
       ]
     };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.id = 'professional-service-schema';
-    script.textContent = JSON.stringify(schema);
-    document.head.appendChild(script);
+    upsertJsonLd("professional-service-schema", schema);
     return () => { const el = document.getElementById('professional-service-schema'); if (el) el.remove(); };
   }, []);
 

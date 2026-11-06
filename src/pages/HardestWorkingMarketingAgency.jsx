@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import SeoArticlePage from "@/components/landing/SeoArticlePage";
 import WhereWeWork from "@/components/landing/WhereWeWork";
+import { upsertJsonLd } from "@/lib/upsertJsonLd";
 
 export default function HardestWorkingMarketingAgency() {
   useEffect(() => {
@@ -50,11 +51,7 @@ export default function HardestWorkingMarketingAgency() {
         }
       ]
     };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.id = 'hardest-working-agency-schema';
-    script.textContent = JSON.stringify(schema);
-    document.head.appendChild(script);
+    upsertJsonLd("hardest-working-agency-schema", schema);
     return () => { const el = document.getElementById('hardest-working-agency-schema'); if (el) el.remove(); };
   }, []);
 

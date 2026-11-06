@@ -41,7 +41,7 @@ export default function FooterSection() {
           <div>
             <a href="/" className="flex items-center gap-2 cursor-pointer mb-3">
               <img
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69aa2d66169a7c4374014381/adfe82e85_Logo_official1.png"
+                src="/assets/logo-official.png"
                 alt="AKW Marketing Logo"
                 className="w-8 h-8 rounded-md object-contain"
               />
