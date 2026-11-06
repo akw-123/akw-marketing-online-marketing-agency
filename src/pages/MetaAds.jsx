@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { upsertJsonLd } from "@/lib/upsertJsonLd";
 import { Users, Zap, TrendingUp, CheckCircle, ChevronDown, ArrowRight, Clock, Loader2 } from "lucide-react";
 import FooterSection from "@/components/landing/FooterSection";
 import SimplifiedApplicationForm from "@/components/SimplifiedApplicationForm";
@@ -106,13 +107,6 @@ export default function MetaAds() {
       ],
       "openingHours": "Mo-Su 00:00-23:59",
       "priceRange": "$$",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5.0",
-        "reviewCount": "3",
-        "bestRating": "5",
-        "worstRating": "1"
-      },
       "sameAs": [
         "https://www.instagram.com/akw_marketing/",
         "https://x.com/akw_marketing",
@@ -121,12 +115,7 @@ export default function MetaAds() {
         "https://www.youtube.com/@AKWMarketing"
       ]
     };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.id = 'professional-service-schema';
-    script.textContent = JSON.stringify(schema);
-    document.getElementById(script.id)?.remove();
-    document.head.appendChild(script);
+    upsertJsonLd("professional-service-schema", schema);
     return () => { const el = document.getElementById('professional-service-schema'); if (el) el.remove(); };
   }, []);
 

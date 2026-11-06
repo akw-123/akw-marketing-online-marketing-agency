@@ -55,29 +55,37 @@ Verified before deletion. These pieces are Builder login scaffolding. The public
 - Public marketing routes in `src/App.jsx` (home, city pages, service pages, legal pages, newsletter thank-you, and so on).
 - `base44/functions`, `base44/entities`, and connectors. They document the live backend and are not part of the Vite bundle.
 - Make.com webhook on the home, landing, and newsletter email forms. That path is Brevo signup, not the Base44 SDK. The Base44 `SendEmail` notification that used to run beside it is removed.
-- Remote images on `media.base44.com` and the Base44 Supabase storage bucket. They still load while those hosts stay up.
+- `media.base44.com` images used by the marketing pages, and the Supabase `base44-prod` logo, now point at files in `public/assets`. The favicon is `/assets/logo-official.png` with `type="image/png"` (same bytes as the old Supabase logo and the Base44 media logo).
 
 ## Blog
 
-Published `BlogPost` records are not in git on `main`. They are public at `https://base44.app/api/apps/69aa2d66169a7c4374014381/entities/BlogPost` (same filter the live page uses: `published: true`). `npm run build` runs `scripts/fetch-blog-posts.mjs`, which copies those posts into `src/data/blog-posts.json`. The blog pages read that file. The script does not invent posts. If the request fails and a previous snapshot exists, the build keeps it and still succeeds.
+`src/data/blog-posts.json` is the build source: 31 published posts captured from the public Base44 entity API (`fetchedAt` `2026-11-05T18:46:53.785Z`). `npm run build` reads that file and does not call Base44, so a Pages build cannot silently replace or drop posts.
 
-Internal fields such as `created_by_id` are not written into the snapshot.
+To refresh on purpose, run `npm run blog:refresh`, review the diff, and commit it. The script copies published posts only and does not invent any. If the request fails, the committed file stays as it is. Internal fields such as `created_by_id` are not written.
 
 ## Lead forms (not Phase 1.2)
 
 `/free-analysis` and the GBP form on `/gbp` only stored leads through `StrategyApplication.create` and `Core.SendEmail`. Those calls are removed. Submitting either form shows that this preview cannot store the application. Supabase lead capture is Phase 1.2 and is not implemented here.
 
-## Pre-render
+## Pre-render and sitemap
 
-`npm run build` runs `scripts/prerender-html.mjs` after Vite. For each public route it writes `dist/<path>/index.html` and `dist/<path>.html` (Pages serves the extensionless URL from the `.html` file, and the trailing-slash URL from `index.html`). The shell is the Vite `index.html` with that page's `<title>`, meta description, canonical (`https://akwmarketing.com/...`), and any JSON-LD the page already injects in `useEffect`. Those strings are read from the page component and from `src/data/blog-posts.json`. The Phase 1 `noindex` meta and the Wistia, Meta Pixel, and Google Analytics scripts stay in every shell.
+`npm run build` runs Vite, then `scripts/prerender.mjs`. There is one prerender. For each public route it writes the rendered page (body plus that page's title, description, canonical, and JSON-LD) to both `dist/<path>.html` and `dist/<path>/index.html`. Cloudflare Pages serves `/path` from the `.html` file, redirects `/path.html` to `/path`, and serves `/path/` from `index.html`. Both files use the same canonical (`https://akwmarketing.com/path`, or `https://akwmarketing.com/` for `/` and for the `/Home` alias).
 
-`/dashboard`, client redirects (`/landing`, `/Landing`), and the `*` catch-all are not shelled. There is still no top-level `404.html`, so those paths keep the SPA fallback.
+`/sitemap.xml` lists each canonical once: the static URLs from `base44/functions/sitemap`, plus the real routes `/gbp-three-free` and `/newsletter-thank-you` (no priority invented for those two), plus one URL per published post. Blog `lastmod` is `published_date`. Static `lastmod` is the build date, matching that function. Not listed: `/Home` (alias of `/`), `/dashboard`, `/landing`, `/Landing`, trailing-slash duplicates, and `.html` duplicates. `/Home` and `/dashboard` are still prerendered so those URLs are not the home shell.
+
+There is still no `404.html`. Unknown paths fall back to `/`, which is the prerendered home page, and the client router then shows the not-found page. Do not add `/* /index.html 200`.
+
+`vite preview` serves `kitchener/index.html` at `/kitchener/` and falls back to `/` for `/kitchener` unless `kitchener.html` is what the static host uses. Pages uses `kitchener.html` for `/kitchener`.
+
+Preview noindex stays: `_headers`, the robots meta copied into every prerendered file, and `robots.txt`.
+
+`aggregateRating` was removed from the Home, Kitchener, and `/gbp` JSON-LD. The visible testimonials stay. The schema counts (6 and 3) were not backed by a review source in the repo.
 
 ## Blockers before parity with live akwmarketing.com
 
-1. **media.base44.com and Base44 Supabase storage.** Logos, the founder photo, the SEO hero image, manifest icons, and schema `logo` URLs are hotlinked. Cancelling Base44 breaks them until the files move (for example to R2 or Cloudflare Images). `index.html` in this repo still points the favicon at `https://base44.com/logo_v2.svg`; the live publish step rewrites that to the AKW logo on `media.base44.com`.
-2. **Blog source of truth.** The snapshot goes stale when someone publishes in Base44. After Base44 is cancelled, the public entity API goes away. A later phase needs a new store. `dist/sitemap.xml` is generated at build time from `src/App.jsx` and the snapshot (`https://akwmarketing.com` URLs). It does not call the Base44 sitemap function. `public/robots.txt` still disallows crawling on this preview.
+1. **Blog freshness.** The committed snapshot is what this build ships. It goes stale until someone runs `npm run blog:refresh` and commits the result. After Base44 is cancelled, that API goes away.
+2. **Sitemap on the live host.** This build writes `dist/sitemap.xml`. The preview `robots.txt` still disallows crawling, and `_headers` still sends `noindex`, including on the sitemap. Remove those before any production cutover. The Base44 sitemap function is not deployed with this build.
 3. **Lead storage and notification email.** `StrategyApplication` and `Core.SendEmail` are unwired until Phase 1.2. Newsletter and tip signups still post to the existing Make.com webhook only.
 4. **Admin analytics.** `ga-traffic`, `gsc-search-queries`, and `gsc-index-monitor` need Base44 auth plus Google and Slack connectors. `/dashboard` does not show live numbers.
-5. **Base44 publish-time HTML.** The live response adds app-log beacons (`/api/app-logs/...`), visitor-tracking cookies, Open Graph tags, and a swapped favicon. This Vite build does not. Google Analytics (`G-2V59RJ0GT7`) and the Meta Pixel in `index.html` are unchanged.
+5. **Base44 publish-time HTML.** The live response adds app-log beacons (`/api/app-logs/...`), visitor-tracking cookies, and Open Graph tags. This build does not add those. The favicon is the rehosted logo. Google Analytics (`G-2V59RJ0GT7`) and the Meta Pixel in `index.html` are unchanged.
 6. **No custom domain and noindex.** `*.pages.dev` is the only target. Remove `_headers`, the robots meta, and `robots.txt` disallow before DNS.

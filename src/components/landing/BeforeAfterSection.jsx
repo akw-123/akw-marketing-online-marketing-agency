@@ -55,7 +55,7 @@ function HeatMap({ grid }) {
 
 export default function BeforeAfterSection() {
   return (
-    <section id="before-after" className="py-20 md:py-28 px-6 bg-[#FAF8F5]">
+    <section id="before-after" className="py-20 md:py-28 px-6 bg-[#FAF8F5] overflow-x-clip">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -84,8 +84,8 @@ export default function BeforeAfterSection() {
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {/* Before */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="relative bg-white border border-stone-200 rounded-2xl p-8 overflow-hidden"
@@ -129,8 +129,8 @@ export default function BeforeAfterSection() {
 
           {/* After */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="relative bg-stone-900 border border-stone-700 rounded-2xl p-8 overflow-hidden"

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import SeoArticlePage from "@/components/landing/SeoArticlePage";
 import WhereWeWork from "@/components/landing/WhereWeWork";
+import { upsertJsonLd } from "@/lib/upsertJsonLd";
 
 export default function HardestWorkingSeoExpert() {
   useEffect(() => {
@@ -60,12 +61,7 @@ export default function HardestWorkingSeoExpert() {
         }
       ]
     };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.id = 'hardest-working-seo-expert-schema';
-    script.textContent = JSON.stringify(schema);
-    document.getElementById(script.id)?.remove();
-    document.head.appendChild(script);
+    upsertJsonLd("hardest-working-seo-expert-schema", schema);
     return () => { const el = document.getElementById('hardest-working-seo-expert-schema'); if (el) el.remove(); };
   }, []);
 

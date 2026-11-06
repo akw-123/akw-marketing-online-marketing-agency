@@ -1,11 +1,10 @@
 /**
- * Refresh the committed BlogPost snapshot from the public Base44 entity API.
+ * Optional refresh of the committed BlogPost snapshot from the public Base44
+ * entity API. `npm run build` does not run this. Run `npm run blog:refresh`
+ * on purpose when the published list should change, then review the diff.
  *
- * The live site reads `entities.BlogPost` in the browser. This script copies
- * published posts into src/data/blog-posts.json so the Pages build does not
- * call Base44 when someone opens /blog. It never invents posts.
- *
- * Failure does not fail `npm run build`: the last committed snapshot is kept.
+ * It never invents posts. If the request fails and a snapshot already exists,
+ * that file is left untouched.
  */
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";

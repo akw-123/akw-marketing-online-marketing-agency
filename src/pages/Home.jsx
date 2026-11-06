@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { ArrowRight, Loader2, CheckCircle } from "lucide-react";
 import FooterSection from "@/components/landing/FooterSection";
 import WhereWeWork from "@/components/landing/WhereWeWork";
 import ProcessSection from "@/components/landing/ProcessSection";
 import BeforeAfterSection from "@/components/landing/BeforeAfterSection";
+import { upsertJsonLd } from "@/lib/upsertJsonLd";
 
 const clients = [
   "Simpson Drew",
@@ -76,8 +78,9 @@ function EmailForm() {
 }
 
 export default function Home() {
+  const { pathname } = useLocation();
   React.useEffect(() => {
-    const isHome = window.location.pathname.toLowerCase() === '/home';
+    const isHome = pathname.toLowerCase() === "/home";
     document.title = isHome
       ? "Top 3 on Google in 90 Days | AKW Marketing"
       : "Is Your Business Invisible on Google? | AKW Marketing";
@@ -92,13 +95,7 @@ export default function Home() {
       "name": "AKW Marketing",
       "url": "https://akwmarketing.com"
     };
-    const websiteScript = document.createElement('script');
-    websiteScript.type = 'application/ld+json';
-    websiteScript.id = 'website-schema';
-    websiteScript.textContent = JSON.stringify(websiteSchema);
-    document.getElementById(websiteScript.id)?.remove();
-    document.head.appendChild(websiteScript);
-
+    upsertJsonLd("website-schema", websiteSchema);
     const orgSchema = {
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -113,13 +110,7 @@ export default function Home() {
         "https://x.com/akw_marketing"
       ]
     };
-    const orgScript = document.createElement('script');
-    orgScript.type = 'application/ld+json';
-    orgScript.id = 'organization-schema';
-    orgScript.textContent = JSON.stringify(orgSchema);
-    document.getElementById(orgScript.id)?.remove();
-    document.head.appendChild(orgScript);
-
+    upsertJsonLd("organization-schema", orgSchema);
     const psSchema = {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
@@ -151,13 +142,6 @@ export default function Home() {
       ],
       "openingHours": "Mo-Su 00:00-23:59",
       "priceRange": "$$",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5.0",
-        "reviewCount": "6",
-        "bestRating": "5",
-        "worstRating": "1"
-      },
       "sameAs": [
         "https://www.instagram.com/akw_marketing/",
         "https://x.com/akw_marketing",
@@ -166,18 +150,13 @@ export default function Home() {
         "https://www.youtube.com/@AKWMarketing"
       ]
     };
-    const psScript = document.createElement('script');
-    psScript.type = 'application/ld+json';
-    psScript.id = 'professional-service-schema';
-    psScript.textContent = JSON.stringify(psSchema);
-    document.getElementById(psScript.id)?.remove();
-    document.head.appendChild(psScript);
+    upsertJsonLd("professional-service-schema", psSchema);
     return () => {
       const ws = document.getElementById('website-schema'); if (ws) ws.remove();
       const org = document.getElementById('organization-schema'); if (org) org.remove();
       const ps = document.getElementById('professional-service-schema'); if (ps) ps.remove();
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <div className="min-h-screen bg-[#F5F0EB]">
