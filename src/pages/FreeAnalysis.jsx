@@ -122,6 +122,15 @@ export default function FreeAnalysis() {
           {/* Right — Form */}
           <div>
             <form onSubmit={handleSubmit} className="space-y-1">
+                <input
+                  type="text"
+                  name="company_url_confirm"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  defaultValue=""
+                  className="hidden"
+                />
                 <div>
                   <input
                     required

@@ -39,6 +39,15 @@ export default function SimplifiedApplicationForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
+      <input
+        type="text"
+        name="company_url_confirm"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        defaultValue=""
+        className="hidden"
+      />
       {/* Section 1 */}
       <div>
         <h3 className="text-sm font-semibold text-stone-900 mb-4">Your information</h3>

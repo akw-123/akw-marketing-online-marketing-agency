@@ -63,9 +63,11 @@ Verified before deletion. These pieces are Builder login scaffolding. The public
 
 To refresh on purpose, run `npm run blog:refresh`, review the diff, and commit it. The script copies published posts only and does not invent any. If the request fails, the committed file stays as it is. Internal fields such as `created_by_id` are not written.
 
-## Lead forms (not Phase 1.2)
+## Lead forms
 
-`/free-analysis` and the GBP form on `/gbp` only stored leads through `StrategyApplication.create` and `Core.SendEmail`. Those calls are removed. Submitting either form shows that this preview cannot store the application. Supabase lead capture is Phase 1.2 and is not implemented here.
+`/free-analysis` and the form on `/gbp` still do not POST. Submit shows that this preview cannot store the application. Newsletter and tip forms still POST to the existing Make.com webhook only.
+
+`supabase/functions/lead-intake` can validate those two forms, reject a honeypot, and call Cloudflare Turnstile siteverify when `TURNSTILE_SECRET_KEY` is set. It does not write a CRM row and does not send Slack or email. The CRM table and RPC are not in this repo yet. `base44/entities/StrategyApplication.jsonc` is the old Base44 shape, not the Supabase contract.
 
 ## Pre-render and sitemap
 
