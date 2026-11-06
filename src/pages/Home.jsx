@@ -96,7 +96,6 @@ export default function Home() {
       "url": "https://akwmarketing.com"
     };
     upsertJsonLd("website-schema", websiteSchema);
-
     const orgSchema = {
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -112,7 +111,6 @@ export default function Home() {
       ]
     };
     upsertJsonLd("organization-schema", orgSchema);
-
     const psSchema = {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
@@ -144,13 +142,6 @@ export default function Home() {
       ],
       "openingHours": "Mo-Su 00:00-23:59",
       "priceRange": "$$",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5.0",
-        "reviewCount": "6",
-        "bestRating": "5",
-        "worstRating": "1"
-      },
       "sameAs": [
         "https://www.instagram.com/akw_marketing/",
         "https://x.com/akw_marketing",

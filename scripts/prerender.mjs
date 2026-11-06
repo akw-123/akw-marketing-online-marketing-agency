@@ -3,8 +3,9 @@
  *
  * Pages serves a real file when one exists and falls back to /index.html otherwise.
  * The Vite build only emits the SPA shell, so /kitchener and /sitemap.xml were that
- * shell. This step renders each public route to its own index.html and writes
- * sitemap.xml from the same routes plus the committed blog snapshot.
+ * shell. This step renders each public route's full HTML twice: path.html (Pages
+ * serves /path) and path/index.html (Pages serves /path/). Both use one canonical.
+ * sitemap.xml lists that canonical once, from the committed blog snapshot.
  *
  * Head tags come from the existing page effects (titles, descriptions, JSON-LD,
  * canonical). Nothing new is added to schema or copy here.
@@ -20,6 +21,7 @@ import { pathToFileURL } from "node:url";
 import { fileURLToPath } from "node:url";
 import { build } from "vite";
 import { Window } from "happy-dom";
+import { canonicalUrl } from "../src/lib/canonicalPath.js";
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = path.join(rootDir, "dist");
@@ -62,8 +64,10 @@ const PAGE_ROUTES = [
 /**
  * Mirrors base44/functions/sitemap STATIC_URLS.
  * lastmod for these URLs is the generation date, same as that function.
- * /gbp-three-free is a real public route that function did not list.
- * /Home, /dashboard, /newsletter-thank-you, and /landing are not listed.
+ * /gbp-three-free and /newsletter-thank-you are real public routes that
+ * function did not list, so they are included without a made-up priority.
+ * /Home is the pages.config alias of / and is prerendered but not listed.
+ * /dashboard, /landing, trailing-slash URLs, and .html URLs are not listed.
  */
 const SITEMAP_STATIC = [
   { loc: "/", priority: "1.0", changefreq: "weekly" },
@@ -90,6 +94,7 @@ const SITEMAP_STATIC = [
   { loc: "/get-more-clients", priority: "0.8", changefreq: "monthly" },
   { loc: "/newsletter", priority: "0.7", changefreq: "monthly" },
   { loc: "/gbp-three-free", priority: null, changefreq: null },
+  { loc: "/newsletter-thank-you", priority: null, changefreq: null },
   { loc: "/PrivacyPolicy", priority: "0.3", changefreq: "yearly" },
   { loc: "/TermsOfService", priority: "0.3", changefreq: "yearly" },
 ];
@@ -159,17 +164,19 @@ function xmlEscape(value) {
   return escapeAttr(value);
 }
 
-function outputPath(route) {
-  if (route === "/") return path.join(distDir, "index.html");
+function outputFiles(route) {
+  if (route === "/") return [path.join(distDir, "index.html")];
   const segments = route.split("/").filter(Boolean);
   if (segments.some((segment) => segment === "." || segment === ".." || segment === "assets")) {
     throw new Error(`Refusing to write route ${route}`);
   }
-  return path.join(distDir, ...segments, "index.html");
+  const rel = segments.join("/");
+  // Pages serves /path from path.html and /path/ from path/index.html.
+  return [path.join(distDir, `${rel}.html`), path.join(distDir, rel, "index.html")];
 }
 
 function canonicalFor(route) {
-  return `${SITE}${route === "/" ? "/" : route}`;
+  return canonicalUrl(route);
 }
 
 function loadPosts() {
@@ -181,6 +188,9 @@ function loadPosts() {
   if (published.length !== posts.length) {
     throw new Error(`Blog snapshot has ${posts.length} records but ${published.length} are published with a slug and title.`);
   }
+  console.log(
+    `Blog snapshot ${catalog.fetchedAt || "undated"}: ${published.length} published posts. This build reads the committed file and does not call Base44.`,
+  );
   const slugs = new Set();
   for (const post of published) {
     if (!/^[a-z0-9-]+$/.test(post.slug)) {
@@ -371,7 +381,12 @@ function assertSitemap(xml, posts) {
   for (const loc of expected) {
     if (!locs.includes(loc)) throw new Error(`Sitemap missing ${loc}`);
   }
-  const banned = [`${SITE}/dashboard`, `${SITE}/Home`, `${SITE}/landing`, `${SITE}/newsletter-thank-you`];
+  const banned = [`${SITE}/dashboard`, `${SITE}/Home`, `${SITE}/home`, `${SITE}/landing`, `${SITE}/Landing`];
+  for (const loc of locs) {
+    if (loc.endsWith(".html") || (loc !== `${SITE}/` && loc.endsWith("/"))) {
+      throw new Error(`Sitemap lists an alias instead of the canonical URL: ${loc}`);
+    }
+  }
   for (const loc of banned) {
     if (locs.includes(loc)) throw new Error(`Sitemap should not list ${loc}`);
   }
@@ -393,6 +408,18 @@ function assertPage(route, html, shell, posts) {
   if (!html.includes(shell.asset)) problems.push(`missing SPA bundle ${shell.asset}`);
   if (!html.includes(shell.css)) problems.push(`missing CSS ${shell.css}`);
   if (html.includes("base44.com/logo")) problems.push("Base44 favicon URL remains");
+  if (!html.includes('rel="icon" type="image/png" href="/assets/logo-official.png"')) {
+    problems.push("favicon is not the PNG logo");
+  }
+  if (html.includes("image/svg+xml")) problems.push("favicon MIME is still image/svg+xml");
+  if (html.includes("aggregateRating")) problems.push("aggregateRating has no verifiable review source");
+  for (const marker of [
+    "https://fast.wistia.com/player.js",
+    "https://connect.facebook.net/en_US/fbevents.js",
+    "https://www.googletagmanager.com/gtag/js?id=G-2V59RJ0GT7",
+  ]) {
+    if (!html.includes(marker)) problems.push(`missing preview script ${marker}`);
+  }
   if (html.includes("supabase.co/storage") || html.includes("base44-prod")) {
     problems.push("Supabase base44-prod URL remains");
   }
@@ -526,10 +553,12 @@ async function main() {
       if (!head.description) throw new Error(`${route} has an empty meta description`);
       const html = stitch(shell, { ...head, appHtml });
       assertPage(route, html, { asset, css }, posts);
-      const dest = outputPath(route);
-      await mkdir(path.dirname(dest), { recursive: true });
-      await writeFile(dest, html);
-      console.log(`${route}  ${head.title}  ${html.length} bytes`);
+      const files = outputFiles(route);
+      for (const dest of files) {
+        await mkdir(path.dirname(dest), { recursive: true });
+        await writeFile(dest, html);
+      }
+      console.log(`${route}  ${head.title}  ${html.length} bytes  canonical ${head.canonical}  files ${files.length}`);
     }
   } finally {
     globalThis.document = undefined;

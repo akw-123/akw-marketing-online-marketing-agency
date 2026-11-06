@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/fetch-blog-posts.mjs && vite build && node scripts/prerender.mjs",
-    "lint": "eslint . --quiet",
+    "build": "vite build && node scripts/prerender.mjs",
+    "blog:refresh": "node scripts/fetch-blog-posts.mjs",    "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc -p ./jsconfig.json",
     "preview": "vite preview"

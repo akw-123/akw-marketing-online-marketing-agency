@@ -5,6 +5,9 @@ import FooterSection from "@/components/landing/FooterSection";
 export default function TermsOfService() {
   useEffect(() => {
     document.title = "Terms of Service | AKW Marketing";
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) { meta = document.createElement("meta"); meta.name = "description"; document.head.appendChild(meta); }
+    meta.content = 'By accessing and using the services provided by AKW Marketing ("Company", "we", "our", "us"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.';
   }, []);
 
   return (

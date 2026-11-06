@@ -32,6 +32,7 @@ import About from './pages/About';
 import WebsiteDesignKitchener from './pages/WebsiteDesignKitchener';
 import ContentMarketingKitchener from './pages/ContentMarketingKitchener';
 import NoIndexRedirect from './components/NoIndexRedirect';
+import { canonicalUrl } from '@/lib/canonicalPath';
 import Dashboard from './pages/Dashboard';
 import HardestWorkingSeoExpert from './pages/HardestWorkingSeoExpert';
 import HardestWorkingMarketingAgency from './pages/HardestWorkingMarketingAgency';
@@ -50,7 +51,7 @@ const CanonicalUpdater = () => {
   React.useEffect(() => {
     let canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical); }
-    canonical.href = `https://akwmarketing.com${location.pathname}`;
+    canonical.href = canonicalUrl(location.pathname);
   }, [location.pathname]);
   return null;
 };
