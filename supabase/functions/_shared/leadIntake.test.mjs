@@ -18,6 +18,9 @@ import {
   CRM_SCHEMA,
   FORM_FIELDS,
   HONEYPOT_FIELD,
+  GMAIL_SEND_URL,
+  GMAIL_SENDER,
+  GMAIL_TOKEN_URL,
   MAIL_TRANSPORT,
   SLACK_INBOUND_ALERTS,
   TURNSTILE_SITEVERIFY_URL,
@@ -29,6 +32,7 @@ import {
   persistLead,
   planEmailNotification,
   planNotifications,
+  sendLeadAlertViaGmail,
   postSlackWebhook,
   slackInboundPayload,
   validateLead,
@@ -156,7 +160,9 @@ describe("validateLead", () => {
     assert.equal(SLACK_INBOUND_ALERTS.id, "C0BJZD8LNPM");
     assert.equal(SLACK_INBOUND_ALERTS.liveVerified, true);
     assert.equal(SLACK_INBOUND_ALERTS.sendImplemented, false);
-    assert.equal(MAIL_TRANSPORT.chosen, null);
+    assert.equal(MAIL_TRANSPORT.chosen, "gmail");
+    assert.equal(MAIL_TRANSPORT.sender, "contact@akwmarketing.com");
+    assert.deepEqual(MAIL_TRANSPORT.rejected, ["resend", "smtp"]);
     assert.equal(MAIL_TRANSPORT.vaultContactId, "3289329");
     assert.equal(CRM_SCHEMA.liveVerified, true);
     assert.equal(CRM_SCHEMA.hypothesis, "crm_lead_plus_contact");
@@ -437,7 +443,7 @@ describe("notifications stay off", () => {
     });
     assert.equal(planned.notified, false);
     assert.equal(planned.code, "notify_not_implemented");
-    assert.equal(planEmailNotification({ LEAD_NOTIFY_EMAIL: "true" }).code, "email_transport_unchosen");
+    assert.equal(planEmailNotification({ LEAD_NOTIFY_EMAIL: "true" }).code, "gmail_unconfigured");
     assert.equal(called, false);
   });
 });
@@ -537,6 +543,7 @@ describe("handleLeadRequest", () => {
     assert.equal(result.body.stored, true);
     assert.equal(result.body.notifications, undefined);
     assert.equal(calls.some((call) => call.url.includes("hooks.example.test")), false);
+    assert.equal(calls.some((call) => call.url === GMAIL_TOKEN_URL || call.url === GMAIL_SEND_URL), false);
     assert.equal(calls.some((call) => call.url.includes("slack.com")), false);
   });
 
@@ -626,5 +633,112 @@ describe("browser capture URL", () => {
     assert.equal(failed.ok, false);
     assert.equal(failed.message, LEAD_CAPTURE_FAILED);
     assert.equal(failed.message.includes("secret-leak"), false);
+  });
+});
+
+describe("contact@ Gmail alerts", () => {
+  const gmailEnv = {
+    LEAD_NOTIFY_EMAIL: "true",
+    LEAD_NOTIFY_EMAIL_TO: "andre@akwmarketing.com",
+    GMAIL_CLIENT_ID: "client-id",
+    GMAIL_CLIENT_SECRET: "client-secret",
+    GMAIL_REFRESH_TOKEN: "refresh-token",
+  };
+
+  it("does not call Google when the email flag is off", async () => {
+    let called = false;
+    const result = await sendLeadAlertViaGmail({
+      env: { ...gmailEnv, LEAD_NOTIFY_EMAIL: "false" },
+      lead: { source: "gbp", business_name: "Analytical Engines", email: "ada@example.com" },
+      leadId: LEAD_ID,
+      fetchImpl: async () => {
+        called = true;
+        return jsonResponse(200, { access_token: "ya29.test" });
+      },
+    });
+    assert.equal(result.code, "notifications_disabled");
+    assert.equal(called, false);
+  });
+
+  it("does not call Google when OAuth env is missing", async () => {
+    let called = false;
+    const result = await sendLeadAlertViaGmail({
+      env: { LEAD_NOTIFY_EMAIL: "true", LEAD_NOTIFY_EMAIL_TO: "andre@akwmarketing.com" },
+      lead: { source: "gbp" },
+      leadId: LEAD_ID,
+      fetchImpl: async () => {
+        called = true;
+        return jsonResponse(200, {});
+      },
+    });
+    assert.equal(result.code, "gmail_unconfigured");
+    assert.equal(called, false);
+  });
+
+  it("refuses a From address other than contact@", async () => {
+    let called = false;
+    const result = await sendLeadAlertViaGmail({
+      env: { ...gmailEnv, GMAIL_SENDER: "other@example.com" },
+      lead: { source: "gbp" },
+      leadId: LEAD_ID,
+      fetchImpl: async () => {
+        called = true;
+        return jsonResponse(200, {});
+      },
+    });
+    assert.equal(result.code, "gmail_unconfigured");
+    assert.equal(called, false);
+    assert.equal(GMAIL_SENDER, "contact@akwmarketing.com");
+  });
+
+  it("exchanges the refresh token and sends as contact@", async () => {
+    const calls = [];
+    const result = await sendLeadAlertViaGmail({
+      env: gmailEnv,
+      lead: {
+        source: "free-analysis",
+        business_name: "Analytical Engines",
+        email: "ada@example.com",
+        phone: "555-0100",
+      },
+      leadId: LEAD_ID,
+      fetchImpl: async (url, init) => {
+        calls.push({ url, init });
+        if (url === GMAIL_TOKEN_URL) {
+          return jsonResponse(200, { access_token: "ya29.test" });
+        }
+        return jsonResponse(200, { id: "msg-1" });
+      },
+    });
+    assert.equal(result.sent, true);
+    assert.equal(result.code, "gmail_sent");
+    assert.equal(calls[0].url, GMAIL_TOKEN_URL);
+    const tokenBody = new URLSearchParams(calls[0].init.body);
+    assert.equal(tokenBody.get("grant_type"), "refresh_token");
+    assert.equal(tokenBody.get("refresh_token"), "refresh-token");
+    assert.equal(calls[1].url, GMAIL_SEND_URL);
+    assert.equal(calls[1].init.headers.authorization, "Bearer ya29.test");
+    const raw = JSON.parse(calls[1].init.body).raw;
+    const decoded = Buffer.from(raw.replace(/-/g, "+").replace(/_/g, "/"), "base64").toString("utf8");
+    assert.match(decoded, /From: AKW Marketing <contact@akwmarketing.com>/);
+    assert.match(decoded, /To: andre@akwmarketing.com/);
+    assert.match(decoded, /Business: Analytical Engines/);
+    assert.equal(decoded.includes("refresh-token"), false);
+    assert.equal(decoded.includes("client-secret"), false);
+  });
+
+  it("does not call messages.send when the token exchange fails", async () => {
+    const urls = [];
+    const result = await sendLeadAlertViaGmail({
+      env: gmailEnv,
+      lead: { source: "gbp", business_name: "Analytical Engines" },
+      leadId: LEAD_ID,
+      fetchImpl: async (url) => {
+        urls.push(url);
+        return jsonResponse(400, { error: "invalid_grant" });
+      },
+    });
+    assert.equal(result.code, "gmail_auth_failed");
+    assert.deepEqual(urls, [GMAIL_TOKEN_URL]);
   });
 });

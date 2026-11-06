@@ -4,9 +4,9 @@
  * After Turnstile and the honeypot pass, persistLead writes crm_lead,
  * crm_contact, crm_contact_email, and crm_contact_phone on the live CRM
  * project. It does not create a website-lead table and it does not write
- * prospects. Slack and email stay off unless their flags are true and send
- * is implemented. Mail transport is still unchosen, and sendImplemented is
- * false, so this module does not post.
+ * prospects. Slack stays off because sendImplemented is false. Email uses
+ * the contact@akwmarketing.com Gmail API only when LEAD_NOTIFY_EMAIL is true
+ * and the OAuth env vars are set. Both flags default off, so nothing is sent.
  */
 
 export const TURNSTILE_SITEVERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
@@ -32,15 +32,23 @@ export const SLACK_INBOUND_ALERTS = {
   sendImplemented: false,
 };
 
+/** Gmail API for mailbox contact@akwmarketing.com. Not Resend and not SMTP. */
+export const GMAIL_SENDER = "contact@akwmarketing.com";
+export const GMAIL_TOKEN_URL = "https://oauth2.googleapis.com/token";
+export const GMAIL_SEND_URL = "https://gmail.googleapis.com/gmail/v1/users/me/messages/send";
+
 /**
- * Mail recipient is vault contact 3289329, read at deploy time into
- * LEAD_NOTIFY_EMAIL_TO. No transport is selected, and this module does not send.
+ * Recipient is vault contact 3289329, copied into LEAD_NOTIFY_EMAIL_TO at
+ * deploy time. The From address is fixed to contact@. Sending still requires
+ * LEAD_NOTIFY_EMAIL=true plus the three OAuth env vars.
  */
 export const MAIL_TRANSPORT = {
-  chosen: null,
-  notedOptions: ["resend", "smtp", "gmail"],
+  chosen: "gmail",
+  sender: GMAIL_SENDER,
+  rejected: ["resend", "smtp"],
   vaultContactId: "3289329",
   recipientEnv: "LEAD_NOTIFY_EMAIL_TO",
+  credentialEnv: ["GMAIL_CLIENT_ID", "GMAIL_CLIENT_SECRET", "GMAIL_REFRESH_TOKEN"],
 };
 
 /**
@@ -154,17 +162,115 @@ export async function postSlackWebhook({ webhookUrl, payload, fetchImpl }) {
   return { sent: true, code: "slack_sent" };
 }
 
+export function gmailCredentials(env = {}) {
+  const clientId = String(env.GMAIL_CLIENT_ID || "").trim();
+  const clientSecret = String(env.GMAIL_CLIENT_SECRET || "").trim();
+  const refreshToken = String(env.GMAIL_REFRESH_TOKEN || "").trim();
+  const recipient = String(env[MAIL_TRANSPORT.recipientEnv] || "").trim();
+  const sender = String(env.GMAIL_SENDER || GMAIL_SENDER).trim();
+  if (!clientId || !clientSecret || !refreshToken || !recipient) return null;
+  if (sender !== GMAIL_SENDER) return null;
+  return { clientId, clientSecret, refreshToken, recipient, sender };
+}
+
 export function planEmailNotification(env = {}) {
   if (env.LEAD_NOTIFY_EMAIL !== "true") {
     return { sent: false, code: "notifications_disabled" };
   }
-  if (!MAIL_TRANSPORT.chosen) {
-    return { sent: false, code: "email_transport_unchosen" };
+  if (!gmailCredentials(env)) {
+    return { sent: false, code: "gmail_unconfigured" };
   }
-  if (!env[MAIL_TRANSPORT.recipientEnv]) {
-    return { sent: false, code: "email_unconfigured" };
+  return { sent: false, code: "gmail_ready" };
+}
+
+export function base64UrlEncode(text) {
+  const bytes = new TextEncoder().encode(text);
+  let binary = "";
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
+}
+
+export function buildLeadAlertRfc822({ from, to, lead, leadId }) {
+  const source = lead && lead.source ? lead.source : "unknown";
+  const business = lead && lead.business_name ? lead.business_name : "";
+  const subject = `New website lead (${source})`;
+  const lines = [
+    `From: AKW Marketing <${from}>`,
+    `To: ${to}`,
+    `Subject: ${subject}`,
+    "MIME-Version: 1.0",
+    "Content-Type: text/plain; charset=utf-8",
+    "",
+    `Source: ${source}`,
+    `Lead id: ${leadId || ""}`,
+    business ? `Business: ${business}` : "",
+    lead && lead.email ? `Email: ${lead.email}` : "",
+    lead && lead.phone ? `Phone: ${lead.phone}` : "",
+  ].filter((line) => line !== undefined);
+  return lines.join("\r\n");
+}
+
+/**
+ * Gmail API users.messages.send as contact@akwmarketing.com.
+ * Does nothing unless LEAD_NOTIFY_EMAIL is exactly "true" and OAuth env is set.
+ */
+export async function sendLeadAlertViaGmail({ env = {}, lead, leadId, fetchImpl } = {}) {
+  if (env.LEAD_NOTIFY_EMAIL !== "true") {
+    return { sent: false, code: "notifications_disabled" };
   }
-  return { sent: false, code: "notify_not_implemented" };
+  const creds = gmailCredentials(env);
+  if (!creds || typeof fetchImpl !== "function") {
+    return { sent: false, code: "gmail_unconfigured" };
+  }
+
+  let tokenResponse;
+  try {
+    tokenResponse = await fetchImpl(GMAIL_TOKEN_URL, {
+      method: "POST",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        client_id: creds.clientId,
+        client_secret: creds.clientSecret,
+        refresh_token: creds.refreshToken,
+        grant_type: "refresh_token",
+      }).toString(),
+    });
+  } catch {
+    return { sent: false, code: "gmail_auth_failed" };
+  }
+  if (!tokenResponse || !tokenResponse.ok) {
+    return { sent: false, code: "gmail_auth_failed" };
+  }
+  let tokenBody;
+  try {
+    tokenBody = await tokenResponse.json();
+  } catch {
+    return { sent: false, code: "gmail_auth_failed" };
+  }
+  const accessToken = tokenBody && tokenBody.access_token;
+  if (!accessToken) return { sent: false, code: "gmail_auth_failed" };
+
+  const raw = base64UrlEncode(buildLeadAlertRfc822({
+    from: creds.sender,
+    to: creds.recipient,
+    lead,
+    leadId,
+  }));
+  let sendResponse;
+  try {
+    sendResponse = await fetchImpl(GMAIL_SEND_URL, {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${accessToken}`,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ raw }),
+    });
+  } catch {
+    return { sent: false, code: "gmail_failed" };
+  }
+  if (!sendResponse || !sendResponse.ok) return { sent: false, code: "gmail_failed" };
+  return { sent: true, code: "gmail_sent" };
 }
 
 export async function dispatchNotifications({ env = {}, fetchImpl, lead, leadId } = {}) {
@@ -191,7 +297,7 @@ export async function dispatchNotifications({ env = {}, fetchImpl, lead, leadId 
   }
 
   const email = flags.email
-    ? planEmailNotification(env)
+    ? await sendLeadAlertViaGmail({ env, lead, leadId, fetchImpl })
     : { sent: false, code: "notifications_disabled" };
   const notified = Boolean(slack.sent || email.sent);
   return {
