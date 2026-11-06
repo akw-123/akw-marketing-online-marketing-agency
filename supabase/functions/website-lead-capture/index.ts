@@ -1,7 +1,7 @@
 /**
  * HTTP adapter. Not deployed from this repo.
  * Saves a lead when SUPABASE_URL and the service role key are set.
- * Does not post to Slack or email while those flags and sendImplemented stay off.
+ * Slack and email send only when their flags are true and the matching secret is set.
  */
 import { handleLeadRequest, corsHeaders } from "../_shared/leadIntake.mjs";
 
@@ -45,6 +45,8 @@ Deno.serve(async (req) => {
       GMAIL_CLIENT_SECRET: Deno.env.get("GMAIL_CLIENT_SECRET") ?? "",
       GMAIL_REFRESH_TOKEN: Deno.env.get("GMAIL_REFRESH_TOKEN") ?? "",
       GMAIL_SENDER: Deno.env.get("GMAIL_SENDER") ?? "",
+      SLACK_BOT_TOKEN: Deno.env.get("SLACK_BOT_TOKEN") ?? "",
+      SLACK_INBOUND_ALERTS_CHANNEL_ID: Deno.env.get("SLACK_INBOUND_ALERTS_CHANNEL_ID") ?? "",
       SLACK_WEBHOOK_URL: Deno.env.get("SLACK_WEBHOOK_URL") ?? "",
       SUPABASE_URL: Deno.env.get("SUPABASE_URL") ?? "",
       SUPABASE_SERVICE_ROLE_KEY: Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",

@@ -23,6 +23,7 @@ import {
   GMAIL_TOKEN_URL,
   MAIL_TRANSPORT,
   SLACK_INBOUND_ALERTS,
+  SLACK_POST_MESSAGE_URL,
   TURNSTILE_SITEVERIFY_URL,
   TURNSTILE_SITE_KEY,
   buildLeadInsert,
@@ -33,6 +34,7 @@ import {
   planEmailNotification,
   planNotifications,
   sendLeadAlertViaGmail,
+  sendLeadAlertViaSlack,
   postSlackWebhook,
   slackInboundPayload,
   validateLead,
@@ -159,7 +161,7 @@ describe("validateLead", () => {
   it("records the Slack channel as verified and mail transport as unchosen", () => {
     assert.equal(SLACK_INBOUND_ALERTS.id, "C0BJZD8LNPM");
     assert.equal(SLACK_INBOUND_ALERTS.liveVerified, true);
-    assert.equal(SLACK_INBOUND_ALERTS.sendImplemented, false);
+    assert.equal(SLACK_INBOUND_ALERTS.sendImplemented, true);
     assert.equal(MAIL_TRANSPORT.chosen, "gmail");
     assert.equal(MAIL_TRANSPORT.sender, "contact@akwmarketing.com");
     assert.deepEqual(MAIL_TRANSPORT.rejected, ["resend", "smtp"]);
@@ -544,6 +546,7 @@ describe("handleLeadRequest", () => {
     assert.equal(result.body.notifications, undefined);
     assert.equal(calls.some((call) => call.url.includes("hooks.example.test")), false);
     assert.equal(calls.some((call) => call.url === GMAIL_TOKEN_URL || call.url === GMAIL_SEND_URL), false);
+    assert.equal(calls.some((call) => call.url === SLACK_POST_MESSAGE_URL), false);
     assert.equal(calls.some((call) => call.url.includes("slack.com")), false);
   });
 
@@ -633,6 +636,90 @@ describe("browser capture URL", () => {
     assert.equal(failed.ok, false);
     assert.equal(failed.message, LEAD_CAPTURE_FAILED);
     assert.equal(failed.message.includes("secret-leak"), false);
+  });
+});
+
+describe("Slack inbound alerts", () => {
+  it("does not call Slack when the flag is off", async () => {
+    let called = false;
+    const result = await sendLeadAlertViaSlack({
+      env: { LEAD_NOTIFY_SLACK: "false", SLACK_BOT_TOKEN: "xoxb-test" },
+      lead: { source: "gbp", business_name: "Analytical Engines" },
+      leadId: LEAD_ID,
+      fetchImpl: async () => {
+        called = true;
+        return jsonResponse(200, { ok: true });
+      },
+    });
+    assert.equal(result.code, "notifications_disabled");
+    assert.equal(called, false);
+  });
+
+  it("returns slack_unconfigured and does not call Slack when the token is missing", async () => {
+    let called = false;
+    const result = await sendLeadAlertViaSlack({
+      env: { LEAD_NOTIFY_SLACK: "true" },
+      lead: { source: "free-analysis", business_name: "Analytical Engines" },
+      leadId: LEAD_ID,
+      fetchImpl: async () => {
+        called = true;
+        return jsonResponse(200, { ok: true });
+      },
+    });
+    assert.equal(result.code, "slack_unconfigured");
+    assert.equal(called, false);
+  });
+
+  it("refuses a channel id other than #inbound-alerts", async () => {
+    let called = false;
+    const result = await sendLeadAlertViaSlack({
+      env: {
+        LEAD_NOTIFY_SLACK: "true",
+        SLACK_BOT_TOKEN: "xoxb-test",
+        SLACK_INBOUND_ALERTS_CHANNEL_ID: "C0CBLSRUGFN",
+      },
+      lead: { source: "gbp" },
+      leadId: LEAD_ID,
+      fetchImpl: async () => {
+        called = true;
+        return jsonResponse(200, { ok: true });
+      },
+    });
+    assert.equal(result.code, "slack_unconfigured");
+    assert.equal(called, false);
+  });
+
+  it("posts chat.postMessage to C0BJZD8LNPM when the flag and token are set", async () => {
+    const calls = [];
+    const result = await sendLeadAlertViaSlack({
+      env: { LEAD_NOTIFY_SLACK: "true", SLACK_BOT_TOKEN: "xoxb-test" },
+      lead: { source: "free-analysis", business_name: "Analytical Engines" },
+      leadId: LEAD_ID,
+      fetchImpl: async (url, init) => {
+        calls.push({ url, init });
+        return jsonResponse(200, { ok: true, ts: "1.0" });
+      },
+    });
+    assert.equal(result.sent, true);
+    assert.equal(result.code, "slack_sent");
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].url, SLACK_POST_MESSAGE_URL);
+    assert.equal(calls[0].init.headers.authorization, "Bearer xoxb-test");
+    const body = JSON.parse(calls[0].init.body);
+    assert.equal(body.channel, "C0BJZD8LNPM");
+    assert.match(body.text, /Analytical Engines/);
+    assert.equal(body.text.includes("xoxb-test"), false);
+  });
+
+  it("does not treat a Slack ok:false body as sent", async () => {
+    const result = await sendLeadAlertViaSlack({
+      env: { LEAD_NOTIFY_SLACK: "true", SLACK_BOT_TOKEN: "xoxb-test" },
+      lead: { source: "gbp" },
+      leadId: LEAD_ID,
+      fetchImpl: async () => jsonResponse(200, { ok: false, error: "not_in_channel" }),
+    });
+    assert.equal(result.sent, false);
+    assert.equal(result.code, "slack_failed");
   });
 });
 

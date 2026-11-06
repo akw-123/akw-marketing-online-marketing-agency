@@ -4,9 +4,9 @@
  * After Turnstile and the honeypot pass, persistLead writes crm_lead,
  * crm_contact, crm_contact_email, and crm_contact_phone on the live CRM
  * project. It does not create a website-lead table and it does not write
- * prospects. Slack stays off because sendImplemented is false. Email uses
- * the contact@akwmarketing.com Gmail API only when LEAD_NOTIFY_EMAIL is true
- * and the OAuth env vars are set. Both flags default off, so nothing is sent.
+ * prospects. Slack chat.postMessage and the contact@ Gmail API exist, and
+ * both run only when their LEAD_NOTIFY flag is exactly "true" and the
+ * matching secret is set. Both flags default off, so nothing is sent.
  */
 
 export const TURNSTILE_SITEVERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
@@ -22,15 +22,18 @@ export const DEFAULT_TURNSTILE_HOSTNAME = "akwmarketing.pages.dev";
 
 /**
  * Slack #inbound-alerts was live-checked as a private, unarchived channel.
- * This constant is the notify target. This module does not post.
+ * This constant is the notify target. The default flag does not post.
  */
 export const SLACK_INBOUND_ALERTS = {
   name: "#inbound-alerts",
   id: "C0BJZD8LNPM",
   workspace: "akwmarketing.slack.com",
   liveVerified: true,
-  sendImplemented: false,
+  sendImplemented: true,
 };
+
+/** Slack Web API method. The bot token is an env var and is never committed. */
+export const SLACK_POST_MESSAGE_URL = "https://slack.com/api/chat.postMessage";
 
 /** Gmail API for mailbox contact@akwmarketing.com. Not Resend and not SMTP. */
 export const GMAIL_SENDER = "contact@akwmarketing.com";
@@ -139,10 +142,59 @@ export function slackInboundPayload({ leadId, source, businessName } = {}) {
   };
 }
 
+export function slackBotCredentials(env = {}) {
+  const token = String(env.SLACK_BOT_TOKEN || "").trim();
+  const channel = String(env.SLACK_INBOUND_ALERTS_CHANNEL_ID || SLACK_INBOUND_ALERTS.id).trim();
+  if (!token) return null;
+  if (channel !== SLACK_INBOUND_ALERTS.id) return null;
+  return { token, channel };
+}
+
 /**
- * Incoming-webhook POST. Callers must keep this behind LEAD_NOTIFY_SLACK
- * and SLACK_INBOUND_ALERTS.sendImplemented. The request path does not call
- * it while sendImplemented is false.
+ * chat.postMessage to #inbound-alerts. Does nothing unless LEAD_NOTIFY_SLACK
+ * is exactly "true" and SLACK_BOT_TOKEN is set. A missing token does not call Slack.
+ */
+export async function sendLeadAlertViaSlack({ env = {}, lead, leadId, fetchImpl } = {}) {
+  if (env.LEAD_NOTIFY_SLACK !== "true") {
+    return { sent: false, code: "notifications_disabled" };
+  }
+  const creds = slackBotCredentials(env);
+  if (!creds || typeof fetchImpl !== "function") {
+    return { sent: false, code: "slack_unconfigured" };
+  }
+  const payload = slackInboundPayload({
+    leadId,
+    source: lead && lead.source,
+    businessName: lead && lead.business_name,
+  });
+  payload.channel = creds.channel;
+  let response;
+  try {
+    response = await fetchImpl(SLACK_POST_MESSAGE_URL, {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${creds.token}`,
+        "content-type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    return { sent: false, code: "slack_failed" };
+  }
+  if (!response || !response.ok) return { sent: false, code: "slack_failed" };
+  let body;
+  try {
+    body = await response.json();
+  } catch {
+    return { sent: false, code: "slack_failed" };
+  }
+  if (!body || body.ok !== true) return { sent: false, code: "slack_failed" };
+  return { sent: true, code: "slack_sent" };
+}
+
+/**
+ * Incoming-webhook helper kept for tests. The request path uses
+ * sendLeadAlertViaSlack and does not call this.
  */
 export async function postSlackWebhook({ webhookUrl, payload, fetchImpl }) {
   if (!webhookUrl || typeof fetchImpl !== "function") {
@@ -279,22 +331,9 @@ export async function dispatchNotifications({ env = {}, fetchImpl, lead, leadId 
     return { notified: false, code: "notifications_disabled" };
   }
 
-  let slack = { sent: false, code: "notifications_disabled" };
-  if (flags.slack) {
-    if (!SLACK_INBOUND_ALERTS.sendImplemented) {
-      slack = { sent: false, code: "notify_not_implemented" };
-    } else {
-      slack = await postSlackWebhook({
-        webhookUrl: env.SLACK_WEBHOOK_URL || "",
-        payload: slackInboundPayload({
-          leadId,
-          source: lead && lead.source,
-          businessName: lead && lead.business_name,
-        }),
-        fetchImpl,
-      });
-    }
-  }
+  const slack = flags.slack
+    ? await sendLeadAlertViaSlack({ env, lead, leadId, fetchImpl })
+    : { sent: false, code: "notifications_disabled" };
 
   const email = flags.email
     ? await sendLeadAlertViaGmail({ env, lead, leadId, fetchImpl })
