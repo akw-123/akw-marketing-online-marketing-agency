@@ -1,0 +1,6 @@
+# Points at the approved Supabase project. Applying this file does not
+# change remote tables. Do not run supabase db push from this phase.
+project_id = "hzllfwqnsiirlwacaitt"
+
+[functions.website-lead-capture]
+verify_jwt = false
