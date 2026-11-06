@@ -39,6 +39,7 @@ export default function About() {
     script.type = 'application/ld+json';
     script.id = 'about-page-schema';
     script.textContent = JSON.stringify(schema);
+    document.getElementById(script.id)?.remove();
     document.head.appendChild(script);
     return () => { const el = document.getElementById('about-page-schema'); if (el) el.remove(); };
   }, []);

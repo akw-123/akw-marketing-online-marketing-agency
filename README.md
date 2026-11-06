@@ -69,12 +69,14 @@ Internal fields such as `created_by_id` are not written into the snapshot.
 
 ## Pre-render
 
-The exit plan calls for React pre-render. This phase ships the static SPA shell (`dist/index.html` plus hashed assets). A follow-up should pre-render the public routes so crawlers see page HTML without executing the client bundle. Do not block the preview on that work.
+`npm run build` runs `scripts/prerender-html.mjs` after Vite. For each public route it writes `dist/<path>/index.html` and `dist/<path>.html` (Pages serves the extensionless URL from the `.html` file, and the trailing-slash URL from `index.html`). The shell is the Vite `index.html` with that page's `<title>`, meta description, canonical (`https://akwmarketing.com/...`), and any JSON-LD the page already injects in `useEffect`. Those strings are read from the page component and from `src/data/blog-posts.json`. The Phase 1 `noindex` meta and the Wistia, Meta Pixel, and Google Analytics scripts stay in every shell.
+
+`/dashboard`, client redirects (`/landing`, `/Landing`), and the `*` catch-all are not shelled. There is still no top-level `404.html`, so those paths keep the SPA fallback.
 
 ## Blockers before parity with live akwmarketing.com
 
 1. **media.base44.com and Base44 Supabase storage.** Logos, the founder photo, the SEO hero image, manifest icons, and schema `logo` URLs are hotlinked. Cancelling Base44 breaks them until the files move (for example to R2 or Cloudflare Images). `index.html` in this repo still points the favicon at `https://base44.com/logo_v2.svg`; the live publish step rewrites that to the AKW logo on `media.base44.com`.
-2. **Blog source of truth.** The snapshot goes stale when someone publishes in Base44. After Base44 is cancelled, the public entity API goes away. Phase 1.3 needs a new store. The sitemap function (`base44/functions/sitemap`) is not deployed with this build, so `/sitemap.xml` is absent on Pages.
+2. **Blog source of truth.** The snapshot goes stale when someone publishes in Base44. After Base44 is cancelled, the public entity API goes away. A later phase needs a new store. `dist/sitemap.xml` is generated at build time from `src/App.jsx` and the snapshot (`https://akwmarketing.com` URLs). It does not call the Base44 sitemap function. `public/robots.txt` still disallows crawling on this preview.
 3. **Lead storage and notification email.** `StrategyApplication` and `Core.SendEmail` are unwired until Phase 1.2. Newsletter and tip signups still post to the existing Make.com webhook only.
 4. **Admin analytics.** `ga-traffic`, `gsc-search-queries`, and `gsc-index-monitor` need Base44 auth plus Google and Slack connectors. `/dashboard` does not show live numbers.
 5. **Base44 publish-time HTML.** The live response adds app-log beacons (`/api/app-logs/...`), visitor-tracking cookies, Open Graph tags, and a swapped favicon. This Vite build does not. Google Analytics (`G-2V59RJ0GT7`) and the Meta Pixel in `index.html` are unchanged.

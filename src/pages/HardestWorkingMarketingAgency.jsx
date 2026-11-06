@@ -54,6 +54,7 @@ export default function HardestWorkingMarketingAgency() {
     script.type = 'application/ld+json';
     script.id = 'hardest-working-agency-schema';
     script.textContent = JSON.stringify(schema);
+    document.getElementById(script.id)?.remove();
     document.head.appendChild(script);
     return () => { const el = document.getElementById('hardest-working-agency-schema'); if (el) el.remove(); };
   }, []);

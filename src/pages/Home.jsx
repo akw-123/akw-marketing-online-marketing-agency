@@ -96,6 +96,7 @@ export default function Home() {
     websiteScript.type = 'application/ld+json';
     websiteScript.id = 'website-schema';
     websiteScript.textContent = JSON.stringify(websiteSchema);
+    document.getElementById(websiteScript.id)?.remove();
     document.head.appendChild(websiteScript);
 
     const orgSchema = {
@@ -116,6 +117,7 @@ export default function Home() {
     orgScript.type = 'application/ld+json';
     orgScript.id = 'organization-schema';
     orgScript.textContent = JSON.stringify(orgSchema);
+    document.getElementById(orgScript.id)?.remove();
     document.head.appendChild(orgScript);
 
     const psSchema = {
@@ -168,6 +170,7 @@ export default function Home() {
     psScript.type = 'application/ld+json';
     psScript.id = 'professional-service-schema';
     psScript.textContent = JSON.stringify(psSchema);
+    document.getElementById(psScript.id)?.remove();
     document.head.appendChild(psScript);
     return () => {
       const ws = document.getElementById('website-schema'); if (ws) ws.remove();

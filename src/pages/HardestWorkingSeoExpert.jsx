@@ -64,6 +64,7 @@ export default function HardestWorkingSeoExpert() {
     script.type = 'application/ld+json';
     script.id = 'hardest-working-seo-expert-schema';
     script.textContent = JSON.stringify(schema);
+    document.getElementById(script.id)?.remove();
     document.head.appendChild(script);
     return () => { const el = document.getElementById('hardest-working-seo-expert-schema'); if (el) el.remove(); };
   }, []);

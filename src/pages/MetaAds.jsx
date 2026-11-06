@@ -125,6 +125,7 @@ export default function MetaAds() {
     script.type = 'application/ld+json';
     script.id = 'professional-service-schema';
     script.textContent = JSON.stringify(schema);
+    document.getElementById(script.id)?.remove();
     document.head.appendChild(script);
     return () => { const el = document.getElementById('professional-service-schema'); if (el) el.remove(); };
   }, []);
