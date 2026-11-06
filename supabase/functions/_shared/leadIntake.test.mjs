@@ -1,9 +1,13 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { HONEYPOT_FIELD as CLIENT_HONEYPOT, TURNSTILE_SITE_KEY as CLIENT_SITE_KEY, buildLeadRequest } from "../../../src/lib/leadCaptureContract.js";
 import {
   ALLOWED_ORIGIN,
+  CRM_SCHEMA,
   FORM_FIELDS,
   HONEYPOT_FIELD,
+  MAIL_TRANSPORT,
+  SLACK_INBOUND_ALERTS,
   TURNSTILE_SITEVERIFY_URL,
   TURNSTILE_SITE_KEY,
   handleLeadRequest,
@@ -12,8 +16,7 @@ import {
   verifyTurnstile,
 } from "./leadIntake.mjs";
 
-const freeAnalysis = {
-  source: "free-analysis",
+const freeFields = {
   full_name: "Ada Lovelace",
   email: "ada@example.com",
   phone: "555-0100",
@@ -21,29 +24,36 @@ const freeAnalysis = {
   business_name: "Analytical Engines",
   google_maps_url: "https://maps.example.com/place",
   timeline: "Today",
-  turnstileToken: "token-ok",
-  [HONEYPOT_FIELD]: "",
 };
 
-const gbp = {
-  source: "gbp",
+const gbpFields = {
   first_name: "Ada",
   last_name: "Lovelace",
   email: "ada@example.com",
   phone: "5550100",
   business_name: "Analytical Engines",
-  website: "",
-  gbp_link: "",
-  turnstileToken: "token-ok",
 };
 
-function siteverifyFetch(success) {
+const freeAnalysis = envelope("free-analysis", freeFields);
+const gbp = envelope("gbp", gbpFields);
+
+function envelope(source, payload, extra = {}) {
+  return {
+    source,
+    payload,
+    "cf-turnstile-response": "token-ok",
+    honeypot: "",
+    ...extra,
+  };
+}
+
+function siteverifyFetch(success, hostname = "akwmarketing.pages.dev") {
   const calls = [];
   const fetchImpl = async (url, init) => {
     calls.push({ url, init });
     return {
       ok: true,
-      json: async () => ({ success }),
+      json: async () => ({ success, hostname }),
     };
   };
   return { fetchImpl, calls };
@@ -57,6 +67,18 @@ describe("form contracts match the pages", () => {
   it("keeps the public site key out of the secret path", () => {
     assert.equal(TURNSTILE_SITE_KEY.startsWith("0x"), true);
     assert.equal(TURNSTILE_SITE_KEY.includes("SECRET"), false);
+    assert.equal(CLIENT_SITE_KEY, TURNSTILE_SITE_KEY);
+    assert.equal(CLIENT_HONEYPOT, HONEYPOT_FIELD);
+  });
+
+  it("accepts the client request builder", () => {
+    const built = buildLeadRequest({
+      source: "gbp",
+      payload: gbpFields,
+      turnstileToken: "token-ok",
+      honeypot: "",
+    });
+    assert.equal(validateLead(built).ok, true);
   });
 });
 
@@ -84,7 +106,10 @@ describe("validateLead", () => {
 
   it("rejects an unknown source and unknown keys", () => {
     assert.equal(validateLead({ ...freeAnalysis, source: "newsletter" }).ok, false);
-    assert.equal(validateLead({ ...gbp, monthly_budget: "$500" }).field, "monthly_budget");
+    assert.equal(validateLead({
+      ...gbp,
+      payload: { ...gbp.payload, monthly_budget: "$500" },
+    }).field, "monthly_budget");
   });
 
   it("rejects a free-analysis timeline that the buttons do not offer", () => {
@@ -94,9 +119,19 @@ describe("validateLead", () => {
   });
 
   it("does not require google_maps_url because that input is not marked required", () => {
-    const { google_maps_url, ...rest } = freeAnalysis;
-    assert.equal(validateLead(rest).ok, true);
-    assert.equal(google_maps_url.startsWith("https://"), true);
+    const payload = { ...freeFields };
+    delete payload.google_maps_url;
+    assert.equal(validateLead(envelope("free-analysis", payload)).ok, true);
+  });
+
+  it("records the Slack channel as verified and mail transport as unchosen", () => {
+    assert.equal(SLACK_INBOUND_ALERTS.id, "C0BJZD8LNPM");
+    assert.equal(SLACK_INBOUND_ALERTS.liveVerified, true);
+    assert.equal(SLACK_INBOUND_ALERTS.sendImplemented, false);
+    assert.equal(MAIL_TRANSPORT.chosen, null);
+    assert.equal(MAIL_TRANSPORT.vaultContactId, "3289329");
+    assert.equal(CRM_SCHEMA.liveVerified, false);
+    assert.equal(CRM_SCHEMA.doNotWrite.includes("prospects"), true);
   });
 });
 
@@ -121,6 +156,7 @@ describe("verifyTurnstile", () => {
       token: "token-ok",
       secret: "server-secret",
       remoteIp: "203.0.113.5",
+      hostnames: ["akwmarketing.pages.dev"],
       fetchImpl,
     });
     assert.equal(result.ok, true);
@@ -130,6 +166,16 @@ describe("verifyTurnstile", () => {
     assert.equal(body.get("secret"), "server-secret");
     assert.equal(body.get("response"), "token-ok");
     assert.equal(body.get("remoteip"), "203.0.113.5");
+  });
+
+  it("rejects a token issued for a hostname outside the allowlist", async () => {
+    const { fetchImpl } = siteverifyFetch(true, "evil.example");
+    const result = await verifyTurnstile({
+      token: "token-ok",
+      secret: "server-secret",
+      fetchImpl,
+    });
+    assert.equal(result.code, "turnstile_hostname");
   });
 
   it("fails closed when siteverify says the token is bad", async () => {
@@ -147,14 +193,14 @@ describe("handleLeadRequest", () => {
   it("does not store or notify a valid free-analysis lead", async () => {
     const { fetchImpl, calls } = siteverifyFetch(true);
     const result = await handleLeadRequest(freeAnalysis, {
-      env: { TURNSTILE_SECRET_KEY: "server-secret" },
+      env: { TURNSTILE_SECRET: "server-secret" },
       fetchImpl,
     });
     assert.equal(result.status, 503);
     assert.equal(result.body.stored, false);
     assert.equal(result.body.notified, false);
     assert.equal(result.body.ok, false);
-    assert.equal(result.body.code, "crm_contract_missing");
+    assert.equal(result.body.code, "crm_schema_unverified");
     assert.equal(result.body.notifications, "notifications_disabled");
     assert.equal(calls.length, 1);
     assert.equal(calls[0].url, TURNSTILE_SITEVERIFY_URL);
@@ -164,10 +210,10 @@ describe("handleLeadRequest", () => {
   it("does not store a valid gbp lead", async () => {
     const { fetchImpl } = siteverifyFetch(true);
     const result = await handleLeadRequest(gbp, {
-      env: { TURNSTILE_SECRET_KEY: "server-secret" },
+      env: { TURNSTILE_SECRET: "server-secret" },
       fetchImpl,
     });
-    assert.equal(result.body.code, "crm_contract_missing");
+    assert.equal(result.body.code, "crm_schema_unverified");
     assert.equal(result.body.stored, false);
   });
 
@@ -176,7 +222,7 @@ describe("handleLeadRequest", () => {
     const result = await handleLeadRequest(
       { ...gbp, [HONEYPOT_FIELD]: "bot" },
       {
-        env: { TURNSTILE_SECRET_KEY: "server-secret" },
+        env: { TURNSTILE_SECRET: "server-secret" },
         fetchImpl: async () => {
           called = true;
           return { ok: true, json: async () => ({ success: true }) };
@@ -197,7 +243,7 @@ describe("handleLeadRequest", () => {
     assert.equal(flags.code, "notify_not_implemented");
     const result = await handleLeadRequest(freeAnalysis, {
       env: {
-        TURNSTILE_SECRET_KEY: "server-secret",
+        TURNSTILE_SECRET: "server-secret",
         LEAD_NOTIFY_SLACK: "true",
         LEAD_NOTIFY_EMAIL: "true",
       },

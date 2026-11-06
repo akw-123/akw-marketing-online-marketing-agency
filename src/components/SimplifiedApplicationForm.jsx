@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { LEAD_CAPTURE_UNAVAILABLE } from "@/lib/previewLeadCapture";
+import TurnstileWidget from "@/components/TurnstileWidget";
 
 const inputClass =
   "w-full px-4 py-3 rounded-lg border border-stone-300 bg-white text-stone-900 text-sm focus:outline-none focus:border-[#85b6e9] focus:ring-1 focus:ring-[#85b6e9] transition-colors";
@@ -41,7 +42,7 @@ export default function SimplifiedApplicationForm() {
     <form onSubmit={handleSubmit} className="space-y-8">
       <input
         type="text"
-        name="company_url_confirm"
+        name="honeypot"
         tabIndex={-1}
         autoComplete="off"
         aria-hidden="true"
@@ -79,6 +80,7 @@ export default function SimplifiedApplicationForm() {
         By clicking "Submit" you agree to receive marketing communications from AKW Marketing via email, phone, and/or SMS. You can unsubscribe at any time by clicking the unsubscribe link in our emails or by contacting us.
       </p>
 
+      <TurnstileWidget />
       {/* Submit */}
       <button
         type="submit"

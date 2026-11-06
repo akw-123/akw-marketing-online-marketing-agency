@@ -2,5 +2,5 @@
 # change remote tables. Do not run supabase db push from this phase.
 project_id = "hzllfwqnsiirlwacaitt"
 
-[functions.lead-intake]
+[functions.website-lead-capture]
 verify_jwt = false

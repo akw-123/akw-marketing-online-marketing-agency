@@ -1,7 +1,5 @@
 /**
- * HTTP adapter for lead intake. Not deployed by this change.
- * Persistence and notifications are implemented in leadIntake.mjs and both
- * refuse to save or send.
+ * HTTP adapter. Not deployed. Does not save a lead or send a notification.
  */
 import { handleLeadRequest, corsHeaders } from "../_shared/leadIntake.mjs";
 
@@ -36,7 +34,8 @@ Deno.serve(async (req) => {
 
   const result = await handleLeadRequest(body, {
     env: {
-      TURNSTILE_SECRET_KEY: Deno.env.get("TURNSTILE_SECRET_KEY") ?? "",
+      TURNSTILE_SECRET: Deno.env.get("TURNSTILE_SECRET") ?? "",
+      TURNSTILE_HOSTNAMES: Deno.env.get("TURNSTILE_HOSTNAMES") ?? "",
       LEAD_NOTIFY_SLACK: Deno.env.get("LEAD_NOTIFY_SLACK") ?? "",
       LEAD_NOTIFY_EMAIL: Deno.env.get("LEAD_NOTIFY_EMAIL") ?? "",
     },

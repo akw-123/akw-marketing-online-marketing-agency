@@ -65,9 +65,9 @@ To refresh on purpose, run `npm run blog:refresh`, review the diff, and commit i
 
 ## Lead forms
 
-`/free-analysis` and the form on `/gbp` still do not POST. Submit shows that this preview cannot store the application. Newsletter and tip forms still POST to the existing Make.com webhook only.
+`/free-analysis` and the form on `/gbp` still do not POST. Submit shows that this preview cannot store the application. The Turnstile widget renders only on `akwmarketing.pages.dev`. Newsletter and tip forms still POST to the existing Make.com webhook only.
 
-`supabase/functions/lead-intake` can validate those two forms, reject a honeypot, and call Cloudflare Turnstile siteverify when `TURNSTILE_SECRET_KEY` is set. It does not write a CRM row and does not send Slack or email. The CRM table and RPC are not in this repo yet. `base44/entities/StrategyApplication.jsonc` is the old Base44 shape, not the Supabase contract.
+`supabase/functions/website-lead-capture` validates the brief's request shape (`source`, `payload`, `cf-turnstile-response`, `honeypot`) and calls Turnstile siteverify when `TURNSTILE_SECRET` is set. Siteverify must return hostname `akwmarketing.pages.dev`. It does not insert a row. Live schema access is not available, so hypothesis A (a new website-lead table) and hypothesis B (`crm_lead` plus contact rows) are recorded as unverified. Documented `crm_*` names are not treated as confirmed columns. `prospects` is not a write target. Slack `#inbound-alerts` `C0BJZD8LNPM` is the intended channel and is not posted to. Mail transport is unset: Resend, SMTP, and Gmail are noted options, and `LEAD_NOTIFY_EMAIL_TO` must be taken from vault contact `3289329` at deploy time. `base44/entities/StrategyApplication.jsonc` is the old Base44 shape, not the Supabase contract.
 
 ## Pre-render and sitemap
 

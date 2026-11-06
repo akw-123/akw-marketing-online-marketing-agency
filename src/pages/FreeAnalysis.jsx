@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LEAD_CAPTURE_UNAVAILABLE } from "@/lib/previewLeadCapture";
+import TurnstileWidget from "@/components/TurnstileWidget";
 
 const faqs = [
   {
@@ -124,7 +125,7 @@ export default function FreeAnalysis() {
             <form onSubmit={handleSubmit} className="space-y-1">
                 <input
                   type="text"
-                  name="company_url_confirm"
+                  name="honeypot"
                   tabIndex={-1}
                   autoComplete="off"
                   aria-hidden="true"
@@ -212,6 +213,7 @@ export default function FreeAnalysis() {
                   </div>
                 </div>
 
+                <TurnstileWidget />
                 <div className="pt-4">
                   <button
                     type="submit"
