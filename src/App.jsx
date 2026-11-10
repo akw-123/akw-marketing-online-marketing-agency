@@ -33,6 +33,8 @@ import WebsiteDesignKitchener from './pages/WebsiteDesignKitchener';
 import ContentMarketingKitchener from './pages/ContentMarketingKitchener';
 import NoIndexRedirect from './components/NoIndexRedirect';
 import { canonicalUrl } from '@/lib/canonicalPath';
+import { applySocialMeta, socialImageUrl, socialType } from '@/lib/socialMeta';
+import { getPublishedPost } from '@/data/blog';
 import Dashboard from './pages/Dashboard';
 import HardestWorkingSeoExpert from './pages/HardestWorkingSeoExpert';
 import HardestWorkingMarketingAgency from './pages/HardestWorkingMarketingAgency';
@@ -56,10 +58,28 @@ const CanonicalUpdater = () => {
   return null;
 };
 
+/** Runs after the page title and description effects because it wraps the routes. */
+const SocialMeta = ({ children }) => {
+  const location = useLocation();
+  React.useEffect(() => {
+    const slug = location.pathname.match(/^\/blog\/([a-z0-9-]+)\/?$/)?.[1] || "";
+    const post = slug ? getPublishedPost(slug) : null;
+    applySocialMeta(document, {
+      title: document.title,
+      description: document.querySelector('meta[name="description"]')?.getAttribute("content") || "",
+      url: canonicalUrl(location.pathname),
+      image: socialImageUrl(post?.cover_image_url),
+      type: socialType(location.pathname),
+    });
+  }, [location.pathname]);
+  return children;
+};
+
 export const PublicApp = () => {
   return (
     <>
     <CanonicalUpdater />
+    <SocialMeta>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/landing" element={<NoIndexRedirect to="/" />} />
@@ -106,6 +126,7 @@ export const PublicApp = () => {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
+    </SocialMeta>
     </>
   );
 };
