@@ -17,7 +17,7 @@ function BlogNavbar() {
           />
           <span className="text-lg font-semibold tracking-tight text-stone-900">AKW Marketing</span>
         </a>
-        <a href="https://akwmarketing.com/landing">
+        <a href="https://www.akwmarketing.com/landing">
           <Button className="bg-stone-900 hover:bg-stone-800 text-white rounded-full px-5 h-9 text-sm font-medium">
             Sign Up
           </Button>

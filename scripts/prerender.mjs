@@ -10,7 +10,8 @@
  * Head tags come from the existing page effects (titles, descriptions, JSON-LD,
  * canonical). Open Graph and Twitter tags are written from those values.
  * Nothing new is added to schema or copy here.
- * Preview noindex (meta, _headers, robots.txt) stays in place.
+ * Pages have no global robots noindex meta. _headers noindexes *.pages.dev only.
+ * robots.txt allows crawling and points the sitemap at www.
  *
  * Chrome is not required. Cloudflare Pages builds do not have a browser.
  */
@@ -22,12 +23,12 @@ import { pathToFileURL } from "node:url";
 import { fileURLToPath } from "node:url";
 import { build } from "vite";
 import { Window } from "happy-dom";
-import { canonicalUrl } from "../src/lib/canonicalPath.js";
+import { CANONICAL_ORIGIN, canonicalUrl } from "../src/lib/canonicalPath.js";
 import { socialEntries, socialImageUrl, socialType } from "../src/lib/socialMeta.js";
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = path.join(rootDir, "dist");
-const SITE = "https://akwmarketing.com";
+const SITE = CANONICAL_ORIGIN;
 const SHELL_TITLE = "AKW Marketing | Online Marketing Agency";
 
 /** Public routes from src/App.jsx, excluding client redirects (/landing, /Landing). */
@@ -431,7 +432,7 @@ function assertSitemap(xml, posts) {
   }
   for (const loc of locs) {
     if (!expected.has(loc)) throw new Error(`Unexpected sitemap URL ${loc}`);
-    if (!/^https:\/\/akwmarketing\.com\/[A-Za-z0-9/-]*$/.test(loc) && loc !== `${SITE}/`) {
+    if (!/^https:\/\/www\.akwmarketing\.com\/[A-Za-z0-9/-]*$/.test(loc) && loc !== `${SITE}/`) {
       throw new Error(`Sitemap URL is not a site path: ${loc}`);
     }
   }
@@ -484,8 +485,8 @@ function assertSocialHtml(route, html, fields) {
 
 function assertPage(route, html, shell, posts) {
   const problems = [];
-  if (!html.includes('meta name="robots" content="noindex"')) {
-    problems.push("preview noindex meta missing");
+  if (/<meta name="robots" content="[^"]*noindex/i.test(html)) {
+    problems.push("global noindex robots meta is present");
   }
   if (!html.includes(shell.asset)) problems.push(`missing SPA bundle ${shell.asset}`);
   if (!html.includes(shell.css)) problems.push(`missing CSS ${shell.css}`);
@@ -647,8 +648,8 @@ async function main() {
       const ogType = socialType(route);
       assertOgAsset(route, ogImage);
       const head = await readHead(route, shell, create, act, React, PrerenderApp, cover);
-      if (!head.robots.includes("noindex")) {
-        throw new Error(`${route} lost the preview noindex robots meta (${head.robots}).`);
+      if (head.robots.toLowerCase().includes("noindex")) {
+        throw new Error(`${route} still emits a noindex robots meta (${head.robots}).`);
       }
       if (head.canonical !== canonicalFor(route)) {
         throw new Error(`${route} canonical from the page effect is ${head.canonical}, expected ${canonicalFor(route)}`);
@@ -672,11 +673,32 @@ async function main() {
   await writeFile(path.join(distDir, "sitemap.xml"), sitemap);
   const headers = await readFile(path.join(distDir, "_headers"), "utf8");
   const robots = await readFile(path.join(distDir, "robots.txt"), "utf8");
-  if (!headers.includes("X-Robots-Tag: noindex") || !headers.includes("/sitemap.xml")) {
-    throw new Error("dist/_headers lost preview noindex or the sitemap content type.");
+  const redirects = await readFile(path.join(distDir, "_redirects"), "utf8");
+  if (!headers.includes("https://:project.pages.dev/*") || !headers.includes("X-Robots-Tag: noindex")) {
+    throw new Error("dist/_headers lost the pages.dev noindex rule.");
   }
-  if (!robots.includes("Disallow: /")) {
-    throw new Error("dist/robots.txt no longer disallows crawlers.");
+  if (!headers.includes("https://:preview.:project.pages.dev/*")) {
+    throw new Error("dist/_headers does not noindex preview hostnames under *.pages.dev.");
+  }
+  if (/(^|\n)\/\*/.test(headers)) {
+    throw new Error("dist/_headers still applies a global /* rule.");
+  }
+  if (headers.includes("www.akwmarketing.com") && /www\.akwmarketing\.com\/\*[\s\S]*X-Robots-Tag:\s*noindex/.test(headers)) {
+    throw new Error("dist/_headers noindexes the www canonical host.");
+  }
+  if (!headers.includes("/sitemap.xml") || !headers.includes("Content-Type: application/xml; charset=utf-8")) {
+    throw new Error("dist/_headers lost the sitemap content type.");
+  }
+  if (robots.includes("Disallow: /")) {
+    throw new Error("dist/robots.txt still disallows crawlers.");
+  }
+  if (!robots.includes("Allow: /") || !robots.includes(`Sitemap: ${SITE}/sitemap.xml`)) {
+    throw new Error("dist/robots.txt must allow crawling and point Sitemap at www.");
+  }
+  for (const rule of ["/landing / 301", "/Landing / 301"]) {
+    if (!redirects.includes(rule)) {
+      throw new Error(`dist/_redirects is missing ${rule}.`);
+    }
   }
   console.log(`sitemap.xml  ${SITEMAP_STATIC.length + posts.length} URLs  (${posts.length} blog posts)`);
 }

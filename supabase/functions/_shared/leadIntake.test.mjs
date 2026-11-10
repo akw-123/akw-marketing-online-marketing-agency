@@ -1,11 +1,20 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import {
+  CANONICAL_ORIGIN,
+  canonicalUrl,
+} from "../../../src/lib/canonicalPath.js";
 import {
   DEFAULT_LEAD_CAPTURE_URL,
   HONEYPOT_FIELD as CLIENT_HONEYPOT,
+  TURNSTILE_HOSTNAMES as CLIENT_TURNSTILE_HOSTNAMES,
   TURNSTILE_SITE_KEY as CLIENT_SITE_KEY,
   buildLeadRequest,
   resolveLeadCaptureUrl,
+  turnstileAllowedHost,
 } from "../../../src/lib/leadCaptureContract.js";
 import {
   LEAD_CAPTURE_FAILED,
@@ -14,8 +23,9 @@ import {
   submitLeadCapture,
 } from "../../../src/lib/previewLeadCapture.js";
 import {
-  ALLOWED_ORIGIN,
+  ALLOWED_ORIGINS,
   CRM_SCHEMA,
+  DEFAULT_TURNSTILE_HOSTNAMES,
   FORM_FIELDS,
   HONEYPOT_FIELD,
   GMAIL_SEND_URL,
@@ -27,8 +37,10 @@ import {
   TURNSTILE_SITEVERIFY_URL,
   TURNSTILE_SITE_KEY,
   buildLeadInsert,
+  corsHeaders,
   dispatchNotifications,
   handleLeadRequest,
+  isAllowedOrigin,
   normalizePhoneE164,
   persistLead,
   planEmailNotification,
@@ -37,9 +49,16 @@ import {
   sendLeadAlertViaSlack,
   postSlackWebhook,
   slackInboundPayload,
+  turnstileHostnames,
   validateLead,
   verifyTurnstile,
 } from "./leadIntake.mjs";
+
+const LEAD_HOSTS = [
+  "www.akwmarketing.com",
+  "akwmarketing.com",
+  "akwmarketing.pages.dev",
+];
 
 const freeFields = {
   full_name: "Ada Lovelace",
@@ -217,6 +236,22 @@ describe("verifyTurnstile", () => {
       fetchImpl,
     });
     assert.equal(result.code, "turnstile_hostname");
+  });
+
+  it("accepts the www, apex, and pages.dev hostnames by default", async () => {
+    assert.deepEqual(DEFAULT_TURNSTILE_HOSTNAMES, LEAD_HOSTS);
+    assert.deepEqual(turnstileHostnames({}), LEAD_HOSTS);
+    assert.deepEqual(turnstileHostnames({ TURNSTILE_HOSTNAMES: "  " }), LEAD_HOSTS);
+    assert.deepEqual(turnstileHostnames({ TURNSTILE_HOSTNAMES: "only.example" }), ["only.example"]);
+    for (const hostname of LEAD_HOSTS) {
+      const { fetchImpl } = siteverifyFetch(true, hostname);
+      const result = await verifyTurnstile({
+        token: "token-ok",
+        secret: "server-secret",
+        fetchImpl,
+      });
+      assert.equal(result.ok, true, hostname);
+    }
   });
 
   it("fails closed when siteverify says the token is bad", async () => {
@@ -666,11 +701,61 @@ describe("handleLeadRequest", () => {
     assert.equal(called, false);
   });
 
-  it("allows only the Pages preview origin", () => {
-    assert.equal(
-      ALLOWED_ORIGIN,
-      "https://akwmarketing.pages.dev",
+  it("allows www, the apex, and the pages.dev origin", () => {
+    assert.deepEqual(
+      ALLOWED_ORIGINS,
+      LEAD_HOSTS.map((host) => `https://${host}`),
     );
+    for (const origin of ALLOWED_ORIGINS) {
+      assert.equal(isAllowedOrigin(origin), true);
+      const headers = corsHeaders(origin);
+      assert.equal(headers["access-control-allow-origin"], origin);
+      assert.equal(headers.vary, "origin");
+    }
+    assert.equal(isAllowedOrigin("https://evil.example"), false);
+    assert.equal(isAllowedOrigin(null), false);
+    assert.deepEqual(corsHeaders("https://evil.example"), {});
+    assert.deepEqual(corsHeaders("https://www.akwmarketing.com.evil.example"), {});
+  });
+});
+
+describe("browser host allowlist and canonical host", () => {
+  it("renders Turnstile on the same three hosts and not on localhost", () => {
+    assert.deepEqual(CLIENT_TURNSTILE_HOSTNAMES, LEAD_HOSTS);
+    for (const hostname of LEAD_HOSTS) {
+      assert.equal(turnstileAllowedHost(hostname), true);
+    }
+    assert.equal(turnstileAllowedHost("localhost"), false);
+    assert.equal(turnstileAllowedHost("www.akwmarketing.com.evil.example"), false);
+  });
+
+  it("emits www as the canonical origin", () => {
+    assert.equal(CANONICAL_ORIGIN, "https://www.akwmarketing.com");
+    assert.equal(canonicalUrl("/"), "https://www.akwmarketing.com/");
+    assert.equal(canonicalUrl("/Home"), "https://www.akwmarketing.com/");
+    assert.equal(canonicalUrl("/kitchener/"), "https://www.akwmarketing.com/kitchener");
+  });
+
+  it("scopes noindex to pages.dev and allows crawling in robots.txt", () => {
+    const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
+    const headers = readFileSync(`${root}/public/_headers`, "utf8");
+    const robots = readFileSync(`${root}/public/robots.txt`, "utf8");
+    const redirects = readFileSync(`${root}/public/_redirects`, "utf8");
+    const shell = readFileSync(`${root}/index.html`, "utf8");
+    const edge = readFileSync(`${root}/supabase/functions/website-lead-capture/index.ts`, "utf8");
+    assert.match(headers, /https:\/\/:project\.pages\.dev\/\*/);
+    assert.match(headers, /https:\/\/:preview\.:project\.pages\.dev\/\*/);
+    assert.match(headers, /X-Robots-Tag: noindex/);
+    assert.doesNotMatch(headers, /(^|\n)\/\*/);
+    assert.doesNotMatch(shell, /<meta name="robots" content="[^"]*noindex/i);
+    assert.match(shell, /rel="canonical" href="https:\/\/www\.akwmarketing\.com"/);
+    assert.match(robots, /Allow: \//);
+    assert.doesNotMatch(robots, /Disallow: \//);
+    assert.match(robots, /Sitemap: https:\/\/www\.akwmarketing\.com\/sitemap\.xml/);
+    assert.match(redirects, /\/landing \/ 301/);
+    assert.match(redirects, /\/Landing \/ 301/);
+    assert.match(edge, /isAllowedOrigin\(origin\)/);
+    assert.doesNotMatch(edge, /akwmarketing\.pages\.dev/);
   });
 });
 
