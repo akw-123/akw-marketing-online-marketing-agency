@@ -288,6 +288,19 @@ function bodyOf(call) {
   return JSON.parse(call.init.body);
 }
 
+async function capturePersistLogs(run) {
+  const errors = [];
+  const original = console.error;
+  console.error = (...args) => {
+    errors.push(args.map((part) => String(part)).join(" "));
+  };
+  try {
+    return { result: await run(), errors };
+  } finally {
+    console.error = original;
+  }
+}
+
 describe("persistLead", () => {
   it("normalizes a 10-digit North American number and skips the rest", () => {
     assert.equal(normalizePhoneE164("(519) 555-0100"), "+15195550100");
@@ -304,7 +317,7 @@ describe("persistLead", () => {
     assert.equal(rows.lead.source, "website:free-analysis");
     assert.equal(rows.lead.name, "Analytical Engines");
     assert.equal(rows.lead.website, "https://example.com");
-    assert.equal(rows.lead.domain, "example.com");
+    assert.equal("domain" in rows.lead, false);
     assert.equal(rows.lead.emailable, true);
     assert.equal(rows.lead.callable, true);
     assert.equal(rows.lead.custom.timeline, "Today");
@@ -317,7 +330,7 @@ describe("persistLead", () => {
     assert.equal(JSON.stringify(rows).includes("prospects"), false);
   });
 
-  it("strips www and stores a gbp phone as E.164", () => {
+  it("keeps the website and stores a gbp phone as E.164", () => {
     const lead = validateLead(envelope("gbp", {
       ...gbpFields,
       phone: "5195550100",
@@ -326,7 +339,8 @@ describe("persistLead", () => {
     })).lead;
     const rows = buildLeadInsert(lead);
     assert.equal(rows.lead.source, "website:gbp");
-    assert.equal(rows.lead.domain, "example.com");
+    assert.equal(rows.lead.website, "https://www.Example.com/about");
+    assert.equal("domain" in rows.lead, false);
     assert.equal(rows.lead.custom.form_path, "/gbp");
     assert.equal(rows.lead.custom.gbp_link, "https://maps.example.com/gbp");
     assert.equal(rows.contact.name, "Ada Lovelace");
@@ -348,6 +362,9 @@ describe("persistLead", () => {
     const leadCall = posted(calls, "crm_lead")[0];
     assert.equal(leadCall.init.headers.authorization, "Bearer service-role-test");
     assert.equal(leadCall.init.headers.apikey, "service-role-test");
+    const leadBody = bodyOf(leadCall);
+    assert.equal("domain" in leadBody, false);
+    assert.equal(leadBody.website, "https://example.com");
     assert.equal(bodyOf(posted(calls, "crm_contact")[0]).lead_id, LEAD_ID);
     const patch = calls.find((call) => call.init.method === "PATCH");
     assert.deepEqual(bodyOf(patch), { emailable: true, callable: true });
@@ -385,13 +402,92 @@ describe("persistLead", () => {
 
   it("deletes the lead and hides database text when the contact insert fails", async () => {
     const { fetchImpl, calls } = crmFetch({ contactStatus: 500 });
-    const saved = await persistLead(validateLead(freeAnalysis).lead, {
+    const { result: saved, errors } = await capturePersistLogs(() => persistLead(validateLead(freeAnalysis).lead, {
       env: STORE_ENV,
       fetchImpl,
-    });
+    }));
     assert.deepEqual(saved, { ok: false, stored: false, code: "store_failed" });
     assert.equal(calls.some((call) => call.init.method === "DELETE" && call.url.includes(LEAD_ID)), true);
     assert.equal(JSON.stringify(saved).includes("secret-leak"), false);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /step=crm_contact/);
+    assert.match(errors[0], /status=500/);
+    assert.equal(errors[0].includes("service-role-test"), false);
+    assert.equal(errors[0].includes("ada@example.com"), false);
+  });
+
+  it("omits domain from every CRM insert body", async () => {
+    const { fetchImpl, calls } = crmFetch();
+    const lead = validateLead(envelope("gbp", {
+      ...gbpFields,
+      phone: "5195550100",
+      website: "https://www.Example.com/about",
+      gbp_link: "https://maps.example.com/gbp",
+    })).lead;
+    const saved = await persistLead(lead, { env: STORE_ENV, fetchImpl });
+    assert.equal(saved.stored, true);
+    const bodies = [
+      bodyOf(posted(calls, "crm_lead")[0]),
+      bodyOf(posted(calls, "crm_contact")[0]),
+      bodyOf(posted(calls, "crm_contact_email")[0]),
+      bodyOf(posted(calls, "crm_contact_phone")[0]),
+    ];
+    for (const body of bodies) {
+      assert.equal("domain" in body, false);
+      assert.equal(JSON.stringify(body).includes('"domain"'), false);
+    }
+    assert.deepEqual(Object.keys(bodies[0]).sort(), [
+      "callable",
+      "custom",
+      "emailable",
+      "name",
+      "org_id",
+      "source",
+      "status_id",
+      "website",
+    ]);
+    assert.equal(bodies[0].website, "https://www.Example.com/about");
+    assert.deepEqual(Object.keys(bodies[1]).sort(), ["custom", "lead_id", "name", "org_id"]);
+    assert.deepEqual(Object.keys(bodies[2]).sort(), ["bounced", "contact_id", "email", "org_id", "unsubscribed"]);
+    assert.deepEqual(Object.keys(bodies[3]).sort(), [
+      "contact_id",
+      "dnc",
+      "org_id",
+      "phone_e164",
+      "sms_consent",
+      "sms_optout",
+    ]);
+  });
+
+  it("logs PostgREST status and error code when the lead insert fails", async () => {
+    const fetchImpl = async (url, init) => {
+      const path = new URL(String(url)).pathname;
+      if (init && init.method === "POST" && path.endsWith("/crm_lead")) {
+        return jsonResponse(400, {
+          code: "428C9",
+          message: 'cannot insert a non-DEFAULT value into column "domain"',
+          details: "Key (email)=(ada@example.com)",
+          hint: "omit generated column",
+        });
+      }
+      return jsonResponse(500, { message: "unexpected" });
+    };
+    const { result: saved, errors } = await capturePersistLogs(() => persistLead(
+      validateLead(freeAnalysis).lead,
+      { env: STORE_ENV, fetchImpl },
+    ));
+    assert.deepEqual(saved, { ok: false, stored: false, code: "store_failed" });
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /step=crm_lead/);
+    assert.match(errors[0], /status=400/);
+    assert.match(errors[0], /code=428C9/);
+    assert.match(errors[0], /cannot insert a non-DEFAULT value into column "domain"/);
+    assert.equal(errors[0].includes("ada@example.com"), false);
+    assert.equal(errors[0].includes("omit generated column"), false);
+    assert.equal(errors[0].includes("service-role-test"), false);
+    assert.equal(errors[0].includes("Analytical Engines"), false);
+    assert.equal(errors[0].includes("https://example.com"), false);
+    assert.equal(JSON.stringify(saved).includes("428C9"), false);
   });
 
   it("does not call the database when the service role is missing", async () => {
@@ -496,15 +592,20 @@ describe("handleLeadRequest", () => {
 
   it("returns 500 without database text when the insert fails", async () => {
     const { fetchImpl } = crmFetch({ leadStatus: 500 });
-    const result = await handleLeadRequest(freeAnalysis, {
+    const { result, errors } = await capturePersistLogs(() => handleLeadRequest(freeAnalysis, {
       env: STORE_ENV,
       fetchImpl,
-    });
+    }));
     assert.equal(result.status, 500);
     assert.equal(result.body.stored, false);
     assert.equal(result.body.ok, false);
     assert.equal(JSON.stringify(result.body).includes("secret-leak"), false);
     assert.equal(JSON.stringify(result.body).includes("duplicate"), false);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /step=crm_lead/);
+    assert.match(errors[0], /status=500/);
+    assert.equal(errors[0].includes("service-role-test"), false);
+    assert.equal(errors[0].includes(freeFields.email), false);
   });
 
   it("stops before siteverify when the honeypot is filled", async () => {
