@@ -1,10 +1,20 @@
-# Phase 1 preview only. Remove this file before any production DNS cutover.
-# *.pages.dev already sends X-Robots-Tag: noindex. These rules make noindex explicit
-# on every static response from this build, including prerendered HTML and sitemap.xml.
-/*
-  X-Robots-Tag: noindex
+# www.akwmarketing.com is the canonical host and is indexable.
+# The bare domain 301s to www outside this repo.
+# robots.txt is shared by every host, so it allows crawling. pages.dev stays
+# out of the index because these rules are host-scoped.
+#
+# Cloudflare Pages _headers: a placeholder (:name) matches one host label,
+# and a URL may contain only one splat. Docs:
+# https://developers.cloudflare.com/pages/configuration/headers/
+# https://akwmarketing.pages.dev/*  ->  https://:project.pages.dev/*
+# https://<id>.akwmarketing.pages.dev/*  ->  https://:preview.:project.pages.dev/*
+# Preview deployment URLs also get X-Robots-Tag: noindex from Pages itself.
 
-# A more specific rule replaces the wildcard for this path, so noindex is repeated.
 /sitemap.xml
   Content-Type: application/xml; charset=utf-8
+
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:preview.:project.pages.dev/*
   X-Robots-Tag: noindex

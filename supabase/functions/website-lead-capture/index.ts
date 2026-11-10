@@ -3,7 +3,7 @@
  * Saves a lead when SUPABASE_URL and the service role key are set.
  * Slack and email send only when their flags are true and the matching secret is set.
  */
-import { handleLeadRequest, corsHeaders } from "../_shared/leadIntake.mjs";
+import { handleLeadRequest, corsHeaders, isAllowedOrigin } from "../_shared/leadIntake.mjs";
 
 function json(body: unknown, status: number, origin: string | null) {
   return new Response(JSON.stringify(body), {
@@ -23,7 +23,7 @@ Deno.serve(async (req) => {
   if (req.method !== "POST") {
     return json({ ok: false, stored: false, notified: false, code: "method_not_allowed" }, 405, origin);
   }
-  if (origin !== "https://akwmarketing.pages.dev") {
+  if (!isAllowedOrigin(origin)) {
     return json({ ok: false, stored: false, notified: false, code: "origin" }, 403, origin);
   }
 

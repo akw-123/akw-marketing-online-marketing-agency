@@ -10,7 +10,7 @@ import {
 } from "./leadCaptureContract.js";
 
 export const LEAD_CAPTURE_UNAVAILABLE =
-  "This preview cannot submit applications yet. Lead capture moves to Supabase in Phase 1.2. Use akwmarketing.com to send this form today.";
+  "This form is unavailable right now. Email contact@akwmarketing.com and we will follow up.";
 
 export const LEAD_CAPTURE_FAILED =
   "We could not save this request. Please try again later.";

@@ -11,14 +11,27 @@
 
 export const TURNSTILE_SITEVERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
-export const ALLOWED_ORIGIN = "https://akwmarketing.pages.dev";
+/** Browser origins that may call the lead function. */
+export const ALLOWED_ORIGINS = [
+  "https://www.akwmarketing.com",
+  "https://akwmarketing.com",
+  "https://akwmarketing.pages.dev",
+];
 
-/** Public site key. Hostname-locked to akwmarketing.pages.dev. Not a secret. */
+export function isAllowedOrigin(origin) {
+  return typeof origin === "string" && ALLOWED_ORIGINS.includes(origin);
+}
+
+/** Public site key. Not a secret. Hostname checks use DEFAULT_TURNSTILE_HOSTNAMES. */
 export const TURNSTILE_SITE_KEY = "0x4AAAAAAF1rkRiBjPcPH2DU";
 
 export const HONEYPOT_FIELD = "honeypot";
 export const TURNSTILE_TOKEN_FIELD = "cf-turnstile-response";
-export const DEFAULT_TURNSTILE_HOSTNAME = "akwmarketing.pages.dev";
+export const DEFAULT_TURNSTILE_HOSTNAMES = [
+  "www.akwmarketing.com",
+  "akwmarketing.com",
+  "akwmarketing.pages.dev",
+];
 
 /**
  * Slack #inbound-alerts was live-checked as a private, unarchived channel.
@@ -355,8 +368,9 @@ export function turnstileSecret(env = {}) {
 }
 
 export function turnstileHostnames(env = {}) {
-  const raw = env.TURNSTILE_HOSTNAMES || DEFAULT_TURNSTILE_HOSTNAME;
-  return String(raw).split(",").map((item) => item.trim()).filter(Boolean);
+  const raw = env.TURNSTILE_HOSTNAMES;
+  if (typeof raw !== "string" || raw.trim() === "") return [...DEFAULT_TURNSTILE_HOSTNAMES];
+  return raw.split(",").map((item) => item.trim()).filter(Boolean);
 }
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -712,7 +726,7 @@ export async function verifyTurnstile({ token, secret, remoteIp, fetchImpl, host
   if (!payload || payload.success !== true) {
     return { ok: false, code: "turnstile_failed" };
   }
-  const allowed = new Set(hostnames && hostnames.length ? hostnames : [DEFAULT_TURNSTILE_HOSTNAME]);
+  const allowed = new Set(hostnames && hostnames.length ? hostnames : DEFAULT_TURNSTILE_HOSTNAMES);
   if (!allowed.has(payload.hostname)) {
     return { ok: false, code: "turnstile_hostname" };
   }
@@ -720,9 +734,9 @@ export async function verifyTurnstile({ token, secret, remoteIp, fetchImpl, host
 }
 
 export function corsHeaders(origin) {
-  if (origin !== ALLOWED_ORIGIN) return {};
+  if (!isAllowedOrigin(origin)) return {};
   return {
-    "access-control-allow-origin": ALLOWED_ORIGIN,
+    "access-control-allow-origin": origin,
     "access-control-allow-methods": "POST, OPTIONS",
     "access-control-allow-headers": "content-type",
     vary: "origin",

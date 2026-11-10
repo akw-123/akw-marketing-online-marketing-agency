@@ -1,9 +1,9 @@
-import { canonicalPath } from "./canonicalPath.js";
+import { CANONICAL_ORIGIN, canonicalPath } from "./canonicalPath.js";
 
 export const OG_SITE_NAME = "AKW Marketing";
 
 /** Existing public asset. Blog posts ship with an empty cover_image_url. */
-export const DEFAULT_OG_IMAGE = "https://akwmarketing.com/assets/hero-1570675559675.jpeg";
+export const DEFAULT_OG_IMAGE = `${CANONICAL_ORIGIN}/assets/hero-1570675559675.jpeg`;
 
 /**
  * Blog posts are articles. Every other public route, including /blog, is a website.
@@ -18,8 +18,8 @@ export function socialType(pathname) {
  */
 export function socialImageUrl(coverImageUrl) {
   const raw = String(coverImageUrl || "").trim();
-  if (raw.startsWith("https://akwmarketing.com/assets/")) return raw;
-  if (raw.startsWith("/assets/")) return `https://akwmarketing.com${raw}`;
+  if (raw.startsWith(`${CANONICAL_ORIGIN}/assets/`)) return raw;
+  if (raw.startsWith("/assets/")) return `${CANONICAL_ORIGIN}${raw}`;
   return DEFAULT_OG_IMAGE;
 }
 

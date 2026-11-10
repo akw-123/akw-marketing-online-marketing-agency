@@ -1,15 +1,20 @@
 /** Public lead-capture values. No secrets. */
 
 export const TURNSTILE_SITE_KEY = "0x4AAAAAAF1rkRiBjPcPH2DU";
-export const TURNSTILE_HOSTNAME = "akwmarketing.pages.dev";
+/** Hosts that may render the widget and whose siteverify hostname is accepted. */
+export const TURNSTILE_HOSTNAMES = [
+  "www.akwmarketing.com",
+  "akwmarketing.com",
+  "akwmarketing.pages.dev",
+];
 export const HONEYPOT_FIELD = "honeypot";
 
-/** Preview production builds use this when VITE_LEAD_CAPTURE_URL is unset. */
+/** Production builds use this when VITE_LEAD_CAPTURE_URL is unset. */
 export const DEFAULT_LEAD_CAPTURE_URL =
   "https://hzllfwqnsiirlwacaitt.supabase.co/functions/v1/website-lead-capture";
 
 export function turnstileAllowedHost(hostname) {
-  return hostname === TURNSTILE_HOSTNAME;
+  return TURNSTILE_HOSTNAMES.includes(hostname);
 }
 
 export function resolveLeadCaptureUrl(envValue, { production = false } = {}) {

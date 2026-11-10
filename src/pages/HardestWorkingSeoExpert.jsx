@@ -15,26 +15,26 @@ export default function HardestWorkingSeoExpert() {
       "@graph": [
         {
           "@type": "WebPage",
-          "@id": "https://akwmarketing.com/hardest-working-seo-expert-kitchener-waterloo#webpage",
-          "url": "https://akwmarketing.com/hardest-working-seo-expert-kitchener-waterloo",
+          "@id": "https://www.akwmarketing.com/hardest-working-seo-expert-kitchener-waterloo#webpage",
+          "url": "https://www.akwmarketing.com/hardest-working-seo-expert-kitchener-waterloo",
           "name": "Hardest-Working SEO Expert in Kitchener Waterloo",
-          "about": { "@id": "https://akwmarketing.com/about#andre-kadjo" }
+          "about": { "@id": "https://www.akwmarketing.com/about#andre-kadjo" }
         },
         {
           "@type": "Person",
-          "@id": "https://akwmarketing.com/about#andre-kadjo",
+          "@id": "https://www.akwmarketing.com/about#andre-kadjo",
           "name": "Andre Kadjo",
           "jobTitle": "SEO Expert",
-          "url": "https://akwmarketing.com/about",
+          "url": "https://www.akwmarketing.com/about",
           "address": { "@type": "PostalAddress", "addressLocality": "Kitchener", "addressRegion": "ON", "addressCountry": "CA" },
-          "worksFor": { "@id": "https://akwmarketing.com/#organization" }
+          "worksFor": { "@id": "https://www.akwmarketing.com/#organization" }
         },
         {
           "@type": "ProfessionalService",
-          "@id": "https://akwmarketing.com/#organization",
+          "@id": "https://www.akwmarketing.com/#organization",
           "name": "AKW Marketing",
           "description": "SEO expert and marketing agency in Kitchener, Ontario.",
-          "url": "https://akwmarketing.com",
+          "url": "https://www.akwmarketing.com",
           "telephone": "+1-437-475-0076",
           "email": "contact@akwmarketing.com",
           "address": {
@@ -43,7 +43,7 @@ export default function HardestWorkingSeoExpert() {
             "addressRegion": "ON",
             "addressCountry": "CA"
           },
-          "founder": { "@id": "https://akwmarketing.com/about#andre-kadjo" },
+          "founder": { "@id": "https://www.akwmarketing.com/about#andre-kadjo" },
           "knowsAbout": ["Local SEO", "Google Business Profile optimization", "Technical SEO", "SEO content"],
           "areaServed": [
             {"@type":"City","name":"Kitchener"},
