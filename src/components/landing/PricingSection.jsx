@@ -53,7 +53,8 @@ const plans = [
   },
 ];
 
-export default function PricingSection() {
+export default function PricingSection({ headingLevel = "h2" }) {
+  const HeadingTag = headingLevel === "h1" ? "h1" : "h2";
   return (
     <section id="pricing" className="py-20 md:py-28 px-6">
       <div className="max-w-7xl mx-auto">
@@ -67,7 +68,7 @@ export default function PricingSection() {
           <span className="inline-flex items-center gap-2 bg-white border border-stone-200 rounded-full px-4 py-1.5 text-xs font-medium text-stone-600 mb-6">
             Packages
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-stone-900 tracking-tight">
+          <HeadingTag className="text-3xl md:text-4xl font-bold text-stone-900 tracking-tight">
             Get{" "}
             <span
               className="italic font-bold"
@@ -75,7 +76,7 @@ export default function PricingSection() {
             >
               more Clients
             </span>
-          </h2>
+          </HeadingTag>
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">

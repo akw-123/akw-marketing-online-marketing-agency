@@ -8,13 +8,14 @@
  * sitemap.xml lists that canonical once, from the committed blog snapshot.
  *
  * Head tags come from the existing page effects (titles, descriptions, JSON-LD,
- * canonical). Nothing new is added to schema or copy here.
+ * canonical). Open Graph and Twitter tags are written from those values.
+ * Nothing new is added to schema or copy here.
  * Preview noindex (meta, _headers, robots.txt) stays in place.
  *
  * Chrome is not required. Cloudflare Pages builds do not have a browser.
  */
 import { spawn } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -22,6 +23,7 @@ import { fileURLToPath } from "node:url";
 import { build } from "vite";
 import { Window } from "happy-dom";
 import { canonicalUrl } from "../src/lib/canonicalPath.js";
+import { socialEntries, socialImageUrl, socialType } from "../src/lib/socialMeta.js";
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = path.join(rootDir, "dist");
@@ -254,7 +256,33 @@ function assertJsonLd(route, scripts) {
   return types;
 }
 
-function stitch(template, { title, description, canonical, ldScripts, appHtml }) {
+function stripSocial(html) {
+  return html.replace(
+    /[ \t]*<meta (?:property="og:[a-z_]+"|name="twitter:[a-z_]+") content="[^"]*"\s*\/>\r?\n?/g,
+    "",
+  );
+}
+
+function renderSocialTags(fields) {
+  return socialEntries(fields)
+    .map(([attr, key, content]) => `<meta ${attr}="${key}" content="${escapeAttr(content)}" />`)
+    .join("\n    ");
+}
+
+function assertOgAsset(route, imageUrl) {
+  const prefix = `${SITE}/assets/`;
+  if (!imageUrl.startsWith(prefix)) {
+    throw new Error(`${route} Open Graph image is not an absolute site asset: ${imageUrl}`);
+  }
+  const rel = imageUrl.slice(prefix.length);
+  if (!/^[A-Za-z0-9._-]+$/.test(rel)) {
+    throw new Error(`${route} Open Graph image is not a public asset file: ${imageUrl}`);
+  }
+  const file = path.join(rootDir, "public", "assets", rel);
+  if (!existsSync(file)) throw new Error(`${route} Open Graph image file is missing: ${file}`);
+}
+
+function stitch(template, { title, description, canonical, ldScripts, appHtml, ogImage, ogType }) {
   let html = template;
   if (!/<div id="root">\s*<\/div>/.test(html)) {
     throw new Error("dist/index.html has no empty #root. Refusing to guess the mount point.");
@@ -266,12 +294,20 @@ function stitch(template, { title, description, canonical, ldScripts, appHtml })
     throw new Error("Could not find the description meta tag in the shell.");
   }
   html = html.replace(/<meta name="description" content="[^"]*"\s*\/>/, descriptionTag);
+  html = stripSocial(html);
   if (!/<link rel="canonical" href="[^"]*"\s*\/>/.test(html)) {
     throw new Error("Could not find the canonical link in the shell.");
   }
+  const social = renderSocialTags({
+    title,
+    description,
+    url: canonical,
+    image: ogImage,
+    type: ogType,
+  });
   html = html.replace(
     /<link rel="canonical" href="[^"]*"\s*\/>/,
-    `<link rel="canonical" href="${escapeAttr(canonical)}" />`,
+    `<link rel="canonical" href="${escapeAttr(canonical)}" />\n    ${social}`,
   );
   html = html.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>\s*/g, "");
   const block = ldScripts.map(serializeLd).join("\n    ");
@@ -285,7 +321,21 @@ function serializeLd(script) {
   return `<script type="application/ld+json"${id}>${json}</script>`;
 }
 
-async function readHead(route, shell, create, act, React, PrerenderApp) {
+function assertSocialDom(route, doc, fields) {
+  const problems = [];
+  for (const [attr, key, content] of socialEntries(fields)) {
+    const matches = [...doc.querySelectorAll("meta")].filter((el) => el.getAttribute(attr) === key);
+    if (matches.length !== 1) {
+      problems.push(`${key} count ${matches.length}`);
+      continue;
+    }
+    const value = matches[0].getAttribute("content") || "";
+    if (value !== content) problems.push(`${key} is ${JSON.stringify(value)}`);
+  }
+  if (problems.length) throw new Error(`${route} social meta: ${problems.join("; ")}`);
+}
+
+async function readHead(route, shell, create, act, React, PrerenderApp, coverImageUrl) {
   const win = new Window({
     url: canonicalFor(route),
     settings: {
@@ -307,6 +357,13 @@ async function readHead(route, shell, create, act, React, PrerenderApp) {
   const robots = win.document.querySelector('meta[name="robots"]')?.getAttribute("content") || "";
   const canonical = win.document.querySelector('link[rel="canonical"]')?.getAttribute("href") || "";
   const ldNodes = [...win.document.querySelectorAll('script[type="application/ld+json"]')];
+  assertSocialDom(route, win.document, {
+    title,
+    description,
+    url: canonical,
+    image: socialImageUrl(coverImageUrl),
+    type: socialType(route),
+  });
   assertJsonLd(route, ldNodes);
   const ldScripts = ldNodes.map((script) => ({
     id: script.id || "",
@@ -400,6 +457,31 @@ function assertSitemap(xml, posts) {
   win.close();
 }
 
+function metaContent(html, attr, key) {
+  const pattern = new RegExp(`<meta ${attr}="${key}" content="([^"]*)"\\s*/>`, "g");
+  const matches = [...html.matchAll(pattern)];
+  return {
+    count: matches.length,
+    value: matches.length === 1 ? decodeHtml(matches[0][1]) : "",
+  };
+}
+
+function assertSocialHtml(route, html, fields) {
+  const problems = [];
+  const required = new Set(["og:title", "og:description", "og:image"]);
+  for (const [attr, key, content] of socialEntries(fields)) {
+    const found = metaContent(html, attr, key);
+    if (found.count !== 1 || !found.value) problems.push(`missing ${key}`);
+    else if (found.value !== content) problems.push(`${key} is ${JSON.stringify(found.value)}`);
+    required.delete(key);
+  }
+  for (const key of required) problems.push(`${route} missing ${key}`);
+  if (!String(fields.image || "").startsWith(`${SITE}/assets/`)) {
+    problems.push("og:image is not an absolute site asset");
+  }
+  return problems;
+}
+
 function assertPage(route, html, shell, posts) {
   const problems = [];
   if (!html.includes('meta name="robots" content="noindex"')) {
@@ -437,7 +519,27 @@ function assertPage(route, html, shell, posts) {
   if (canonical !== canonicalFor(route)) {
     problems.push(`canonical ${canonical} !== ${canonicalFor(route)}`);
   }
-  if (!/<h[12][\s>]/.test(html)) problems.push("no h1 or h2 in the raw HTML");
+  const description = decodeHtml(
+    html.match(/<meta name="description" content="([^"]*)"\s*\/>/)?.[1] ?? "",
+  );
+  const postForImage = posts.find((item) => route === `/blog/${item.slug}`);
+  problems.push(
+    ...assertSocialHtml(route, html, {
+      title,
+      description,
+      url: canonicalFor(route),
+      image: socialImageUrl(postForImage?.cover_image_url),
+      type: socialType(route),
+    }),
+  );
+  if (!/<h1[\s>]/.test(html)) problems.push("no h1 in the raw HTML");
+  const clientsHeading = html.match(/<(h[1-6])\b[^>]*>[\s\S]*?more Clients[\s\S]*?<\/\1>/)?.[1];
+  if (route === "/get-more-clients" && clientsHeading !== "h1") {
+    problems.push("pricing heading is not an h1");
+  }
+  if ((route === "/" || route === "/Home") && clientsHeading !== "h2") {
+    problems.push("homepage pricing heading is not an h2");
+  }
   const root = html.match(/<div id="root">([\s\S]*)<\/div>\s*(?:<script|<\/body>)/);
   if (!root || root[1].trim().length < 200) problems.push("prerendered #root is empty or tiny");
   const expected = EXPECTED[route];
@@ -452,9 +554,6 @@ function assertPage(route, html, shell, posts) {
     if (title !== `${post.title} | AKW Marketing`) problems.push(`post title ${JSON.stringify(title)}`);
     if (!html.includes(post.title)) problems.push("post title not in the body");
     if (html.includes("Post not found.")) problems.push("rendered the not-found state");
-    const description = decodeHtml(
-      html.match(/<meta name="description" content="([^"]*)"\s*\/>/)?.[1] ?? "",
-    );
     const expectedDescription = post.excerpt
       ? post.excerpt
       : `AKW Marketing is the online marketing agency in the Kitchener-Waterloo area that helps local businesses rank higher on Google. ${post.title}`;
@@ -543,7 +642,11 @@ async function main() {
     for (const route of routes) {
       globalThis.document = undefined;
       const appHtml = renderToString(React.createElement(PrerenderApp, { location: route }));
-      const head = await readHead(route, shell, create, act, React, PrerenderApp);
+      const cover = posts.find((item) => route === `/blog/${item.slug}`)?.cover_image_url || "";
+      const ogImage = socialImageUrl(cover);
+      const ogType = socialType(route);
+      assertOgAsset(route, ogImage);
+      const head = await readHead(route, shell, create, act, React, PrerenderApp, cover);
       if (!head.robots.includes("noindex")) {
         throw new Error(`${route} lost the preview noindex robots meta (${head.robots}).`);
       }
@@ -551,7 +654,7 @@ async function main() {
         throw new Error(`${route} canonical from the page effect is ${head.canonical}, expected ${canonicalFor(route)}`);
       }
       if (!head.description) throw new Error(`${route} has an empty meta description`);
-      const html = stitch(shell, { ...head, appHtml });
+      const html = stitch(shell, { ...head, appHtml, ogImage, ogType });
       assertPage(route, html, { asset, css }, posts);
       const files = outputFiles(route);
       for (const dest of files) {
