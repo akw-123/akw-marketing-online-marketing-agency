@@ -8,7 +8,7 @@
     "build": "vite build && node scripts/prerender.mjs",
     "blog:refresh": "node scripts/fetch-blog-posts.mjs",
     "lint": "eslint . --quiet",
-    "test": "node --test supabase/functions/_shared/leadIntake.test.mjs",
+    "test": "node --test supabase/functions/_shared/leadIntake.test.mjs scripts/seo-invariants.test.mjs",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc -p ./jsconfig.json",
     "preview": "vite preview"

@@ -3,7 +3,7 @@
   // Canonical host is https://www.akwmarketing.com (www CNAME to akwmarketing.pages.dev).
   // The bare domain 301 to www is an external HTTPS redirect, not this file.
   // public/_headers sends X-Robots-Tag: noindex only on *.pages.dev.
-  // No Pages Functions. Do not deploy or change DNS from this repo.
+  // functions/BlogPost.js redirects /BlogPost?slug= only. Do not deploy or change DNS from this repo.
   // Dashboard build settings (source of truth for Git deploys):
   //   Build command: npm run build
   //   Build output directory: dist

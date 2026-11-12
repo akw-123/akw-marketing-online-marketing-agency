@@ -107,10 +107,10 @@ export default function KitchenerFooter() {
             <a href="/about" className="text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1">
               About <ArrowUpRight className="w-3 h-3" />
             </a>
-            <a href="/PrivacyPolicy" className="text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1">
+            <a href="/privacy-policy" className="text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1">
               Privacy Policy <ArrowUpRight className="w-3 h-3" />
             </a>
-            <a href="/TermsOfService" className="text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1">
+            <a href="/terms-of-service" className="text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1">
               Terms of Service <ArrowUpRight className="w-3 h-3" />
             </a>
           </div>

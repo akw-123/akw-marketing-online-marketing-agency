@@ -33,6 +33,7 @@ import WebsiteDesignKitchener from './pages/WebsiteDesignKitchener';
 import ContentMarketingKitchener from './pages/ContentMarketingKitchener';
 import NoIndexRedirect from './components/NoIndexRedirect';
 import { canonicalUrl } from '@/lib/canonicalPath';
+import { LEGACY_REDIRECTS } from '@/lib/siteRoutes';
 import { applySocialMeta, socialImageUrl, socialType } from '@/lib/socialMeta';
 import { getPublishedPost } from '@/data/blog';
 import Dashboard from './pages/Dashboard';
@@ -43,6 +44,9 @@ import GetMoreClients from './pages/GetMoreClients';
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
 const MainPage = mainPageKey ? Pages[mainPageKey] : <></>;
+const clientRedirects = LEGACY_REDIRECTS.filter(
+  (entry) => entry.from !== "/landing" && entry.from !== "/Landing",
+);
 
 const LayoutWrapper = ({ children, currentPageName }) => Layout ?
   <Layout currentPageName={currentPageName}>{children}</Layout>
@@ -84,7 +88,7 @@ export const PublicApp = () => {
       <Route path="/" element={<Home />} />
       <Route path="/landing" element={<NoIndexRedirect to="/" />} />
       <Route path="/Landing" element={<NoIndexRedirect to="/" />} />
-      {Object.entries(Pages).map(([path, Page]) => (
+      {Object.entries(Pages).filter(([path]) => path !== "Home").map(([path, Page]) => (
         <Route
           key={path}
           path={`/${path}`}
@@ -95,8 +99,8 @@ export const PublicApp = () => {
           }
         />
       ))}
-      <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
-      <Route path="/TermsOfService" element={<TermsOfService />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/terms-of-service" element={<TermsOfService />} />
       <Route path="/gbp" element={<MetaAds />} />
       <Route path="/kitchener" element={<Kitchener />} />
       <Route path="/seo-services-kitchener" element={<SeoServicesKitchener />} />
@@ -124,6 +128,9 @@ export const PublicApp = () => {
       <Route path="/content-marketing-kitchener" element={<ContentMarketingKitchener />} />
       <Route path="/landing" element={<Navigate to="/" replace />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      {clientRedirects.map((entry) => (
+        <Route key={entry.from} path={entry.from} element={<Navigate to={entry.to} replace />} />
+      ))}
       <Route path="*" element={<PageNotFound />} />
     </Routes>
     </SocialMeta>
