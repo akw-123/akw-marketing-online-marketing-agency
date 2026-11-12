@@ -11,7 +11,9 @@
  * canonical). Open Graph and Twitter tags are written from those values.
  * Nothing new is added to schema or copy here.
  * Pages have no global robots noindex meta. _headers noindexes *.pages.dev only.
+ * /newsletter-thank-you is the exception: noindex, follow, and it is not in the sitemap.
  * robots.txt allows crawling and points the sitemap at www.
+ * Unknown paths are dist/404.html. Do not add a /* /index.html 200 rewrite.
  *
  * Chrome is not required. Cloudflare Pages builds do not have a browser.
  */
@@ -24,93 +26,28 @@ import { fileURLToPath } from "node:url";
 import { build } from "vite";
 import { Window } from "happy-dom";
 import { CANONICAL_ORIGIN, canonicalUrl } from "../src/lib/canonicalPath.js";
+import {
+  INDEXNOW_KEY,
+  NOINDEX_ROBOTS,
+  PRERENDER_PATHS,
+  SITEMAP_PAGES,
+  blogLastmod,
+  isNoindexRoute,
+  renderRedirects,
+} from "../src/lib/siteRoutes.js";
 import { socialEntries, socialImageUrl, socialType } from "../src/lib/socialMeta.js";
+import { pageLastmod } from "./pageLastmod.mjs";
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = path.join(rootDir, "dist");
 const SITE = CANONICAL_ORIGIN;
 const SHELL_TITLE = "AKW Marketing | Online Marketing Agency";
 
-/** Public routes from src/App.jsx, excluding client redirects (/landing, /Landing). */
-const PAGE_ROUTES = [
-  "/",
-  "/Home",
-  "/PrivacyPolicy",
-  "/TermsOfService",
-  "/gbp",
-  "/kitchener",
-  "/seo-services-kitchener",
-  "/waterloo",
-  "/google-ads-kitchener",
-  "/meta-ads-kitchener",
-  "/local-seo-kitchener",
-  "/cambridge",
-  "/guelph",
-  "/hamilton",
-  "/burlington",
-  "/brantford",
-  "/stratford",
-  "/newsletter",
-  "/newsletter-thank-you",
-  "/gbp-three-free",
-  "/blog",
-  "/free-analysis",
-  "/about",
-  "/hardest-working-seo-expert-kitchener-waterloo",
-  "/hardest-working-marketing-agency-kitchener-waterloo",
-  "/get-more-clients",
-  "/website-design-kitchener",
-  "/content-marketing-kitchener",
-  "/dashboard",
-];
-
-/**
- * Mirrors base44/functions/sitemap STATIC_URLS.
- * lastmod for these URLs is the generation date, same as that function.
- * /gbp-three-free and /newsletter-thank-you are real public routes that
- * function did not list, so they are included without a made-up priority.
- * /Home is the pages.config alias of / and is prerendered but not listed.
- * /dashboard, /landing, trailing-slash URLs, and .html URLs are not listed.
- */
-const SITEMAP_STATIC = [
-  { loc: "/", priority: "1.0", changefreq: "weekly" },
-  { loc: "/gbp", priority: "1.0", changefreq: "weekly" },
-  { loc: "/kitchener", priority: "0.9", changefreq: "weekly" },
-  { loc: "/waterloo", priority: "0.9", changefreq: "weekly" },
-  { loc: "/cambridge", priority: "0.9", changefreq: "weekly" },
-  { loc: "/guelph", priority: "0.9", changefreq: "weekly" },
-  { loc: "/hamilton", priority: "0.9", changefreq: "weekly" },
-  { loc: "/burlington", priority: "0.9", changefreq: "weekly" },
-  { loc: "/brantford", priority: "0.9", changefreq: "weekly" },
-  { loc: "/stratford", priority: "0.9", changefreq: "weekly" },
-  { loc: "/local-seo-kitchener", priority: "0.8", changefreq: "monthly" },
-  { loc: "/seo-services-kitchener", priority: "0.8", changefreq: "monthly" },
-  { loc: "/google-ads-kitchener", priority: "0.8", changefreq: "monthly" },
-  { loc: "/meta-ads-kitchener", priority: "0.8", changefreq: "monthly" },
-  { loc: "/website-design-kitchener", priority: "0.8", changefreq: "monthly" },
-  { loc: "/content-marketing-kitchener", priority: "0.8", changefreq: "monthly" },
-  { loc: "/hardest-working-seo-expert-kitchener-waterloo", priority: "0.9", changefreq: "weekly" },
-  { loc: "/hardest-working-marketing-agency-kitchener-waterloo", priority: "0.9", changefreq: "weekly" },
-  { loc: "/about", priority: "0.7", changefreq: "monthly" },
-  { loc: "/blog", priority: "0.8", changefreq: "weekly" },
-  { loc: "/free-analysis", priority: "0.7", changefreq: "monthly" },
-  { loc: "/get-more-clients", priority: "0.8", changefreq: "monthly" },
-  { loc: "/newsletter", priority: "0.7", changefreq: "monthly" },
-  { loc: "/gbp-three-free", priority: null, changefreq: null },
-  { loc: "/newsletter-thank-you", priority: null, changefreq: null },
-  { loc: "/PrivacyPolicy", priority: "0.3", changefreq: "yearly" },
-  { loc: "/TermsOfService", priority: "0.3", changefreq: "yearly" },
-];
-
 const EXPECTED = {
   "/": {
     title: "Is Your Business Invisible on Google? | AKW Marketing",
     text: ["Invisible on Google?"],
     types: ["Organization", "WebSite", "ProfessionalService"],
-  },
-  "/Home": {
-    title: "Top 3 on Google in 90 Days | AKW Marketing",
-    text: ["Invisible on Google?"],
   },
   "/kitchener": {
     title: "Digital Marketing Agency Kitchener | SEO, Google Ads & Local SEO for Kitchener Businesses | AKW Marketing",
@@ -125,11 +62,11 @@ const EXPECTED = {
     title: "AKW Marketing | Blog",
     text: ["The Blog To Get", "More Customers."],
   },
-  "/PrivacyPolicy": {
+  "/privacy-policy": {
     title: "Privacy Policy | AKW Marketing",
     text: ["Privacy Policy", "Last updated: October 6, 2026"],
   },
-  "/TermsOfService": {
+  "/terms-of-service": {
     title: "Terms of Service | AKW Marketing",
     text: ["Terms of Service", "Agreement to Terms"],
   },
@@ -283,7 +220,17 @@ function assertOgAsset(route, imageUrl) {
   if (!existsSync(file)) throw new Error(`${route} Open Graph image file is missing: ${file}`);
 }
 
-function stitch(template, { title, description, canonical, ldScripts, appHtml, ogImage, ogType }) {
+function upsertRobots(html, robots) {
+  html = html.replace(/[ \t]*<meta name="robots" content="[^"]*"\s*\/>\r?\n?/g, "");
+  if (!robots) return html;
+  const tag = `<meta name="robots" content="${escapeAttr(robots)}" />`;
+  return html.replace(
+    /<meta name="description" content="[^"]*"\s*\/>/,
+    (match) => `${match}\n    ${tag}`,
+  );
+}
+
+function stitch(template, { title, description, canonical, robots, ldScripts, appHtml, ogImage, ogType }) {
   let html = template;
   if (!/<div id="root">\s*<\/div>/.test(html)) {
     throw new Error("dist/index.html has no empty #root. Refusing to guess the mount point.");
@@ -295,6 +242,7 @@ function stitch(template, { title, description, canonical, ldScripts, appHtml, o
     throw new Error("Could not find the description meta tag in the shell.");
   }
   html = html.replace(/<meta name="description" content="[^"]*"\s*\/>/, descriptionTag);
+  html = upsertRobots(html, robots);
   html = stripSocial(html);
   if (!/<link rel="canonical" href="[^"]*"\s*\/>/.test(html)) {
     throw new Error("Could not find the canonical link in the shell.");
@@ -378,17 +326,16 @@ async function readHead(route, shell, create, act, React, PrerenderApp, coverIma
 }
 
 function buildSitemap(posts) {
-  const today = new Date().toISOString().slice(0, 10);
   const urls = [
-    ...SITEMAP_STATIC.map((entry) => ({
-      loc: `${SITE}${entry.loc === "/" ? "/" : entry.loc}`,
-      lastmod: today,
+    ...SITEMAP_PAGES.map((entry) => ({
+      loc: canonicalUrl(entry.loc),
+      lastmod: pageLastmod(entry.source, rootDir),
       changefreq: entry.changefreq,
       priority: entry.priority,
     })),
     ...posts.map((post) => ({
-      loc: `${SITE}/blog/${post.slug}`,
-      lastmod: String(post.published_date).slice(0, 10),
+      loc: canonicalUrl(`/blog/${post.slug}`),
+      lastmod: blogLastmod(post),
       changefreq: "monthly",
       priority: "0.6",
     })),
@@ -424,8 +371,8 @@ function assertSitemap(xml, posts) {
   }
   const locs = [...doc.querySelectorAll("loc")].map((node) => node.textContent);
   const expected = new Set([
-    ...SITEMAP_STATIC.map((entry) => `${SITE}${entry.loc === "/" ? "/" : entry.loc}`),
-    ...posts.map((post) => `${SITE}/blog/${post.slug}`),
+    ...SITEMAP_PAGES.map((entry) => canonicalUrl(entry.loc)),
+    ...posts.map((post) => canonicalUrl(`/blog/${post.slug}`)),
   ]);
   if (locs.length !== expected.size) {
     throw new Error(`sitemap has ${locs.length} URLs, expected ${expected.size}`);
@@ -439,7 +386,27 @@ function assertSitemap(xml, posts) {
   for (const loc of expected) {
     if (!locs.includes(loc)) throw new Error(`Sitemap missing ${loc}`);
   }
-  const banned = [`${SITE}/dashboard`, `${SITE}/Home`, `${SITE}/home`, `${SITE}/landing`, `${SITE}/Landing`];
+  const banned = [
+    `${SITE}/dashboard`,
+    `${SITE}/Home`,
+    `${SITE}/home`,
+    `${SITE}/landing`,
+    `${SITE}/Landing`,
+    `${SITE}/newsletter-thank-you`,
+    `${SITE}/PrivacyPolicy`,
+    `${SITE}/TermsOfService`,
+  ];
+  for (const entry of SITEMAP_PAGES) {
+    const node = [...doc.querySelectorAll("url")].find((url) => url.querySelector("loc")?.textContent === canonicalUrl(entry.loc));
+    const lastmod = node?.querySelector("lastmod")?.textContent;
+    const expectedLastmod = pageLastmod(entry.source, rootDir);
+    if (lastmod !== expectedLastmod) {
+      throw new Error(`Static lastmod for ${entry.loc} is ${lastmod}, expected ${expectedLastmod}`);
+    }
+    if (!entry.changefreq || !entry.priority) {
+      throw new Error(`Sitemap page ${entry.loc} is missing changefreq or priority`);
+    }
+  }
   for (const loc of locs) {
     if (loc.endsWith(".html") || (loc !== `${SITE}/` && loc.endsWith("/"))) {
       throw new Error(`Sitemap lists an alias instead of the canonical URL: ${loc}`);
@@ -451,7 +418,7 @@ function assertSitemap(xml, posts) {
   for (const post of posts) {
     const node = [...doc.querySelectorAll("url")].find((url) => url.querySelector("loc")?.textContent === `${SITE}/blog/${post.slug}`);
     const lastmod = node?.querySelector("lastmod")?.textContent;
-    if (lastmod !== String(post.published_date).slice(0, 10)) {
+    if (lastmod !== blogLastmod(post)) {
       throw new Error(`Blog lastmod for ${post.slug} is ${lastmod}`);
     }
   }
@@ -485,8 +452,13 @@ function assertSocialHtml(route, html, fields) {
 
 function assertPage(route, html, shell, posts) {
   const problems = [];
-  if (/<meta name="robots" content="[^"]*noindex/i.test(html)) {
-    problems.push("global noindex robots meta is present");
+  const robotsMeta = html.match(/<meta name="robots" content="([^"]*)"\s*\/>/);
+  if (isNoindexRoute(route)) {
+    if (!robotsMeta || robotsMeta[1] !== NOINDEX_ROBOTS) {
+      problems.push(`expected robots ${NOINDEX_ROBOTS}`);
+    }
+  } else if (robotsMeta && /noindex/i.test(robotsMeta[1])) {
+    problems.push("noindex robots meta is present");
   }
   if (!html.includes(shell.asset)) problems.push(`missing SPA bundle ${shell.asset}`);
   if (!html.includes(shell.css)) problems.push(`missing CSS ${shell.css}`);
@@ -538,7 +510,7 @@ function assertPage(route, html, shell, posts) {
   if (route === "/get-more-clients" && clientsHeading !== "h1") {
     problems.push("pricing heading is not an h1");
   }
-  if ((route === "/" || route === "/Home") && clientsHeading !== "h2") {
+  if (route === "/" && clientsHeading !== "h2") {
     problems.push("homepage pricing heading is not an h2");
   }
   const root = html.match(/<div id="root">([\s\S]*)<\/div>\s*(?:<script|<\/body>)/);
@@ -562,6 +534,90 @@ function assertPage(route, html, shell, posts) {
   }
   if (problems.length) {
     throw new Error(`${route}: ${problems.join("; ")}`);
+  }
+}
+
+function builtHtmlFile(route) {
+  if (route === "/") return path.join(distDir, "index.html");
+  return path.join(distDir, `${route.slice(1)}.html`);
+}
+
+function buildNotFoundHtml(shell, appHtml, css) {
+  if (!/<div id="root">\s*<\/div>/.test(shell)) {
+    throw new Error("404 builder lost the empty shell.");
+  }
+  if (!appHtml.includes("Page not found")) {
+    throw new Error("404 prerender did not render the not-found page.");
+  }
+  let html = shell.replace(/<div id="root">\s*<\/div>/, `<div id="root">${appHtml}</div>`);
+  html = html.replace(/<title>[\s\S]*?<\/title>/, "<title>Page not found | AKW Marketing</title>");
+  html = html.replace(
+    /<meta name="description" content="[^"]*"\s*\/>/,
+    '<meta name="description" content="That page is not on AKW Marketing. Visit the home page, the blog, or request a free analysis." />',
+  );
+  html = html.replace(/<link rel="canonical" href="[^"]*"\s*\/>\s*/g, "");
+  html = html.replace(/<meta property="og:url" content="[^"]*"\s*\/>\s*/g, "");
+  html = html.replace(
+    /<meta property="og:title" content="[^"]*"\s*\/>/,
+    '<meta property="og:title" content="Page not found | AKW Marketing" />',
+  );
+  html = html.replace(
+    /<title>Page not found \| AKW Marketing<\/title>/,
+    `<title>Page not found | AKW Marketing</title>\n    <meta name="robots" content="${NOINDEX_ROBOTS}" />`,
+  );
+  html = html.replace(/<script type="module"[^>]*src="\/assets\/[^"]+\.js"[^>]*><\/script>\s*/g, "");
+  if (!html.includes(css)) throw new Error("404.html lost the CSS bundle.");
+  return html;
+}
+
+function assertNotFound(html, css) {
+  const problems = [];
+  if (!html.includes(`name="robots" content="${NOINDEX_ROBOTS}"`)) problems.push("missing noindex");
+  if (/<link rel="canonical"/.test(html)) problems.push("404 must not canonicalise to another URL");
+  if (/<script type="module"[^>]*src="\/assets\//.test(html)) problems.push("404.html still boots the SPA");
+  if (!html.includes(css)) problems.push("missing CSS");
+  if (!/<h1[\s>]/.test(html)) problems.push("missing h1");
+  if (!html.includes("Page not found")) problems.push("missing heading");
+  if (!html.includes('href="/"')) problems.push("missing home link");
+  if (!html.includes('href="/blog"')) problems.push("missing blog link");
+  if (!html.includes('href="/free-analysis"')) problems.push("missing free analysis link");
+  if (!html.includes("/assets/logo-official.png")) problems.push("missing logo");
+  if (html.includes("Invisible on Google?")) problems.push("404 rendered the home page");
+  if (problems.length) throw new Error(`404.html: ${problems.join("; ")}`);
+}
+
+function assertBuiltRoutes(posts) {
+  const sitemapLocs = [
+    ...SITEMAP_PAGES.map((entry) => canonicalUrl(entry.loc)),
+    ...posts.map((post) => canonicalUrl(`/blog/${post.slug}`)),
+  ];
+  for (const loc of sitemapLocs) {
+    const route = loc.slice(SITE.length);
+    const file = builtHtmlFile(route);
+    if (!existsSync(file)) throw new Error(`Sitemap URL ${loc} is not a built file (${file}).`);
+    if (route !== "/") {
+      const indexFile = path.join(distDir, route.slice(1), "index.html");
+      if (!existsSync(indexFile)) throw new Error(`Sitemap URL ${loc} is missing ${indexFile}.`);
+    }
+    const html = readFileSync(file, "utf8");
+    if (/<meta name="robots" content="[^"]*noindex/i.test(html)) {
+      throw new Error(`Sitemap URL ${loc} has a noindex meta.`);
+    }
+    const canonical = html.match(/<link rel="canonical" href="([^"]*)"\s*\/>/)?.[1];
+    if (canonical !== loc) throw new Error(`Built canonical ${canonical} !== sitemap ${loc}`);
+  }
+  if (!existsSync(path.join(distDir, "404.html"))) throw new Error("dist/404.html is missing.");
+  if (existsSync(path.join(distDir, "404", "index.html"))) {
+    throw new Error("dist/404/index.html would make /404/ a normal page and a nested 404.");
+  }
+  for (const stale of ["Home.html", "PrivacyPolicy.html", "TermsOfService.html", "landing.html"]) {
+    if (existsSync(path.join(distDir, stale))) {
+      throw new Error(`dist/${stale} is a file for a path that must 301, not 200.`);
+    }
+  }
+  const thankYou = readFileSync(path.join(distDir, "newsletter-thank-you.html"), "utf8");
+  if (!thankYou.includes(`content="${NOINDEX_ROBOTS}"`)) {
+    throw new Error("Built /newsletter-thank-you is missing noindex, follow.");
   }
 }
 
@@ -616,7 +672,7 @@ async function main() {
   }
 
   const posts = loadPosts();
-  const routes = [...PAGE_ROUTES, ...posts.map((post) => `/blog/${post.slug}`)];
+  const routes = [...PRERENDER_PATHS, ...posts.map((post) => `/blog/${post.slug}`)];
 
   const ssrDir = path.join(rootDir, "node_modules/.cache/akw-prerender");
   const reactMod = await import("react");
@@ -626,8 +682,8 @@ async function main() {
   const renderToString = serverMod.renderToString || serverMod.default?.renderToString;
   const testMod = await import("react-test-renderer");
   const create = testMod.create || testMod.default?.create;
-  const { PrerenderApp } = await import(pathToFileURL(path.join(ssrDir, "prerender-app.js")).href);
-  if (!React?.createElement || !renderToString || !create || !act || !PrerenderApp) {
+  const { PrerenderApp, PrerenderNotFound } = await import(pathToFileURL(path.join(ssrDir, "prerender-app.js")).href);
+  if (!React?.createElement || !renderToString || !create || !act || !PrerenderApp || !PrerenderNotFound) {
     throw new Error("Could not load React renderers for prerender.");
   }
   globalThis.IS_REACT_ACT_ENVIRONMENT = true;
@@ -648,7 +704,11 @@ async function main() {
       const ogType = socialType(route);
       assertOgAsset(route, ogImage);
       const head = await readHead(route, shell, create, act, React, PrerenderApp, cover);
-      if (head.robots.toLowerCase().includes("noindex")) {
+      if (isNoindexRoute(route)) {
+        if (head.robots !== NOINDEX_ROBOTS) {
+          throw new Error(`${route} robots meta is ${JSON.stringify(head.robots)}, expected ${NOINDEX_ROBOTS}`);
+        }
+      } else if (head.robots.toLowerCase().includes("noindex")) {
         throw new Error(`${route} still emits a noindex robots meta (${head.robots}).`);
       }
       if (head.canonical !== canonicalFor(route)) {
@@ -664,6 +724,12 @@ async function main() {
       }
       console.log(`${route}  ${head.title}  ${html.length} bytes  canonical ${head.canonical}  files ${files.length}`);
     }
+
+    const notFoundBody = renderToString(React.createElement(PrerenderNotFound));
+    const notFoundPage = buildNotFoundHtml(shell, notFoundBody, css);
+    assertNotFound(notFoundPage, css);
+    await writeFile(path.join(distDir, "404.html"), notFoundPage);
+    console.log(`404.html  ${notFoundPage.length} bytes`);
   } finally {
     globalThis.document = undefined;
   }
@@ -695,12 +761,18 @@ async function main() {
   if (!robots.includes("Allow: /") || !robots.includes(`Sitemap: ${SITE}/sitemap.xml`)) {
     throw new Error("dist/robots.txt must allow crawling and point Sitemap at www.");
   }
-  for (const rule of ["/landing / 301", "/Landing / 301"]) {
-    if (!redirects.includes(rule)) {
-      throw new Error(`dist/_redirects is missing ${rule}.`);
-    }
+  if (redirects !== renderRedirects()) {
+    throw new Error("dist/_redirects does not match src/lib/siteRoutes.js.");
   }
-  console.log(`sitemap.xml  ${SITEMAP_STATIC.length + posts.length} URLs  (${posts.length} blog posts)`);
+  if (/(^|\n)\/\*/.test(redirects)) {
+    throw new Error("dist/_redirects contains a splat. That would turn the 404 page back into an SPA fallback.");
+  }
+  assertBuiltRoutes(posts);
+  const indexNow = await readFile(path.join(distDir, `${INDEXNOW_KEY}.txt`), "utf8");
+  if (indexNow !== INDEXNOW_KEY) {
+    throw new Error("dist IndexNow key file does not contain the key.");
+  }
+  console.log(`sitemap.xml  ${SITEMAP_PAGES.length + posts.length} URLs  (${posts.length} blog posts)`);
 }
 
 main().catch((error) => {

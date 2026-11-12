@@ -32,7 +32,7 @@ No `VITE_BASE44_*` variables are required. The build does not boot the Base44 SD
 
 ### Client-side routes
 
-There is no top-level `404.html`. Pages then serves `/` for any path that is not a real file, which is the right fallback for this React Router SPA ([Serving Pages](https://developers.cloudflare.com/pages/configuration/serving-pages/#single-page-application-spa-rendering)). Do not add a `/* /index.html 200` rewrite: Pages follows `_redirects` even when a static asset exists, and that rule would replace JS and CSS with `index.html`.
+Each public route is prerendered to its own HTML file. `dist/404.html` is the not-found page. Pages serves that file with status 404 for a path that is not a real file, and it does not fall back to `/` ([Serving Pages](https://developers.cloudflare.com/pages/configuration/serving-pages/#not-found-behavior)). Do not add a `/* /index.html 200` rewrite: Pages follows `_redirects` even when a static asset exists, and that rule would replace JS and CSS with `index.html` and bring the soft 404s back. Do not add `404/index.html` either. Pages would treat `/404/` as a normal page and would also use it as a nested 404.
 
 ## What was removed
 
@@ -72,13 +72,17 @@ To refresh on purpose, run `npm run blog:refresh`, review the diff, and commit i
 
 `npm run build` runs Vite, then `scripts/prerender.mjs`. There is one prerender. For each public route it writes the rendered page (body plus that page's title, description, canonical, and JSON-LD) to both `dist/<path>.html` and `dist/<path>/index.html`. Cloudflare Pages serves `/path` from the `.html` file, redirects `/path.html` to `/path`, and serves `/path/` from `index.html`. Both files use the same canonical (`https://www.akwmarketing.com/path`, or `https://www.akwmarketing.com/` for `/` and for the `/Home` alias).
 
-`/sitemap.xml` lists each canonical once: the static URLs from `base44/functions/sitemap`, plus the real routes `/gbp-three-free` and `/newsletter-thank-you` (no priority invented for those two), plus one URL per published post. Blog `lastmod` is `published_date`. Static `lastmod` is the build date, matching that function. Not listed: `/Home` (alias of `/`), `/dashboard`, `/landing`, `/Landing`, trailing-slash duplicates, and `.html` duplicates. `/Home` and `/dashboard` are still prerendered so those URLs are not the home shell.
+`/sitemap.xml` lists each canonical once: the static marketing URLs, `/gbp-three-free` (the video page, priority `0.7` / monthly, same weight as `/newsletter` and `/free-analysis`), and one URL per published post. Blog `lastmod` is `published_date` (the snapshot has no updated date; every current post is `2026-05-14`). Static `lastmod` is `git log -1` of that page's source file, or `src/data/page-lastmod.json` when the clone is too shallow to trust. Not listed: `/Home` (301 to `/`), `/dashboard`, `/landing`, `/Landing`, `/newsletter-thank-you`, trailing-slash duplicates, and `.html` duplicates. `/dashboard` is still prerendered so that URL is not the home shell. `/newsletter-thank-you` is prerendered with `<meta name="robots" content="noindex, follow">`.
 
-There is still no `404.html`. Unknown paths fall back to `/`, which is the prerendered home page, and the client router then shows the not-found page. Do not add `/* /index.html 200`.
+`/privacy-policy` and `/terms-of-service` are the canonical legal URLs. `/PrivacyPolicy` and `/TermsOfService` 301 to them so older links keep working.
 
-`vite preview` serves `kitchener/index.html` at `/kitchener/` and falls back to `/` for `/kitchener` unless `kitchener.html` is what the static host uses. Pages uses `kitchener.html` for `/kitchener`.
+`dist/404.html` is a branded page (logo, short explanation, links home, to the blog, and to the free analysis) with `noindex, follow` and no canonical. It does not load the React bundle, so an unknown URL cannot hydrate into the home page. Unknown paths, including a blog slug that was not prerendered, are HTTP 404.
 
-Prerendered pages do not include a robots noindex meta. `dist/_headers` noindexes `*.pages.dev` only. `dist/robots.txt` allows crawling and points the sitemap at www. `public/_redirects` sends `/landing` and `/Landing` to `/` with a 301. The client routes for those paths remain.
+`vite preview` serves `kitchener/index.html` at `/kitchener/` and falls back to `/` for `/kitchener` unless `kitchener.html` is what the static host uses. Pages uses `kitchener.html` for `/kitchener`. `vite preview` does not apply `_redirects` or `404.html`. `npx wrangler pages dev dist` does.
+
+Prerendered marketing pages do not include a robots noindex meta. `dist/_headers` noindexes `*.pages.dev` only. `dist/robots.txt` allows crawling and points the sitemap at www. `public/_redirects` 301s `/landing`, `/Landing`, and the other legacy paths in `src/lib/siteRoutes.js`. `/BlogPost` is a Pages Function because `_redirects` cannot match `?slug=`. The key file `public/<indexnow-key>.txt` is the IndexNow key for www.
+
+`base44/functions/sitemap` is not deployed with this build. It still lists `/PrivacyPolicy` and `/TermsOfService` and stamps static `lastmod` with the request date.
 
 `aggregateRating` was removed from the Home, Kitchener, and `/gbp` JSON-LD. The visible testimonials stay. The schema counts (6 and 3) were not backed by a review source in the repo.
 
