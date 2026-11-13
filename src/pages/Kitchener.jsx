@@ -41,11 +41,16 @@ function KitchenerNav() {
           />
           <span className="text-lg font-semibold tracking-tight text-stone-900">AKW Marketing</span>
         </a>
-        <a href="https://akwmarketing.com/landing">
-          <button className="bg-stone-900 hover:bg-stone-800 text-white rounded-full px-5 h-9 text-sm font-medium flex items-center gap-2 transition-colors">
-            Sign Up
-          </button>
-        </a>
+        <div className="flex items-center gap-5">
+          <a href="#services" className="hidden sm:inline text-sm font-medium text-stone-700 hover:text-stone-900 transition-colors">
+            Services
+          </a>
+          <a href="https://akwmarketing.com/landing">
+            <button className="bg-stone-900 hover:bg-stone-800 text-white rounded-full px-5 h-9 text-sm font-medium flex items-center gap-2 transition-colors">
+              Sign Up
+            </button>
+          </a>
+        </div>
       </div>
     </nav>
   );
@@ -139,6 +144,43 @@ function ExploreInsights() {
             </li>
           ))}
         </ul>
+      </div>
+    </section>
+  );
+}
+
+const SERVICES = [
+  { name: "SEO Services", href: "/seo-services-kitchener", blurb: "Organic ranking built on a documented playbook, not guesswork." },
+  { name: "Local SEO", href: "/local-seo-kitchener", blurb: "Google Business Profile, citations, and reviews that get you into the map pack." },
+  { name: "Google Ads", href: "/google-ads-kitchener", blurb: "Search, Local Service Ads, and conversion tracking built for Kitchener's market." },
+  { name: "Meta Ads", href: "/meta-ads-kitchener", blurb: "Facebook and Instagram campaigns with real funnel logic, not boosted posts." },
+  { name: "AI SEO", href: "/ai-seo-kitchener", blurb: "Get named by ChatGPT, Gemini, and other AI engines when customers ask for a recommendation." },
+];
+
+function ServicesSection() {
+  return (
+    <section id="services" className="py-20 px-6 border-t border-stone-200/60">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <span className="inline-flex items-center bg-white border border-stone-200 rounded-full px-4 py-1.5 text-xs font-medium text-stone-600 mb-5">
+            Our services
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-stone-900 tracking-tight">
+            Everything we run for Kitchener businesses
+          </h2>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {SERVICES.map((service) => (
+            <a
+              key={service.name}
+              href={service.href}
+              className="block rounded-2xl border border-stone-200 bg-white p-6 hover:border-stone-400 hover:shadow-md transition-all"
+            >
+              <h3 className="text-lg font-semibold text-stone-900 mb-2">{service.name}</h3>
+              <p className="text-sm text-stone-500 leading-relaxed">{service.blurb}</p>
+            </a>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -303,6 +345,7 @@ export default function Kitchener() {
       <WhereWeWork />
       <FAQSection />
       <ExploreInsights />
+      <ServicesSection />
       <KitchenerCTA />
       <KitchenerFooter />
     </div>

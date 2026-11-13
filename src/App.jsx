@@ -14,6 +14,7 @@ import Waterloo from './pages/Waterloo';
 import GoogleAdsKitchener from './pages/GoogleAdsKitchener';
 import MetaAdsKitchener from './pages/MetaAdsKitchener';
 import LocalSeoKitchener from './pages/LocalSeoKitchener';
+import AiSeoKitchener from './pages/AiSeoKitchener';
 import Cambridge from './pages/Cambridge';
 import Guelph from './pages/Guelph';
 import Hamilton from './pages/Hamilton';
@@ -84,6 +85,7 @@ export const PublicApp = () => {
       <Route path="/google-ads-kitchener" element={<GoogleAdsKitchener />} />
       <Route path="/meta-ads-kitchener" element={<MetaAdsKitchener />} />
       <Route path="/local-seo-kitchener" element={<LocalSeoKitchener />} />
+      <Route path="/ai-seo-kitchener" element={<AiSeoKitchener />} />
       <Route path="/cambridge" element={<Cambridge />} />
       <Route path="/guelph" element={<Guelph />} />
       <Route path="/hamilton" element={<Hamilton />} />

@@ -65,6 +65,16 @@ export default function FooterSection() {
             </div>
           </div>
 
+          {/* Services Block */}
+          <div className="flex flex-col gap-3">
+            <p className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-1">Services</p>
+            <a href="/seo-services-kitchener" className="text-sm text-stone-500 hover:text-stone-900 transition-colors">SEO Services</a>
+            <a href="/local-seo-kitchener" className="text-sm text-stone-500 hover:text-stone-900 transition-colors">Local SEO</a>
+            <a href="/google-ads-kitchener" className="text-sm text-stone-500 hover:text-stone-900 transition-colors">Google Ads</a>
+            <a href="/meta-ads-kitchener" className="text-sm text-stone-500 hover:text-stone-900 transition-colors">Meta Ads</a>
+            <a href="/ai-seo-kitchener" className="text-sm text-stone-500 hover:text-stone-900 transition-colors">AI SEO</a>
+          </div>
+
           {/* NAP Block */}
           <div className="flex flex-col gap-3">
             <p className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-1">Contact</p>
