@@ -1,3 +1,6 @@
-# Phase 1 preview only. Replace with a crawlable robots.txt before production DNS.
+# Shared by www.akwmarketing.com and *.pages.dev.
+# pages.dev is noindexed by the host-scoped X-Robots-Tag in _headers.
 User-agent: *
-Disallow: /
+Allow: /
+
+Sitemap: https://www.akwmarketing.com/sitemap.xml

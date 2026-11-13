@@ -11,14 +11,27 @@
 
 export const TURNSTILE_SITEVERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
-export const ALLOWED_ORIGIN = "https://akwmarketing.pages.dev";
+/** Browser origins that may call the lead function. */
+export const ALLOWED_ORIGINS = [
+  "https://www.akwmarketing.com",
+  "https://akwmarketing.com",
+  "https://akwmarketing.pages.dev",
+];
 
-/** Public site key. Hostname-locked to akwmarketing.pages.dev. Not a secret. */
+export function isAllowedOrigin(origin) {
+  return typeof origin === "string" && ALLOWED_ORIGINS.includes(origin);
+}
+
+/** Public site key. Not a secret. Hostname checks use DEFAULT_TURNSTILE_HOSTNAMES. */
 export const TURNSTILE_SITE_KEY = "0x4AAAAAAF1rkRiBjPcPH2DU";
 
 export const HONEYPOT_FIELD = "honeypot";
 export const TURNSTILE_TOKEN_FIELD = "cf-turnstile-response";
-export const DEFAULT_TURNSTILE_HOSTNAME = "akwmarketing.pages.dev";
+export const DEFAULT_TURNSTILE_HOSTNAMES = [
+  "www.akwmarketing.com",
+  "akwmarketing.com",
+  "akwmarketing.pages.dev",
+];
 
 /**
  * Slack #inbound-alerts was live-checked as a private, unarchived channel.
@@ -57,6 +70,9 @@ export const MAIL_TRANSPORT = {
 /**
  * Live schema verified 2026-11-05 on project hzllfwqnsiirlwacaitt.
  * Hypothesis B: crm_lead plus contact, email, and phone.
+ * crm_lead.domain is STORED GENERATED from website. Omit it on insert
+ * (Postgres 428C9). crm_contact, crm_contact_email, and crm_contact_phone
+ * have no generated columns (checked 2026-11-10).
  * Do not create website_strategy_application or akw_website_lead.
  */
 export const CRM_SCHEMA = {
@@ -352,8 +368,9 @@ export function turnstileSecret(env = {}) {
 }
 
 export function turnstileHostnames(env = {}) {
-  const raw = env.TURNSTILE_HOSTNAMES || DEFAULT_TURNSTILE_HOSTNAME;
-  return String(raw).split(",").map((item) => item.trim()).filter(Boolean);
+  const raw = env.TURNSTILE_HOSTNAMES;
+  if (typeof raw !== "string" || raw.trim() === "") return [...DEFAULT_TURNSTILE_HOSTNAMES];
+  return raw.split(",").map((item) => item.trim()).filter(Boolean);
 }
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -391,16 +408,6 @@ export function normalizePhoneE164(raw) {
   return null;
 }
 
-export function domainFromWebsite(website) {
-  if (!website || typeof website !== "string") return null;
-  try {
-    const host = new URL(website).hostname.toLowerCase().replace(/\.$/, "").replace(/^www\./, "");
-    return host || null;
-  } catch {
-    return null;
-  }
-}
-
 export function leadSourceLabel(source) {
   if (source === "gbp") return "website:gbp";
   if (source === "free-analysis") return "website:free-analysis";
@@ -424,7 +431,6 @@ export function buildLeadInsert(lead) {
       status_id: CRM_SCHEMA.statusNewId,
       source: leadSourceLabel(lead.source),
       website: lead.website || null,
-      domain: domainFromWebsite(lead.website),
       emailable: Boolean(lead.email),
       callable: Boolean(lead.phone),
       custom,
@@ -491,6 +497,30 @@ function storeFailure() {
   return { ok: false, stored: false, code: "store_failed" };
 }
 
+function persistErrorText(value) {
+  if (typeof value !== "string") return "";
+  return value.replace(/[\r\n]+/g, " ").slice(0, 500);
+}
+
+/**
+ * Server log for a failed CRM write. Status plus PostgREST code and message
+ * only. details and hint are omitted because they can repeat row values.
+ * The request body and credentials are never included.
+ */
+function logPersistFailure(step, response, payload) {
+  const status = response && Number.isInteger(response.status) ? response.status : 0;
+  const code = isPlainObject(payload) ? persistErrorText(payload.code) : "";
+  const message = isPlainObject(payload) ? persistErrorText(payload.message) : "";
+  console.error(
+    `website-lead-capture persist failed step=${step} status=${status} code=${code} message=${message}`,
+  );
+}
+
+async function failPersist(step, response) {
+  logPersistFailure(step, response, await readJson(response));
+  return storeFailure();
+}
+
 /**
  * Inserts one website lead with the service role. Reads SUPABASE_URL and
  * SUPABASE_SERVICE_ROLE_KEY or SUPABASE_SERVICE_KEY. Ignores VITE_* names.
@@ -516,10 +546,13 @@ export async function persistLead(lead, deps = {}) {
     headers: restHeaders(key, "return=representation"),
     body: JSON.stringify(planned.lead),
   });
-  if (!leadResponse || !leadResponse.ok) return storeFailure();
+  if (!leadResponse || !leadResponse.ok) return failPersist("crm_lead", leadResponse);
   const leadRow = firstRow(await readJson(leadResponse));
   const leadId = leadRow && typeof leadRow.id === "string" ? leadRow.id : "";
-  if (!UUID.test(leadId)) return storeFailure();
+  if (!UUID.test(leadId)) {
+    logPersistFailure("crm_lead", leadResponse, { message: "response missing lead id" });
+    return storeFailure();
+  }
 
   const cleanup = () => restCall(fetchImpl, `${base}/rest/v1/crm_lead?id=eq.${leadId}`, {
     method: "DELETE",
@@ -532,12 +565,14 @@ export async function persistLead(lead, deps = {}) {
     body: JSON.stringify({ ...planned.contact, lead_id: leadId }),
   });
   if (!contactResponse || !contactResponse.ok) {
+    const failure = await failPersist("crm_contact", contactResponse);
     await cleanup();
-    return storeFailure();
+    return failure;
   }
   const contactRow = firstRow(await readJson(contactResponse));
   const contactId = contactRow && typeof contactRow.id === "string" ? contactRow.id : "";
   if (!UUID.test(contactId)) {
+    logPersistFailure("crm_contact", contactResponse, { message: "response missing contact id" });
     await cleanup();
     return storeFailure();
   }
@@ -549,8 +584,9 @@ export async function persistLead(lead, deps = {}) {
       body: JSON.stringify({ ...planned.email, contact_id: contactId }),
     });
     if (!emailResponse || !emailResponse.ok) {
+      const failure = await failPersist("crm_contact_email", emailResponse);
       await cleanup();
-      return storeFailure();
+      return failure;
     }
   }
 
@@ -561,14 +597,16 @@ export async function persistLead(lead, deps = {}) {
       body: JSON.stringify({ ...planned.phone, contact_id: contactId }),
     });
     if (!phoneResponse) {
+      const failure = await failPersist("crm_contact_phone", phoneResponse);
       await cleanup();
-      return storeFailure();
+      return failure;
     }
     // 400 and 409 are constraint or uniqueness failures. Raw phone is already
     // on crm_lead.custom. Other statuses mean the write did not land safely.
     if (!phoneResponse.ok && phoneResponse.status !== 400 && phoneResponse.status !== 409) {
+      const failure = await failPersist("crm_contact_phone", phoneResponse);
       await cleanup();
-      return storeFailure();
+      return failure;
     }
   }
 
@@ -581,8 +619,9 @@ export async function persistLead(lead, deps = {}) {
     }),
   });
   if (!flagResponse || !flagResponse.ok) {
+    const failure = await failPersist("crm_lead_flags", flagResponse);
     await cleanup();
-    return storeFailure();
+    return failure;
   }
 
   return { ok: true, stored: true, lead_id: leadId };
@@ -687,7 +726,7 @@ export async function verifyTurnstile({ token, secret, remoteIp, fetchImpl, host
   if (!payload || payload.success !== true) {
     return { ok: false, code: "turnstile_failed" };
   }
-  const allowed = new Set(hostnames && hostnames.length ? hostnames : [DEFAULT_TURNSTILE_HOSTNAME]);
+  const allowed = new Set(hostnames && hostnames.length ? hostnames : DEFAULT_TURNSTILE_HOSTNAMES);
   if (!allowed.has(payload.hostname)) {
     return { ok: false, code: "turnstile_hostname" };
   }
@@ -695,9 +734,9 @@ export async function verifyTurnstile({ token, secret, remoteIp, fetchImpl, host
 }
 
 export function corsHeaders(origin) {
-  if (origin !== ALLOWED_ORIGIN) return {};
+  if (!isAllowedOrigin(origin)) return {};
   return {
-    "access-control-allow-origin": ALLOWED_ORIGIN,
+    "access-control-allow-origin": origin,
     "access-control-allow-methods": "POST, OPTIONS",
     "access-control-allow-headers": "content-type",
     vary: "origin",

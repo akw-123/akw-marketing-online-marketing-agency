@@ -20,7 +20,7 @@ export default function GetMoreClients() {
     <div className="min-h-screen bg-[#F5F0EB]">
       <KitchenerNav />
       <div className="pt-28">
-        <PricingSection />
+        <PricingSection headingLevel="h1" />
       </div>
       <KitchenerFooter />
     </div>

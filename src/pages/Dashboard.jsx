@@ -14,11 +14,11 @@ export default function Dashboard() {
           <Gauge className="w-6 h-6 text-teal-700" /> Traffic Dashboard
         </h1>
         <p className="text-sm text-stone-600 mt-4 leading-relaxed">
-          This preview does not load the traffic dashboard. On the live site it
-          calls the Base44 functions <span className="font-medium">ga-traffic</span> and{" "}
-          <span className="font-medium">gsc-search-queries</span> with an admin
-          login. Those functions stay in <span className="font-medium">base44/functions</span> and
-          are a later-phase blocker, not part of the public marketing pages.
+          The traffic dashboard is not available on this site. It needs an admin
+          login and the Base44 functions <span className="font-medium">ga-traffic</span> and{" "}
+          <span className="font-medium">gsc-search-queries</span>. Those functions stay in{" "}
+          <span className="font-medium">base44/functions</span> and are not part of the public
+          marketing pages.
         </p>
       </div>
     </div>

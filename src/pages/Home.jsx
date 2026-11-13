@@ -93,14 +93,14 @@ export default function Home() {
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "AKW Marketing",
-      "url": "https://akwmarketing.com"
+      "url": "https://www.akwmarketing.com"
     };
     upsertJsonLd("website-schema", websiteSchema);
     const orgSchema = {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "AKW Marketing",
-      "url": "https://akwmarketing.com",
+      "url": "https://www.akwmarketing.com",
       "logo": "/assets/logo-official.png",
       "sameAs": [
         "https://www.instagram.com/akw_marketing/",
@@ -121,7 +121,7 @@ export default function Home() {
         "AKW Marketing KW"
       ],
       "description": "AKW Marketing Agency helps local businesses in the Kitchener-Waterloo area rank in the top 3 on Google in 90 days.",
-      "url": "https://akwmarketing.com/",
+      "url": "https://www.akwmarketing.com/",
       "telephone": "+1-437-475-0076",
       "email": "contact@akwmarketing.com",
       "image": "/assets/logo-official.png",

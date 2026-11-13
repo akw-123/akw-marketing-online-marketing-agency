@@ -1,11 +1,20 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import {
+  CANONICAL_ORIGIN,
+  canonicalUrl,
+} from "../../../src/lib/canonicalPath.js";
 import {
   DEFAULT_LEAD_CAPTURE_URL,
   HONEYPOT_FIELD as CLIENT_HONEYPOT,
+  TURNSTILE_HOSTNAMES as CLIENT_TURNSTILE_HOSTNAMES,
   TURNSTILE_SITE_KEY as CLIENT_SITE_KEY,
   buildLeadRequest,
   resolveLeadCaptureUrl,
+  turnstileAllowedHost,
 } from "../../../src/lib/leadCaptureContract.js";
 import {
   LEAD_CAPTURE_FAILED,
@@ -14,8 +23,9 @@ import {
   submitLeadCapture,
 } from "../../../src/lib/previewLeadCapture.js";
 import {
-  ALLOWED_ORIGIN,
+  ALLOWED_ORIGINS,
   CRM_SCHEMA,
+  DEFAULT_TURNSTILE_HOSTNAMES,
   FORM_FIELDS,
   HONEYPOT_FIELD,
   GMAIL_SEND_URL,
@@ -27,8 +37,10 @@ import {
   TURNSTILE_SITEVERIFY_URL,
   TURNSTILE_SITE_KEY,
   buildLeadInsert,
+  corsHeaders,
   dispatchNotifications,
   handleLeadRequest,
+  isAllowedOrigin,
   normalizePhoneE164,
   persistLead,
   planEmailNotification,
@@ -37,9 +49,16 @@ import {
   sendLeadAlertViaSlack,
   postSlackWebhook,
   slackInboundPayload,
+  turnstileHostnames,
   validateLead,
   verifyTurnstile,
 } from "./leadIntake.mjs";
+
+const LEAD_HOSTS = [
+  "www.akwmarketing.com",
+  "akwmarketing.com",
+  "akwmarketing.pages.dev",
+];
 
 const freeFields = {
   full_name: "Ada Lovelace",
@@ -219,6 +238,22 @@ describe("verifyTurnstile", () => {
     assert.equal(result.code, "turnstile_hostname");
   });
 
+  it("accepts the www, apex, and pages.dev hostnames by default", async () => {
+    assert.deepEqual(DEFAULT_TURNSTILE_HOSTNAMES, LEAD_HOSTS);
+    assert.deepEqual(turnstileHostnames({}), LEAD_HOSTS);
+    assert.deepEqual(turnstileHostnames({ TURNSTILE_HOSTNAMES: "  " }), LEAD_HOSTS);
+    assert.deepEqual(turnstileHostnames({ TURNSTILE_HOSTNAMES: "only.example" }), ["only.example"]);
+    for (const hostname of LEAD_HOSTS) {
+      const { fetchImpl } = siteverifyFetch(true, hostname);
+      const result = await verifyTurnstile({
+        token: "token-ok",
+        secret: "server-secret",
+        fetchImpl,
+      });
+      assert.equal(result.ok, true, hostname);
+    }
+  });
+
   it("fails closed when siteverify says the token is bad", async () => {
     const { fetchImpl } = siteverifyFetch(false);
     const result = await verifyTurnstile({
@@ -288,6 +323,19 @@ function bodyOf(call) {
   return JSON.parse(call.init.body);
 }
 
+async function capturePersistLogs(run) {
+  const errors = [];
+  const original = console.error;
+  console.error = (...args) => {
+    errors.push(args.map((part) => String(part)).join(" "));
+  };
+  try {
+    return { result: await run(), errors };
+  } finally {
+    console.error = original;
+  }
+}
+
 describe("persistLead", () => {
   it("normalizes a 10-digit North American number and skips the rest", () => {
     assert.equal(normalizePhoneE164("(519) 555-0100"), "+15195550100");
@@ -304,7 +352,7 @@ describe("persistLead", () => {
     assert.equal(rows.lead.source, "website:free-analysis");
     assert.equal(rows.lead.name, "Analytical Engines");
     assert.equal(rows.lead.website, "https://example.com");
-    assert.equal(rows.lead.domain, "example.com");
+    assert.equal("domain" in rows.lead, false);
     assert.equal(rows.lead.emailable, true);
     assert.equal(rows.lead.callable, true);
     assert.equal(rows.lead.custom.timeline, "Today");
@@ -317,7 +365,7 @@ describe("persistLead", () => {
     assert.equal(JSON.stringify(rows).includes("prospects"), false);
   });
 
-  it("strips www and stores a gbp phone as E.164", () => {
+  it("keeps the website and stores a gbp phone as E.164", () => {
     const lead = validateLead(envelope("gbp", {
       ...gbpFields,
       phone: "5195550100",
@@ -326,7 +374,8 @@ describe("persistLead", () => {
     })).lead;
     const rows = buildLeadInsert(lead);
     assert.equal(rows.lead.source, "website:gbp");
-    assert.equal(rows.lead.domain, "example.com");
+    assert.equal(rows.lead.website, "https://www.Example.com/about");
+    assert.equal("domain" in rows.lead, false);
     assert.equal(rows.lead.custom.form_path, "/gbp");
     assert.equal(rows.lead.custom.gbp_link, "https://maps.example.com/gbp");
     assert.equal(rows.contact.name, "Ada Lovelace");
@@ -348,6 +397,9 @@ describe("persistLead", () => {
     const leadCall = posted(calls, "crm_lead")[0];
     assert.equal(leadCall.init.headers.authorization, "Bearer service-role-test");
     assert.equal(leadCall.init.headers.apikey, "service-role-test");
+    const leadBody = bodyOf(leadCall);
+    assert.equal("domain" in leadBody, false);
+    assert.equal(leadBody.website, "https://example.com");
     assert.equal(bodyOf(posted(calls, "crm_contact")[0]).lead_id, LEAD_ID);
     const patch = calls.find((call) => call.init.method === "PATCH");
     assert.deepEqual(bodyOf(patch), { emailable: true, callable: true });
@@ -385,13 +437,92 @@ describe("persistLead", () => {
 
   it("deletes the lead and hides database text when the contact insert fails", async () => {
     const { fetchImpl, calls } = crmFetch({ contactStatus: 500 });
-    const saved = await persistLead(validateLead(freeAnalysis).lead, {
+    const { result: saved, errors } = await capturePersistLogs(() => persistLead(validateLead(freeAnalysis).lead, {
       env: STORE_ENV,
       fetchImpl,
-    });
+    }));
     assert.deepEqual(saved, { ok: false, stored: false, code: "store_failed" });
     assert.equal(calls.some((call) => call.init.method === "DELETE" && call.url.includes(LEAD_ID)), true);
     assert.equal(JSON.stringify(saved).includes("secret-leak"), false);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /step=crm_contact/);
+    assert.match(errors[0], /status=500/);
+    assert.equal(errors[0].includes("service-role-test"), false);
+    assert.equal(errors[0].includes("ada@example.com"), false);
+  });
+
+  it("omits domain from every CRM insert body", async () => {
+    const { fetchImpl, calls } = crmFetch();
+    const lead = validateLead(envelope("gbp", {
+      ...gbpFields,
+      phone: "5195550100",
+      website: "https://www.Example.com/about",
+      gbp_link: "https://maps.example.com/gbp",
+    })).lead;
+    const saved = await persistLead(lead, { env: STORE_ENV, fetchImpl });
+    assert.equal(saved.stored, true);
+    const bodies = [
+      bodyOf(posted(calls, "crm_lead")[0]),
+      bodyOf(posted(calls, "crm_contact")[0]),
+      bodyOf(posted(calls, "crm_contact_email")[0]),
+      bodyOf(posted(calls, "crm_contact_phone")[0]),
+    ];
+    for (const body of bodies) {
+      assert.equal("domain" in body, false);
+      assert.equal(JSON.stringify(body).includes('"domain"'), false);
+    }
+    assert.deepEqual(Object.keys(bodies[0]).sort(), [
+      "callable",
+      "custom",
+      "emailable",
+      "name",
+      "org_id",
+      "source",
+      "status_id",
+      "website",
+    ]);
+    assert.equal(bodies[0].website, "https://www.Example.com/about");
+    assert.deepEqual(Object.keys(bodies[1]).sort(), ["custom", "lead_id", "name", "org_id"]);
+    assert.deepEqual(Object.keys(bodies[2]).sort(), ["bounced", "contact_id", "email", "org_id", "unsubscribed"]);
+    assert.deepEqual(Object.keys(bodies[3]).sort(), [
+      "contact_id",
+      "dnc",
+      "org_id",
+      "phone_e164",
+      "sms_consent",
+      "sms_optout",
+    ]);
+  });
+
+  it("logs PostgREST status and error code when the lead insert fails", async () => {
+    const fetchImpl = async (url, init) => {
+      const path = new URL(String(url)).pathname;
+      if (init && init.method === "POST" && path.endsWith("/crm_lead")) {
+        return jsonResponse(400, {
+          code: "428C9",
+          message: 'cannot insert a non-DEFAULT value into column "domain"',
+          details: "Key (email)=(ada@example.com)",
+          hint: "omit generated column",
+        });
+      }
+      return jsonResponse(500, { message: "unexpected" });
+    };
+    const { result: saved, errors } = await capturePersistLogs(() => persistLead(
+      validateLead(freeAnalysis).lead,
+      { env: STORE_ENV, fetchImpl },
+    ));
+    assert.deepEqual(saved, { ok: false, stored: false, code: "store_failed" });
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /step=crm_lead/);
+    assert.match(errors[0], /status=400/);
+    assert.match(errors[0], /code=428C9/);
+    assert.match(errors[0], /cannot insert a non-DEFAULT value into column "domain"/);
+    assert.equal(errors[0].includes("ada@example.com"), false);
+    assert.equal(errors[0].includes("omit generated column"), false);
+    assert.equal(errors[0].includes("service-role-test"), false);
+    assert.equal(errors[0].includes("Analytical Engines"), false);
+    assert.equal(errors[0].includes("https://example.com"), false);
+    assert.equal(JSON.stringify(saved).includes("428C9"), false);
   });
 
   it("does not call the database when the service role is missing", async () => {
@@ -496,15 +627,20 @@ describe("handleLeadRequest", () => {
 
   it("returns 500 without database text when the insert fails", async () => {
     const { fetchImpl } = crmFetch({ leadStatus: 500 });
-    const result = await handleLeadRequest(freeAnalysis, {
+    const { result, errors } = await capturePersistLogs(() => handleLeadRequest(freeAnalysis, {
       env: STORE_ENV,
       fetchImpl,
-    });
+    }));
     assert.equal(result.status, 500);
     assert.equal(result.body.stored, false);
     assert.equal(result.body.ok, false);
     assert.equal(JSON.stringify(result.body).includes("secret-leak"), false);
     assert.equal(JSON.stringify(result.body).includes("duplicate"), false);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /step=crm_lead/);
+    assert.match(errors[0], /status=500/);
+    assert.equal(errors[0].includes("service-role-test"), false);
+    assert.equal(errors[0].includes(freeFields.email), false);
   });
 
   it("stops before siteverify when the honeypot is filled", async () => {
@@ -565,11 +701,61 @@ describe("handleLeadRequest", () => {
     assert.equal(called, false);
   });
 
-  it("allows only the Pages preview origin", () => {
-    assert.equal(
-      ALLOWED_ORIGIN,
-      "https://akwmarketing.pages.dev",
+  it("allows www, the apex, and the pages.dev origin", () => {
+    assert.deepEqual(
+      ALLOWED_ORIGINS,
+      LEAD_HOSTS.map((host) => `https://${host}`),
     );
+    for (const origin of ALLOWED_ORIGINS) {
+      assert.equal(isAllowedOrigin(origin), true);
+      const headers = corsHeaders(origin);
+      assert.equal(headers["access-control-allow-origin"], origin);
+      assert.equal(headers.vary, "origin");
+    }
+    assert.equal(isAllowedOrigin("https://evil.example"), false);
+    assert.equal(isAllowedOrigin(null), false);
+    assert.deepEqual(corsHeaders("https://evil.example"), {});
+    assert.deepEqual(corsHeaders("https://www.akwmarketing.com.evil.example"), {});
+  });
+});
+
+describe("browser host allowlist and canonical host", () => {
+  it("renders Turnstile on the same three hosts and not on localhost", () => {
+    assert.deepEqual(CLIENT_TURNSTILE_HOSTNAMES, LEAD_HOSTS);
+    for (const hostname of LEAD_HOSTS) {
+      assert.equal(turnstileAllowedHost(hostname), true);
+    }
+    assert.equal(turnstileAllowedHost("localhost"), false);
+    assert.equal(turnstileAllowedHost("www.akwmarketing.com.evil.example"), false);
+  });
+
+  it("emits www as the canonical origin", () => {
+    assert.equal(CANONICAL_ORIGIN, "https://www.akwmarketing.com");
+    assert.equal(canonicalUrl("/"), "https://www.akwmarketing.com/");
+    assert.equal(canonicalUrl("/Home"), "https://www.akwmarketing.com/");
+    assert.equal(canonicalUrl("/kitchener/"), "https://www.akwmarketing.com/kitchener");
+  });
+
+  it("scopes noindex to pages.dev and allows crawling in robots.txt", () => {
+    const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
+    const headers = readFileSync(`${root}/public/_headers`, "utf8");
+    const robots = readFileSync(`${root}/public/robots.txt`, "utf8");
+    const redirects = readFileSync(`${root}/public/_redirects`, "utf8");
+    const shell = readFileSync(`${root}/index.html`, "utf8");
+    const edge = readFileSync(`${root}/supabase/functions/website-lead-capture/index.ts`, "utf8");
+    assert.match(headers, /https:\/\/:project\.pages\.dev\/\*/);
+    assert.match(headers, /https:\/\/:preview\.:project\.pages\.dev\/\*/);
+    assert.match(headers, /X-Robots-Tag: noindex/);
+    assert.doesNotMatch(headers, /(^|\n)\/\*/);
+    assert.doesNotMatch(shell, /<meta name="robots" content="[^"]*noindex/i);
+    assert.match(shell, /rel="canonical" href="https:\/\/www\.akwmarketing\.com"/);
+    assert.match(robots, /Allow: \//);
+    assert.doesNotMatch(robots, /Disallow: \//);
+    assert.match(robots, /Sitemap: https:\/\/www\.akwmarketing\.com\/sitemap\.xml/);
+    assert.match(redirects, /\/landing \/ 301/);
+    assert.match(redirects, /\/Landing \/ 301/);
+    assert.match(edge, /isAllowedOrigin\(origin\)/);
+    assert.doesNotMatch(edge, /akwmarketing\.pages\.dev/);
   });
 });
 

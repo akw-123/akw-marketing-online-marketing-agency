@@ -1,0 +1,76 @@
+# Legacy paths. The map and the evidence live in src/lib/siteRoutes.js.
+# Pages matches these paths case-sensitively. Do not add /* /index.html 200.
+# /BlogPost (no trailing slash) is a Pages Function so ?slug= can be read.
+# A trailing slash cannot carry the query and 301s to /blog.
+
+# Observed in App.jsx or the Base44 sitemap
+/landing / 301
+/landing/ / 301
+/Landing / 301
+/Landing/ / 301
+/Home / 301
+/Home/ / 301
+/home / 301
+/home/ / 301
+/meta-ads /gbp 301
+/meta-ads/ /gbp 301
+/PrivacyPolicy /privacy-policy 301
+/PrivacyPolicy/ /privacy-policy 301
+/TermsOfService /terms-of-service 301
+/TermsOfService/ /terms-of-service 301
+# Page component filename (createPageUrl uses the page name). Not a separate App.jsx path.
+/About /about 301
+/About/ /about 301
+/Blog /blog 301
+/Blog/ /blog 301
+/ContentMarketingKitchener /content-marketing-kitchener 301
+/ContentMarketingKitchener/ /content-marketing-kitchener 301
+/Dashboard /dashboard 301
+/Dashboard/ /dashboard 301
+/FreeAnalysis /free-analysis 301
+/FreeAnalysis/ /free-analysis 301
+/GbpThreeFree /gbp-three-free 301
+/GbpThreeFree/ /gbp-three-free 301
+/GetMoreClients /get-more-clients 301
+/GetMoreClients/ /get-more-clients 301
+/HardestWorkingMarketingAgency /hardest-working-marketing-agency-kitchener-waterloo 301
+/HardestWorkingMarketingAgency/ /hardest-working-marketing-agency-kitchener-waterloo 301
+/HardestWorkingSeoExpert /hardest-working-seo-expert-kitchener-waterloo 301
+/HardestWorkingSeoExpert/ /hardest-working-seo-expert-kitchener-waterloo 301
+/Kitchener /kitchener 301
+/Kitchener/ /kitchener 301
+/MetaAds /gbp 301
+/MetaAds/ /gbp 301
+/Newsletter /newsletter 301
+/Newsletter/ /newsletter 301
+/NewsletterThankYou /newsletter-thank-you 301
+/NewsletterThankYou/ /newsletter-thank-you 301
+/WebsiteDesignKitchener /website-design-kitchener 301
+/WebsiteDesignKitchener/ /website-design-kitchener 301
+/Hamilton /hamilton 301
+/Hamilton/ /hamilton 301
+/LocalSeoKitchener /local-seo-kitchener 301
+/LocalSeoKitchener/ /local-seo-kitchener 301
+/MetaAdsKitchener /meta-ads-kitchener 301
+/MetaAdsKitchener/ /meta-ads-kitchener 301
+/SeoServicesKitchener /seo-services-kitchener 301
+/SeoServicesKitchener/ /seo-services-kitchener 301
+/Stratford /stratford 301
+/Stratford/ /stratford 301
+/Waterloo /waterloo 301
+/Waterloo/ /waterloo 301
+/Brantford /brantford 301
+/Brantford/ /brantford 301
+/Burlington /burlington 301
+/Burlington/ /burlington 301
+/Cambridge /cambridge 301
+/Cambridge/ /cambridge 301
+/GoogleAdsKitchener /google-ads-kitchener 301
+/GoogleAdsKitchener/ /google-ads-kitchener 301
+/Guelph /guelph 301
+/Guelph/ /guelph 301
+# Case variant of the BlogPost page name. The PascalCase path is a Pages Function.
+/blogpost /blog 301
+/blogpost/ /blog 301
+# Trailing slash only. The path without a slash is a Pages Function.
+/BlogPost/ /blog 301

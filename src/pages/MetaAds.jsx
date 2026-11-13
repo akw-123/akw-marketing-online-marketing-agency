@@ -86,7 +86,7 @@ export default function MetaAds() {
       "@type": "ProfessionalService",
       "name": "AKW Marketing Agency",
       "description": "AKW Marketing Agency — get your local business into Google's top 3 in 90 days. Serving the Kitchener-Waterloo area.",
-      "url": "https://akwmarketing.com/gbp",
+      "url": "https://www.akwmarketing.com/gbp",
       "telephone": "+1-437-475-0076",
       "email": "contact@akwmarketing.com",
       "image": "/assets/logo-official.png",

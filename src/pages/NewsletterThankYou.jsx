@@ -9,6 +9,20 @@ export default function NewsletterThankYou() {
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
     meta.content = "You're subscribed to the AKW Marketing newsletter. Check your inbox for proven marketing tactics that actually work for local businesses.";
+    let robots = document.querySelector('meta[name="robots"]');
+    const createdRobots = !robots;
+    if (!robots) {
+      robots = document.createElement("meta");
+      robots.setAttribute("name", "robots");
+      document.head.appendChild(robots);
+    }
+    const previousRobots = robots.getAttribute("content");
+    robots.setAttribute("content", "noindex, follow");
+    return () => {
+      if (createdRobots) robots.remove();
+      else if (previousRobots == null) robots.removeAttribute("content");
+      else robots.setAttribute("content", previousRobots);
+    };
   }, []);
 
   return (

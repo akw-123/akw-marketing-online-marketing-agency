@@ -45,7 +45,7 @@ function KitchenerNav() {
           <a href="#services" className="hidden sm:inline text-sm font-medium text-stone-700 hover:text-stone-900 transition-colors">
             Services
           </a>
-          <a href="https://akwmarketing.com/landing">
+          <a href="https://www.akwmarketing.com/landing">
             <button className="bg-stone-900 hover:bg-stone-800 text-white rounded-full px-5 h-9 text-sm font-medium flex items-center gap-2 transition-colors">
               Sign Up
             </button>
@@ -301,7 +301,7 @@ export default function Kitchener() {
         "jobTitle": "Founder",
         "worksFor": { "@type": "Organization", "name": "AKW Marketing" }
       },
-      "url": "https://akwmarketing.com/kitchener",
+      "url": "https://www.akwmarketing.com/kitchener",
       "telephone": "+1-437-475-0076",
       "email": "contact@akwmarketing.com",
       "image": "/assets/logo-official.png",

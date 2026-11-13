@@ -13,7 +13,7 @@ export default function About() {
       "@context": "https://schema.org",
       "@type": "AboutPage",
       "name": "About AKW Marketing",
-      "url": "https://akwmarketing.com/about",
+      "url": "https://www.akwmarketing.com/about",
       "mainEntity": {
         "@type": "ProfessionalService",
         "name": "AKW Marketing",
@@ -23,7 +23,7 @@ export default function About() {
           "jobTitle": "Founder",
           "worksFor": { "@type": "Organization", "name": "AKW Marketing" }
         },
-        "url": "https://akwmarketing.com",
+        "url": "https://www.akwmarketing.com",
         "areaServed": [
           {"@type":"City","name":"Kitchener","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
           {"@type":"City","name":"Waterloo","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
@@ -88,7 +88,7 @@ export default function About() {
 
       <p>Every engagement starts the same way: a free local marketing analysis. We audit your website, your Google Business Profile, your competitors, and your quick-win opportunities, then walk you through the findings on a 30-minute call. No obligation, no pressure. If it makes sense to work together, we scope the engagement from there. If not, you leave with a written diagnostic you can use with any agency you choose.</p>
 
-      <p>Book your free analysis at <a href="/free-analysis">akwmarketing.com/free-analysis</a>, or reach out directly to Andre at <a href="mailto:contact@akwmarketing.com">contact@akwmarketing.com</a>.</p>
+      <p>Book your free analysis at <a href="/free-analysis">www.akwmarketing.com/free-analysis</a>, or reach out directly to Andre at <a href="mailto:contact@akwmarketing.com">contact@akwmarketing.com</a>.</p>
 
       <h2>Contact</h2>
 

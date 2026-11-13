@@ -15,17 +15,17 @@ export default function HardestWorkingMarketingAgency() {
       "@graph": [
         {
           "@type": "WebPage",
-          "@id": "https://akwmarketing.com/hardest-working-marketing-agency-kitchener-waterloo#webpage",
-          "url": "https://akwmarketing.com/hardest-working-marketing-agency-kitchener-waterloo",
+          "@id": "https://www.akwmarketing.com/hardest-working-marketing-agency-kitchener-waterloo#webpage",
+          "url": "https://www.akwmarketing.com/hardest-working-marketing-agency-kitchener-waterloo",
           "name": "Hardest-Working Marketing Agency in Kitchener Waterloo",
-          "about": { "@id": "https://akwmarketing.com/#organization" }
+          "about": { "@id": "https://www.akwmarketing.com/#organization" }
         },
         {
           "@type": "ProfessionalService",
-          "@id": "https://akwmarketing.com/#organization",
+          "@id": "https://www.akwmarketing.com/#organization",
           "name": "AKW Marketing",
           "description": "Marketing agency in Kitchener, Ontario offering local SEO, Google Ads, Meta Ads and content marketing.",
-          "url": "https://akwmarketing.com",
+          "url": "https://www.akwmarketing.com",
           "telephone": "+1-437-475-0076",
           "email": "contact@akwmarketing.com",
           "address": {

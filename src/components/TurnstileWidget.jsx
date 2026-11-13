@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { TURNSTILE_SITE_KEY, turnstileAllowedHost } from "@/lib/leadCaptureContract";
 
 /**
- * Renders the public Turnstile widget only on akwmarketing.pages.dev.
+ * Renders the public Turnstile widget on the lead-capture host allowlist
+ * (www.akwmarketing.com, akwmarketing.com, and akwmarketing.pages.dev).
  * Other hosts skip it so local preview does not show a hostname error.
  * The form reads the widget token when it submits.
  */
