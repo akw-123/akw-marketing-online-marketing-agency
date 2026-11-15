@@ -5,6 +5,7 @@ import FooterSection from "@/components/landing/FooterSection";
 import WhereWeWork from "@/components/landing/WhereWeWork";
 import ProcessSection from "@/components/landing/ProcessSection";
 import BeforeAfterSection from "@/components/landing/BeforeAfterSection";
+import FounderSection from "@/components/landing/FounderSection";
 import { upsertJsonLd } from "@/lib/upsertJsonLd";
 
 const clients = [
@@ -297,6 +298,7 @@ export default function Home() {
         </div>
       </section>
 
+      <FounderSection />
       <WhereWeWork />
       <FooterSection />
     </div>
