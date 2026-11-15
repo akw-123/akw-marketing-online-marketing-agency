@@ -23,6 +23,14 @@ export default function FounderSection() {
               Meet the hardest working SEO expert in Kitchener Waterloo
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
             </a>
+            <div className="mt-2">
+              <a
+                href="/hardest-working-marketing-agency-kitchener-waterloo"
+                className="text-sm text-stone-500 hover:text-stone-700 transition-colors"
+              >
+                Hardest-Working Marketing Agency in Kitchener Waterloo
+              </a>
+            </div>
           </div>
           <div className="order-1 md:order-2">
             <img
