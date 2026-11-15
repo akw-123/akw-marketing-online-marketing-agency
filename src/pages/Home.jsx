@@ -17,14 +17,6 @@ const clients = [
   "Carter Solutions",
 ];
 
-const team = [
-  {
-    name: "Andre Kadjo",
-    role: "Founder & CEO",
-    img: "/assets/hero-1570675559675.jpeg",
-  },
-];
-
 function EmailForm() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -211,29 +203,6 @@ export default function Home() {
               {name}
             </span>
           ))}
-        </div>
-      </section>
-
-      {/* Team */}
-      <section className="py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <span className="inline-flex items-center bg-white border border-stone-200 rounded-full px-4 py-1.5 text-xs font-medium text-stone-600 mb-5">
-              Our team
-            </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-stone-900 tracking-tight">Meet the team</h2>
-          </div>
-          <div className="flex justify-center">
-            {team.map((member) => (
-              <div key={member.name} className="flex flex-col items-center text-center">
-                <div className="w-40 h-40 rounded-2xl overflow-hidden mb-4 shadow-md">
-                  <img src={member.img} alt={member.name} className="w-full h-full object-cover" />
-                </div>
-                <p className="font-semibold text-stone-900 text-sm">{member.name}</p>
-                <p className="text-stone-400 text-xs mt-0.5">{member.role}</p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

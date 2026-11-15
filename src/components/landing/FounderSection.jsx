@@ -34,10 +34,10 @@ export default function FounderSection() {
           </div>
           <div className="order-1 md:order-2">
             <img
-              src="/assets/hardest-working-seo-expert-kitchener-waterloo.jpg"
+              src="/assets/hero-1570675559675.jpeg"
               alt="Andre Kadjo, founder of AKW Marketing"
-              width="717"
-              height="900"
+              width="400"
+              height="400"
               className="w-full max-w-sm mx-auto rounded-2xl shadow-sm"
             />
           </div>
