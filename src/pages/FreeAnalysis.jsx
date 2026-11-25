@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowUpRight, Loader2, CheckCircle, ChevronDown } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { submitLead } from "@/lib/submitLead";
+import TurnstileWidget from "@/components/TurnstileWidget";
 import { motion, AnimatePresence } from "framer-motion";
 
 const faqs = [
@@ -74,6 +75,8 @@ export default function FreeAnalysis() {
     full_name: "", email: "", phone: "", website: "", business_name: "", google_maps_url: "", timeline: "Today", heard_from: "",
   });
   const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState("");
+  const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   const set = (field) => (e) => setForm({ ...form, [field]: e.target.value });
@@ -82,21 +85,22 @@ export default function FreeAnalysis() {
     e.preventDefault();
     setLoading(true);
 
-    await base44.entities.StrategyApplication.create({
+    setError("");
+    const result = await submitLead("free-analysis", {
       full_name: form.full_name,
       email: form.email,
       phone: form.phone,
       website: form.website,
       business_name: form.business_name,
-      additional_info: `Google Maps URL: ${form.google_maps_url}\nTimeline: ${form.timeline}\nHeard about us: ${form.heard_from || "N/A"}`,
-    });
-
-    await base44.integrations.Core.SendEmail({
-      to: "andre@akwmarketing.com",
-      subject: `New Free Analysis Request: ${form.business_name} (${form.full_name})`,
-      body: `New Free Analysis Request\n\nFull Name: ${form.full_name}\nEmail: ${form.email}\nPhone: ${form.phone}\nWebsite: ${form.website || "N/A"}\nBusiness Name: ${form.business_name}\nGoogle Maps URL: ${form.google_maps_url || "N/A"}\nTimeline: ${form.timeline}\nHow they heard about us: ${form.heard_from || "N/A"}`,
-    });
-
+      google_maps_url: form.google_maps_url,
+      timeline: form.timeline,
+      heard_from: form.heard_from,
+    }, token);
+    if (!result.ok) {
+      setLoading(false);
+      setError("Sorry, something went wrong sending your details. Please try again, or call 437-475-0076.");
+      return;
+    }
     setLoading(false);
     setSubmitted(true);
   };
@@ -239,10 +243,13 @@ export default function FreeAnalysis() {
                   </div>
                 </div>
 
+                <TurnstileWidget onToken={setToken} />
+                {error && <p className="text-sm text-red-600">{error}</p>}
+
                 <div className="pt-4">
                   <button
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || !token}
                     className="w-full bg-stone-900 hover:bg-stone-800 disabled:opacity-60 text-white font-semibold py-4 rounded-xl text-sm transition-colors flex items-center justify-center gap-2"
                   >
                     {loading ? (

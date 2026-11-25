@@ -31,11 +31,15 @@ export default function Newsletter() {
       // non-blocking: signup still succeeds if the webhook hiccups
     }
 
-    await base44.integrations.Core.SendEmail({
-      to: "andre@akwmarketing.com",
-      subject: `New Newsletter Subscriber: ${form.first_name}`,
-      body: `New newsletter signup:\n\nFirst Name: ${form.first_name}\nEmail: ${form.email}`,
-    });
+    try {
+      await base44.integrations.Core.SendEmail({
+        to: "andre@akwmarketing.com",
+        subject: `New Newsletter Subscriber: ${form.first_name}`,
+        body: `New newsletter signup:\n\nFirst Name: ${form.first_name}\nEmail: ${form.email}`,
+      });
+    } catch (err) {
+      // Base44 email is retired. Signup continues through the Make webhook.
+    }
 
     setLoading(false);
     navigate("/newsletter-thank-you");
