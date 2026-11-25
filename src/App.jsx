@@ -10,6 +10,7 @@ import TermsOfService from './pages/TermsOfService';
 import MetaAds from './pages/MetaAds';
 import Kitchener from './pages/Kitchener';
 import SeoServicesKitchener from './pages/SeoServicesKitchener';
+import SeoCostKitchener from './pages/SeoCostKitchener';
 import Waterloo from './pages/Waterloo';
 import GoogleAdsKitchener from './pages/GoogleAdsKitchener';
 import MetaAdsKitchener from './pages/MetaAdsKitchener';
@@ -105,6 +106,7 @@ export const PublicApp = () => {
       <Route path="/gbp" element={<MetaAds />} />
       <Route path="/kitchener" element={<Kitchener />} />
       <Route path="/seo-services-kitchener" element={<SeoServicesKitchener />} />
+      <Route path="/seo-cost-kitchener" element={<SeoCostKitchener />} />
       <Route path="/waterloo" element={<Waterloo />} />
       <Route path="/google-ads-kitchener" element={<GoogleAdsKitchener />} />
       <Route path="/meta-ads-kitchener" element={<MetaAdsKitchener />} />

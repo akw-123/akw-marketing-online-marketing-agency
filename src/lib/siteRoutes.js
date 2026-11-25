@@ -25,6 +25,7 @@ export const SITEMAP_PAGES = [
   { loc: "/stratford", source: "src/pages/Stratford.jsx", priority: "0.9", changefreq: "weekly" },
   { loc: "/local-seo-kitchener", source: "src/pages/LocalSeoKitchener.jsx", priority: "0.8", changefreq: "monthly" },
   { loc: "/seo-services-kitchener", source: "src/pages/SeoServicesKitchener.jsx", priority: "0.8", changefreq: "monthly" },
+  { loc: "/seo-cost-kitchener", source: "src/pages/SeoCostKitchener.jsx", priority: "0.8", changefreq: "monthly" },
   { loc: "/google-ads-kitchener", source: "src/pages/GoogleAdsKitchener.jsx", priority: "0.8", changefreq: "monthly" },
   { loc: "/meta-ads-kitchener", source: "src/pages/MetaAdsKitchener.jsx", priority: "0.8", changefreq: "monthly" },
   { loc: "/ai-seo-kitchener", source: "src/pages/AiSeoKitchener.jsx", priority: "0.8", changefreq: "monthly" },

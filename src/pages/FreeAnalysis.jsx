@@ -60,6 +60,7 @@ function FAQItem({ q, a }) {
 const inputClass =
   "w-full px-0 py-3 border-0 border-b border-stone-300 bg-transparent text-stone-900 text-sm placeholder-stone-400 focus:outline-none focus:border-stone-900 transition-colors";
 
+const HEARD_OPTIONS = ["Google search", "Google Maps", "ChatGPT or another AI tool", "Facebook or Instagram", "YouTube", "Friend or colleague", "Other"];
 const TIMELINE_OPTIONS = ["Today", "Tomorrow", "In a few weeks"];
 
 export default function FreeAnalysis() {
@@ -71,7 +72,7 @@ export default function FreeAnalysis() {
   }, []);
 
   const [form, setForm] = useState({
-    full_name: "", email: "", phone: "", website: "", business_name: "", google_maps_url: "", timeline: "Today",
+    full_name: "", email: "", phone: "", website: "", business_name: "", google_maps_url: "", timeline: "Today", heard_from: "",
   });
   const [submitError, setSubmitError] = useState("");
   const [submitOk, setSubmitOk] = useState("");
@@ -203,6 +204,13 @@ export default function FreeAnalysis() {
                     onChange={set("google_maps_url")}
                     className={inputClass}
                   />
+                </div>
+
+                <div>
+                  <select value={form.heard_from} onChange={set("heard_from")} className={inputClass} aria-label="How did you hear about us?">
+                    <option value="">How did you hear about us?</option>
+                    {HEARD_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
+                  </select>
                 </div>
 
                 {/* Timeline */}
