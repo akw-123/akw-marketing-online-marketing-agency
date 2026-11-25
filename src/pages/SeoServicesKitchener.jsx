@@ -17,7 +17,7 @@ export default function SeoServicesKitchener() {
 
       <p>AKW Marketing runs SEO services designed specifically for local Kitchener businesses. Not generic "we do SEO everywhere" packages, but a disciplined process built on a documented ranking playbook that gets you into the top of Google's local map pack and organic results, then keeps you there.</p>
 
-      <p>Book a free local SEO analysis at <a href="/free-analysis">/free-analysis</a> if you want to see exactly where you stand and what it would take to move up.</p>
+      <p>Book a free local SEO analysis at <a href="/free-analysis">/free-analysis</a> if you want to see exactly where you stand and what it would take to move up. Prices are on our <a href="/seo-cost-kitchener">SEO cost in Kitchener-Waterloo</a> page.</p>
 
       <h2>What SEO actually is (and why local SEO is different)</h2>
 

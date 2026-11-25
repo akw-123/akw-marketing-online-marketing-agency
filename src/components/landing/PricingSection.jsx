@@ -15,7 +15,7 @@ const standardFeatures = [
 const plans = [
   {
     name: "Minimum",
-    price: "CA$399",
+    price: "CA$500",
     period: "/ Month",
     commitment: "3 month commitment. Cancellable monthly thereafter.",
     highlight: "First page on Google within 90 days.",
@@ -25,29 +25,29 @@ const plans = [
       { text: "Updates Every Two Weeks", included: true },
       { text: "Ranking For Main Search-Term", included: true },
       { text: "High Quality Backlinks", included: true },
-      { text: "Limited Website Optimization", included: true },
+      { text: "Limited Website Optimization", included: false },
       { text: "No Money-Back Guarantee", included: false },
     ],
     popular: false,
   },
   {
     name: "Standard",
-    price: "CA$499",
+    price: "CA$599",
     period: "/ Month",
     commitment: "3 month commitment. Cancellable monthly thereafter.",
     highlight: "Top 3 on Google within 90 days. Guaranteed or you don't pay.",
-    visibility: "75%+",
+    visibility: "77%",
     features: standardFeatures,
     popular: true,
   },
   {
     name: "Best Value",
-    price: "CA$1,299",
+    price: "CA$999",
     period: "/ Quarter",
-    badge: "Save CA$198",
+    badge: "Save CA$798",
     commitment: "Cancellable every 3 months.",
     highlight: "Top 3 on Google within 90 days. Guaranteed or you don't pay.",
-    visibility: "75%+",
+    visibility: "77%",
     features: standardFeatures,
     popular: false,
   },
@@ -167,7 +167,7 @@ export default function PricingSection() {
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
                 </a>
-                <a href="tel:+15067038558" className="block">
+                <a href="tel:+14374750076" className="block">
                   <Button
                     variant="outline"
                     className={`w-full rounded-xl h-11 font-medium text-sm ${

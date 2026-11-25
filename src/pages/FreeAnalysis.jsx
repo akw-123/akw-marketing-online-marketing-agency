@@ -59,6 +59,7 @@ function FAQItem({ q, a }) {
 const inputClass =
   "w-full px-0 py-3 border-0 border-b border-stone-300 bg-transparent text-stone-900 text-sm placeholder-stone-400 focus:outline-none focus:border-stone-900 transition-colors";
 
+const HEARD_OPTIONS = ["Google search", "Google Maps", "ChatGPT or another AI tool", "Facebook or Instagram", "YouTube", "Friend or colleague", "Other"];
 const TIMELINE_OPTIONS = ["Today", "Tomorrow", "In a few weeks"];
 
 export default function FreeAnalysis() {
@@ -70,7 +71,7 @@ export default function FreeAnalysis() {
   }, []);
 
   const [form, setForm] = useState({
-    full_name: "", email: "", phone: "", website: "", business_name: "", google_maps_url: "", timeline: "Today",
+    full_name: "", email: "", phone: "", website: "", business_name: "", google_maps_url: "", timeline: "Today", heard_from: "",
   });
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -87,13 +88,13 @@ export default function FreeAnalysis() {
       phone: form.phone,
       website: form.website,
       business_name: form.business_name,
-      additional_info: `Google Maps URL: ${form.google_maps_url}\nTimeline: ${form.timeline}`,
+      additional_info: `Google Maps URL: ${form.google_maps_url}\nTimeline: ${form.timeline}\nHeard about us: ${form.heard_from || "N/A"}`,
     });
 
     await base44.integrations.Core.SendEmail({
       to: "andre@akwmarketing.com",
       subject: `New Free Analysis Request: ${form.business_name} (${form.full_name})`,
-      body: `New Free Analysis Request\n\nFull Name: ${form.full_name}\nEmail: ${form.email}\nPhone: ${form.phone}\nWebsite: ${form.website || "N/A"}\nBusiness Name: ${form.business_name}\nGoogle Maps URL: ${form.google_maps_url || "N/A"}\nTimeline: ${form.timeline}`,
+      body: `New Free Analysis Request\n\nFull Name: ${form.full_name}\nEmail: ${form.email}\nPhone: ${form.phone}\nWebsite: ${form.website || "N/A"}\nBusiness Name: ${form.business_name}\nGoogle Maps URL: ${form.google_maps_url || "N/A"}\nTimeline: ${form.timeline}\nHow they heard about us: ${form.heard_from || "N/A"}`,
     });
 
     setLoading(false);
@@ -206,6 +207,13 @@ export default function FreeAnalysis() {
                     onChange={set("google_maps_url")}
                     className={inputClass}
                   />
+                </div>
+
+                <div>
+                  <select value={form.heard_from} onChange={set("heard_from")} className={inputClass} aria-label="How did you hear about us?">
+                    <option value="">How did you hear about us?</option>
+                    {HEARD_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
+                  </select>
                 </div>
 
                 {/* Timeline */}

@@ -5,7 +5,9 @@ import { base44 } from "@/api/base44Client";
 const inputClass =
   "w-full px-4 py-3 rounded-lg border border-stone-300 bg-white text-stone-900 text-sm focus:outline-none focus:border-[#85b6e9] focus:ring-1 focus:ring-[#85b6e9] transition-colors";
 
+const HEARD_OPTIONS = ["Google search", "Google Maps", "ChatGPT or another AI tool", "Facebook or Instagram", "YouTube", "Friend or colleague", "Other"];
 const emptyForm = {
+  heard_from: "",
   first_name: "",
   last_name: "",
   email: "",
@@ -44,6 +46,7 @@ export default function SimplifiedApplicationForm() {
       business_name: form.business_name,
       website: form.website,
       gbp_link: form.gbp_link,
+      heard_from: form.heard_from,
     };
 
     await base44.entities.StrategyApplication.create(payload);
@@ -57,6 +60,7 @@ Phone: ${payload.phone}
 Company: ${payload.business_name}
 Website: ${payload.website || "N/A"}
 Google Business Profile Link: ${payload.gbp_link || "N/A"}
+How they heard about us: ${payload.heard_from || "N/A"}
     `.trim();
 
     await base44.integrations.Core.SendEmail({
@@ -107,6 +111,13 @@ Google Business Profile Link: ${payload.gbp_link || "N/A"}
       <div>
         <h3 className="text-sm font-semibold text-stone-900 mb-4">Google Business profile information</h3>
         <input type="url" placeholder="Link to your Google Business Profile" value={form.gbp_link} onChange={set("gbp_link")} className={inputClass} />
+      </div>
+
+      <div>
+        <select value={form.heard_from} onChange={set("heard_from")} className={inputClass} aria-label="How did you hear about us?">
+          <option value="">How did you hear about us?</option>
+          {HEARD_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
+        </select>
       </div>
 
       {/* Disclaimer */}
