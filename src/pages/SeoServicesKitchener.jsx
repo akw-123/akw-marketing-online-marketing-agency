@@ -51,7 +51,7 @@ export default function SeoServicesKitchener() {
 
       <h3>Link building and citation authority</h3>
 
-      <p>Backlinks (links from other websites to yours) remain one of the strongest ranking signals Google uses. We focus on the two categories that actually move rankings for Kitchener businesses: local citations on the directories Google reads for local intent (which we handle via our LeadSnap subscription and manual outreach), and editorial links from Kitchener-area publications, industry directories, and topical roundups. We do not buy spammy links, run link farms, or engage in any tactic that risks a Google penalty. Slow and safe wins the ranking.</p>
+      <p>Backlinks (links from other websites to yours) remain one of the strongest ranking signals Google uses. We focus on the two categories that actually move rankings for Kitchener businesses: local citations on the directories Google reads for local intent (which we build and verify in-house), and editorial links from Kitchener-area publications, industry directories, and topical roundups. We do not buy spammy links, run link farms, or engage in any tactic that risks a Google penalty. Slow and safe wins the ranking.</p>
 
       <h3>Reporting and monthly rank tracking</h3>
 

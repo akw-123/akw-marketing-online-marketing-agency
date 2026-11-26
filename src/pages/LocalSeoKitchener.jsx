@@ -19,7 +19,7 @@ export default function LocalSeoKitchener() {
 
       <p>Book a free local SEO audit at <a href="/free-analysis">/free-analysis</a> if you want to see exactly where you rank in the map pack today and what it would take to move up.</p>
 
-      <h2>Local SEO vs "regular" SEO — what's actually different</h2>
+      <h2>Local SEO vs "regular" SEO: what's actually different</h2>
 
       <p>Traditional SEO (<a href="/seo-services-kitchener">/seo-services-kitchener</a>) targets organic ranking (the blue links below the map pack). Local SEO targets the map pack itself, which uses partially-different ranking signals.</p>
 
@@ -28,7 +28,7 @@ export default function LocalSeoKitchener() {
       <ol>
         <li>Relevance. Does your Google Business Profile (GBP) category, services, and description match what the searcher wants?</li>
         <li>Distance. How close is your business to the searcher's location? (Not fully controllable, but influenceable via multi-city coverage strategies.)</li>
-        <li>Prominence. How authoritative is your business online — reviews, citations, backlinks, brand mentions, and website authority?</li>
+        <li>Prominence. How authoritative is your business online: reviews, citations, backlinks, brand mentions, and website authority.</li>
       </ol>
 
       <p>Traditional SEO wins on relevance plus prominence. Local SEO wins on all three, with a heavier weight on relevance signals from your GBP and prominence signals from local citations plus reviews.</p>
@@ -41,7 +41,7 @@ export default function LocalSeoKitchener() {
         <li>Primary and secondary categories chosen for maximum relevance (wrong category equals dead map pack)</li>
         <li>All 30+ services listed with keyword-rich 300-character descriptions</li>
         <li>Profile completion to full green circle (name, address, phone, hours, description, attributes, all photos)</li>
-        <li>Weekly Posts cadence (event, offer, or update — Google favors active profiles)</li>
+        <li>Weekly Posts cadence (event, offer, or update, since Google favors active profiles)</li>
         <li>Geotagged photos uploaded regularly</li>
         <li>Q&A section seeded with common customer questions and answers</li>
         <li>Booking or contact links configured for direct conversion</li>
@@ -52,7 +52,7 @@ export default function LocalSeoKitchener() {
       <p>Citations are mentions of your business name, address, and phone number on third-party directories. Google uses citation consistency as a trust signal (matching NAP across 40+ directories equals "this business is real"). We build citations in three tiers:</p>
       <ul>
         <li>Tier 1 (80/20 must-haves): Bing Places, Apple Business Connect, Yellow Pages Canada, FourSquare, Data Axle. Non-negotiable.</li>
-        <li>Tier 2 (general directories): Cylex, Hotfrog, Manta, Tupalo, Infobel, Where To, iGlobal, ShowMeLocal, and 10-20 more. Handled via LeadSnap (paid citation service) for speed.</li>
+        <li>Tier 2 (general directories): Cylex, Hotfrog, Manta, Tupalo, Infobel, Where To, iGlobal, ShowMeLocal, and 10-20 more. Built and verified in-house for speed and accuracy.</li>
         <li>Tier 3 (industry-specific): trade associations, niche directories, industry aggregators. Manual outreach.</li>
       </ul>
 
@@ -70,7 +70,7 @@ export default function LocalSeoKitchener() {
       </ul>
 
       <h3>Map-pack rank tracking</h3>
-      <p>You can't improve what you can't measure. We track your map-pack position for your primary and secondary keywords weekly, using geo-grid tools that show ranking variance across your service area (you might rank #2 in downtown Kitchener but #8 in Waterloo — different problems). Monthly reports show ranking trends, review velocity, citation growth, and traffic plus conversion attribution.</p>
+      <p>You can't improve what you can't measure. We track your map-pack position for your primary and secondary keywords weekly, using geo-grid tools that show ranking variance across your service area (you might rank #2 in downtown Kitchener but #8 in Waterloo, which are different problems). Monthly reports show ranking trends, review velocity, citation growth, and traffic plus conversion attribution.</p>
 
       <h3>Blackhat competitor cleanup</h3>
       <p>Some competitors game local SEO with fake addresses, keyword-stuffed business names, or duplicate listings. When these competitors are blocking legitimate businesses from top-3 map-pack positions, we document them and file "Suggest an edit" reports with Google. Slow but effective when the violation is clear.</p>
@@ -94,7 +94,7 @@ export default function LocalSeoKitchener() {
       <p>Regular SEO targets the organic blue links below the map pack. Local SEO targets the map pack itself. Different ranking signals: GBP optimization, citations, reviews, and NAP consistency matter more for local; content depth and backlinks matter more for organic. Most Kitchener local businesses need both. See SEO Services Kitchener (<a href="/seo-services-kitchener">/seo-services-kitchener</a>) for the organic side.</p>
 
       <h3>Can I rank in the map pack without a physical Kitchener address?</h3>
-      <p>Only if you're a service-area business (SAB) that provides services at customer locations — plumber, contractor, insurance broker, cleaning service. Google requires you to hide your address in the GBP if you're a SAB. Businesses with no physical presence AND no service delivery in Kitchener can't legitimately rank in the Kitchener map pack.</p>
+      <p>Only if you're a service-area business (SAB) that provides services at customer locations, like a plumber, contractor, insurance broker, or cleaning service. Google requires you to hide your address in the GBP if you're a SAB. Businesses with no physical presence AND no service delivery in Kitchener can't legitimately rank in the Kitchener map pack.</p>
 
       <h3>What if I serve multiple cities (Kitchener, Waterloo, Cambridge)?</h3>
       <p>Your primary GBP address city is where you rank strongest. To rank in adjacent cities, you need dedicated city landing pages (like our Waterloo page at <a href="/waterloo">/waterloo</a>) and consistent citations mentioning each city, but you generally can't outrank businesses physically located in those cities. Realistic expectation: dominate your primary city map pack, rank in top 5-10 for adjacent cities.</p>

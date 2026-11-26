@@ -1,0 +1,6 @@
+# Shared by www.akwmarketing.com and *.pages.dev.
+# pages.dev is noindexed by the host-scoped X-Robots-Tag in _headers.
+User-agent: *
+Allow: /
+
+Sitemap: https://www.akwmarketing.com/sitemap.xml

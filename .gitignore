@@ -13,6 +13,7 @@ lerna-debug.log*
 
 node_modules
 dist
+.wrangler
 dist-ssr
 *.local
 
@@ -29,3 +30,4 @@ dist-ssr
 
 .env
 base44/.app.jsonc
+supabase/.temp

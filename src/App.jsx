@@ -15,6 +15,7 @@ import Waterloo from './pages/Waterloo';
 import GoogleAdsKitchener from './pages/GoogleAdsKitchener';
 import MetaAdsKitchener from './pages/MetaAdsKitchener';
 import LocalSeoKitchener from './pages/LocalSeoKitchener';
+import AiSeoKitchener from './pages/AiSeoKitchener';
 import Cambridge from './pages/Cambridge';
 import Guelph from './pages/Guelph';
 import Hamilton from './pages/Hamilton';
@@ -33,6 +34,10 @@ import About from './pages/About';
 import WebsiteDesignKitchener from './pages/WebsiteDesignKitchener';
 import ContentMarketingKitchener from './pages/ContentMarketingKitchener';
 import NoIndexRedirect from './components/NoIndexRedirect';
+import { canonicalUrl } from '@/lib/canonicalPath';
+import { LEGACY_REDIRECTS } from '@/lib/siteRoutes';
+import { applySocialMeta, socialImageUrl, socialType } from '@/lib/socialMeta';
+import { getPublishedPost } from '@/data/blog';
 import Dashboard from './pages/Dashboard';
 import HardestWorkingSeoExpert from './pages/HardestWorkingSeoExpert';
 import HardestWorkingMarketingAgency from './pages/HardestWorkingMarketingAgency';
@@ -41,6 +46,9 @@ import GetMoreClients from './pages/GetMoreClients';
 const { Pages, Layout, mainPage } = pagesConfig;
 const mainPageKey = mainPage ?? Object.keys(Pages)[0];
 const MainPage = mainPageKey ? Pages[mainPageKey] : <></>;
+const clientRedirects = LEGACY_REDIRECTS.filter(
+  (entry) => entry.from !== "/landing" && entry.from !== "/Landing",
+);
 
 const LayoutWrapper = ({ children, currentPageName }) => Layout ?
   <Layout currentPageName={currentPageName}>{children}</Layout>
@@ -51,24 +59,38 @@ const CanonicalUpdater = () => {
   React.useEffect(() => {
     let canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical); }
-    canonical.href = `https://akwmarketing.com${location.pathname}`;
+    canonical.href = canonicalUrl(location.pathname);
   }, [location.pathname]);
   return null;
 };
 
-const AuthenticatedApp = () => {
-  // Render the main app directly — this used to gate behind a Base44 public-settings
-  // check that made a guaranteed-404 network call on every single page load (the
-  // Base44 backend for this app no longer exists post-migration to Cloudflare Pages),
-  // holding up first paint on a spinner before falling through to render anyway.
+/** Runs after the page title and description effects because it wraps the routes. */
+const SocialMeta = ({ children }) => {
+  const location = useLocation();
+  React.useEffect(() => {
+    const slug = location.pathname.match(/^\/blog\/([a-z0-9-]+)\/?$/)?.[1] || "";
+    const post = slug ? getPublishedPost(slug) : null;
+    applySocialMeta(document, {
+      title: document.title,
+      description: document.querySelector('meta[name="description"]')?.getAttribute("content") || "",
+      url: canonicalUrl(location.pathname),
+      image: socialImageUrl(post?.cover_image_url),
+      type: socialType(location.pathname),
+    });
+  }, [location.pathname]);
+  return children;
+};
+
+export const PublicApp = () => {
   return (
     <>
     <CanonicalUpdater />
+    <SocialMeta>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/landing" element={<NoIndexRedirect to="/" />} />
       <Route path="/Landing" element={<NoIndexRedirect to="/" />} />
-      {Object.entries(Pages).map(([path, Page]) => (
+      {Object.entries(Pages).filter(([path]) => path !== "Home").map(([path, Page]) => (
         <Route
           key={path}
           path={`/${path}`}
@@ -79,8 +101,8 @@ const AuthenticatedApp = () => {
           }
         />
       ))}
-      <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
-      <Route path="/TermsOfService" element={<TermsOfService />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/terms-of-service" element={<TermsOfService />} />
       <Route path="/gbp" element={<MetaAds />} />
       <Route path="/kitchener" element={<Kitchener />} />
       <Route path="/seo-services-kitchener" element={<SeoServicesKitchener />} />
@@ -89,6 +111,7 @@ const AuthenticatedApp = () => {
       <Route path="/google-ads-kitchener" element={<GoogleAdsKitchener />} />
       <Route path="/meta-ads-kitchener" element={<MetaAdsKitchener />} />
       <Route path="/local-seo-kitchener" element={<LocalSeoKitchener />} />
+      <Route path="/ai-seo-kitchener" element={<AiSeoKitchener />} />
       <Route path="/cambridge" element={<Cambridge />} />
       <Route path="/guelph" element={<Guelph />} />
       <Route path="/hamilton" element={<Hamilton />} />
@@ -109,8 +132,12 @@ const AuthenticatedApp = () => {
       <Route path="/content-marketing-kitchener" element={<ContentMarketingKitchener />} />
       <Route path="/landing" element={<Navigate to="/" replace />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      {clientRedirects.map((entry) => (
+        <Route key={entry.from} path={entry.from} element={<Navigate to={entry.to} replace />} />
+      ))}
       <Route path="*" element={<PageNotFound />} />
     </Routes>
+    </SocialMeta>
     </>
   );
 };
@@ -121,7 +148,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClientInstance}>
       <Router>
-        <AuthenticatedApp />
+        <PublicApp />
       </Router>
       <Toaster />
     </QueryClientProvider>

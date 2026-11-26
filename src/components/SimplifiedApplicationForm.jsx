@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { ArrowRight, Loader2, CheckCircle } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { ArrowRight } from "lucide-react";
+import { leadCaptureEnabled, submitFormLead } from "@/lib/previewLeadCapture";
+import TurnstileWidget from "@/components/TurnstileWidget";
 
 const inputClass =
   "w-full px-4 py-3 rounded-lg border border-stone-300 bg-white text-stone-900 text-sm focus:outline-none focus:border-[#85b6e9] focus:ring-1 focus:ring-[#85b6e9] transition-colors";
@@ -30,63 +31,41 @@ function Field({ required, placeholder, ...props }) {
 
 export default function SimplifiedApplicationForm() {
   const [form, setForm] = useState(emptyForm);
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [submitOk, setSubmitOk] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const captureReady = leadCaptureEnabled();
 
   const set = (field) => (e) => setForm({ ...form, [field]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    const payload = {
-      full_name: `${form.first_name} ${form.last_name}`.trim(),
-      email: form.email,
-      phone: form.phone,
-      business_name: form.business_name,
-      website: form.website,
-      gbp_link: form.gbp_link,
-      heard_from: form.heard_from,
-    };
-
-    await base44.entities.StrategyApplication.create(payload);
-
-    const emailBody = `
-New GBP Strategy Application
-
-Name: ${payload.full_name}
-Email: ${payload.email}
-Phone: ${payload.phone}
-Company: ${payload.business_name}
-Website: ${payload.website || "N/A"}
-Google Business Profile Link: ${payload.gbp_link || "N/A"}
-How they heard about us: ${payload.heard_from || "N/A"}
-    `.trim();
-
-    await base44.integrations.Core.SendEmail({
-      to: "andre@akwmarketing.com",
-      subject: `New GBP Application: ${payload.business_name} (${payload.full_name})`,
-      body: emailBody,
+    if (submitting) return;
+    setSubmitError("");
+    setSubmitOk("");
+    setSubmitting(true);
+    const result = await submitFormLead({
+      source: "gbp",
+      payload: form,
+      formEl: e.currentTarget,
+      hostname: window.location.hostname,
     });
-
-    setLoading(false);
-    setSubmitted(true);
+    setSubmitting(false);
+    if (result.ok) setSubmitOk(result.message);
+    else setSubmitError(result.message);
   };
 
-  if (submitted) {
-    return (
-      <div className="text-center py-12">
-        <CheckCircle className="w-14 h-14 text-green-500 mx-auto mb-5" />
-        <h3 className="text-2xl font-bold text-stone-900 mb-2">Application Received!</h3>
-        <p className="text-stone-500 text-sm max-w-sm mx-auto leading-relaxed">
-          Thank you, <strong>{form.first_name}</strong>! We'll review your application and reach out within 24–48 hours to schedule your free GBP strategy session.
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-8" data-lead-capture={captureReady ? "ready" : "unavailable"}>
+      <input
+        type="text"
+        name="honeypot"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        defaultValue=""
+        className="hidden"
+      />
       {/* Section 1 */}
       <div>
         <h3 className="text-sm font-semibold text-stone-900 mb-4">Your information</h3>
@@ -125,14 +104,25 @@ How they heard about us: ${payload.heard_from || "N/A"}
         By clicking "Submit" you agree to receive marketing communications from AKW Marketing via email, phone, and/or SMS. You can unsubscribe at any time by clicking the unsubscribe link in our emails or by contacting us.
       </p>
 
+      <TurnstileWidget />
       {/* Submit */}
       <button
         type="submit"
-        disabled={loading}
-        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-stone-900 hover:bg-stone-800 disabled:opacity-60 text-white font-semibold px-8 py-3 rounded-lg text-sm transition-colors"
+        disabled={submitting}
+        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-stone-900 hover:bg-stone-800 text-white font-semibold px-8 py-3 rounded-lg text-sm transition-colors disabled:opacity-60"
       >
-        {loading ? <><Loader2 className="w-4 h-4 animate-spin" /> Submitting…</> : <>Submit <ArrowRight className="w-4 h-4" /></>}
+        {submitting ? "Submitting..." : "Submit"} <ArrowRight className="w-4 h-4" />
       </button>
+      {submitError && (
+        <p className="text-sm text-stone-600 leading-relaxed" role="alert">
+          {submitError}
+        </p>
+      )}
+      {submitOk && (
+        <p className="text-sm text-stone-600 leading-relaxed" role="status">
+          {submitOk}
+        </p>
+      )}
     </form>
   );
 }

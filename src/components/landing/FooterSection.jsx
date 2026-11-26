@@ -41,7 +41,7 @@ export default function FooterSection() {
           <div>
             <a href="/" className="flex items-center gap-2 cursor-pointer mb-3">
               <img
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69aa2d66169a7c4374014381/adfe82e85_Logo_official1.png"
+                src="/assets/logo-official.png"
                 alt="AKW Marketing Logo"
                 className="w-8 h-8 rounded-md object-contain"
               />
@@ -63,6 +63,16 @@ export default function FooterSection() {
                 <XIcon />
               </a>
             </div>
+          </div>
+
+          {/* Services Block */}
+          <div className="flex flex-col gap-3">
+            <p className="text-xs font-semibold text-stone-400 uppercase tracking-widest mb-1">Services</p>
+            <a href="/seo-services-kitchener" className="text-sm text-stone-500 hover:text-stone-900 transition-colors">SEO Services</a>
+            <a href="/local-seo-kitchener" className="text-sm text-stone-500 hover:text-stone-900 transition-colors">Local SEO</a>
+            <a href="/google-ads-kitchener" className="text-sm text-stone-500 hover:text-stone-900 transition-colors">Google Ads</a>
+            <a href="/meta-ads-kitchener" className="text-sm text-stone-500 hover:text-stone-900 transition-colors">Meta Ads</a>
+            <a href="/ai-seo-kitchener" className="text-sm text-stone-500 hover:text-stone-900 transition-colors">AI SEO</a>
           </div>
 
           {/* NAP Block */}
@@ -104,10 +114,10 @@ export default function FooterSection() {
             <a href="mailto:contact@akwmarketing.com" className="underline hover:text-stone-600 transition-colors">contact@akwmarketing.com</a>.
           </p>
           <div className="flex items-center gap-6">
-            <a href="/PrivacyPolicy" className="text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1">
+            <a href="/privacy-policy" className="text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1">
               Privacy Policy <ArrowUpRight className="w-3 h-3" />
             </a>
-            <a href="/TermsOfService" className="text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1">
+            <a href="/terms-of-service" className="text-xs text-stone-400 hover:text-stone-600 transition-colors flex items-center gap-1">
               Terms of Service <ArrowUpRight className="w-3 h-3" />
             </a>
           </div>

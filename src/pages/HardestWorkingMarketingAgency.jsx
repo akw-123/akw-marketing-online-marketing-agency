@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import SeoArticlePage from "@/components/landing/SeoArticlePage";
 import WhereWeWork from "@/components/landing/WhereWeWork";
+import { upsertJsonLd } from "@/lib/upsertJsonLd";
 
 export default function HardestWorkingMarketingAgency() {
   useEffect(() => {
@@ -14,17 +15,17 @@ export default function HardestWorkingMarketingAgency() {
       "@graph": [
         {
           "@type": "WebPage",
-          "@id": "https://akwmarketing.com/hardest-working-marketing-agency-kitchener-waterloo#webpage",
-          "url": "https://akwmarketing.com/hardest-working-marketing-agency-kitchener-waterloo",
+          "@id": "https://www.akwmarketing.com/hardest-working-marketing-agency-kitchener-waterloo#webpage",
+          "url": "https://www.akwmarketing.com/hardest-working-marketing-agency-kitchener-waterloo",
           "name": "Hardest-Working Marketing Agency in Kitchener Waterloo",
-          "about": { "@id": "https://akwmarketing.com/#organization" }
+          "about": { "@id": "https://www.akwmarketing.com/#organization" }
         },
         {
           "@type": "ProfessionalService",
-          "@id": "https://akwmarketing.com/#organization",
+          "@id": "https://www.akwmarketing.com/#organization",
           "name": "AKW Marketing",
           "description": "Marketing agency in Kitchener, Ontario offering local SEO, Google Ads, Meta Ads and content marketing.",
-          "url": "https://akwmarketing.com",
+          "url": "https://www.akwmarketing.com",
           "telephone": "+1-437-475-0076",
           "email": "contact@akwmarketing.com",
           "address": {
@@ -50,11 +51,7 @@ export default function HardestWorkingMarketingAgency() {
         }
       ]
     };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.id = 'hardest-working-agency-schema';
-    script.textContent = JSON.stringify(schema);
-    document.head.appendChild(script);
+    upsertJsonLd("hardest-working-agency-schema", schema);
     return () => { const el = document.getElementById('hardest-working-agency-schema'); if (el) el.remove(); };
   }, []);
 

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { upsertJsonLd } from "@/lib/upsertJsonLd";
 
 // Load Wistia scripts
 if (typeof window !== 'undefined') {
@@ -34,17 +35,22 @@ function KitchenerNav() {
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <a href="/" className="flex items-center gap-2 cursor-pointer">
           <img
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69aa2d66169a7c4374014381/adfe82e85_Logo_official1.png"
+            src="/assets/logo-official.png"
             alt="AKW Marketing Logo"
             className="w-8 h-8 rounded-md object-contain"
           />
           <span className="text-lg font-semibold tracking-tight text-stone-900">AKW Marketing</span>
         </a>
-        <a href="https://akwmarketing.com/landing">
-          <button className="bg-stone-900 hover:bg-stone-800 text-white rounded-full px-5 h-9 text-sm font-medium flex items-center gap-2 transition-colors">
-            Sign Up
-          </button>
-        </a>
+        <div className="flex items-center gap-5">
+          <a href="#services" className="hidden sm:inline text-sm font-medium text-stone-700 hover:text-stone-900 transition-colors">
+            Services
+          </a>
+          <a href="https://www.akwmarketing.com/landing">
+            <button className="bg-stone-900 hover:bg-stone-800 text-white rounded-full px-5 h-9 text-sm font-medium flex items-center gap-2 transition-colors">
+              Sign Up
+            </button>
+          </a>
+        </div>
       </div>
     </nav>
   );
@@ -56,7 +62,7 @@ function KitchenerHero() {
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
@@ -83,7 +89,7 @@ function KitchenerHero() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={false}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.2 }}
             className="relative"
@@ -96,7 +102,7 @@ function KitchenerHero() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.5 }}
           className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4"
@@ -138,6 +144,43 @@ function ExploreInsights() {
             </li>
           ))}
         </ul>
+      </div>
+    </section>
+  );
+}
+
+const SERVICES = [
+  { name: "SEO Services", href: "/seo-services-kitchener", blurb: "Organic ranking built on a documented playbook, not guesswork." },
+  { name: "Local SEO", href: "/local-seo-kitchener", blurb: "Google Business Profile, citations, and reviews that get you into the map pack." },
+  { name: "Google Ads", href: "/google-ads-kitchener", blurb: "Search, Local Service Ads, and conversion tracking built for Kitchener's market." },
+  { name: "Meta Ads", href: "/meta-ads-kitchener", blurb: "Facebook and Instagram campaigns with real funnel logic, not boosted posts." },
+  { name: "AI SEO", href: "/ai-seo-kitchener", blurb: "Get named by ChatGPT, Gemini, and other AI engines when customers ask for a recommendation." },
+];
+
+function ServicesSection() {
+  return (
+    <section id="services" className="py-20 px-6 border-t border-stone-200/60">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <span className="inline-flex items-center bg-white border border-stone-200 rounded-full px-4 py-1.5 text-xs font-medium text-stone-600 mb-5">
+            Our services
+          </span>
+          <h2 className="text-3xl md:text-4xl font-bold text-stone-900 tracking-tight">
+            Everything we run for Kitchener businesses
+          </h2>
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {SERVICES.map((service) => (
+            <a
+              key={service.name}
+              href={service.href}
+              className="block rounded-2xl border border-stone-200 bg-white p-6 hover:border-stone-400 hover:shadow-md transition-all"
+            >
+              <h3 className="text-lg font-semibold text-stone-900 mb-2">{service.name}</h3>
+              <p className="text-sm text-stone-500 leading-relaxed">{service.blurb}</p>
+            </a>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -258,11 +301,11 @@ export default function Kitchener() {
         "jobTitle": "Founder",
         "worksFor": { "@type": "Organization", "name": "AKW Marketing" }
       },
-      "url": "https://akwmarketing.com/kitchener",
+      "url": "https://www.akwmarketing.com/kitchener",
       "telephone": "+1-437-475-0076",
       "email": "contact@akwmarketing.com",
-      "image": "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c8e3cd9e0_Logo_official1.png",
-      "logo": "https://media.base44.com/images/public/69aa2d66169a7c4374014381/c8e3cd9e0_Logo_official1.png",
+      "image": "/assets/logo-official.png",
+      "logo": "/assets/logo-official.png",
       "areaServed": [
         {"@type":"City","name":"Kitchener","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
         {"@type":"City","name":"Waterloo","containedInPlace":{"@type":"AdministrativeArea","name":"Ontario"}},
@@ -279,13 +322,6 @@ export default function Kitchener() {
       ],
       "openingHours": "Mo-Su 00:00-23:59",
       "priceRange": "$$",
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "5.0",
-        "reviewCount": "3",
-        "bestRating": "5",
-        "worstRating": "1"
-      },
       "sameAs": [
         "https://www.instagram.com/akw_marketing/",
         "https://x.com/akw_marketing",
@@ -294,11 +330,7 @@ export default function Kitchener() {
         "https://www.youtube.com/@AKWMarketing"
       ]
     };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.id = 'professional-service-schema';
-    script.textContent = JSON.stringify(schema);
-    document.head.appendChild(script);
+    upsertJsonLd("professional-service-schema", schema);
     return () => { const el = document.getElementById('professional-service-schema'); if (el) el.remove(); };
   }, []);
 
@@ -313,6 +345,7 @@ export default function Kitchener() {
       <WhereWeWork />
       <FAQSection />
       <ExploreInsights />
+      <ServicesSection />
       <KitchenerCTA />
       <KitchenerFooter />
     </div>

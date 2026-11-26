@@ -1,6 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 
-const BASE_URL = 'https://akwmarketing.com'; // v2
+const BASE_URL = 'https://www.akwmarketing.com'; // v2
 const TODAY = new Date().toISOString().split('T')[0];
 
 const STATIC_URLS = [

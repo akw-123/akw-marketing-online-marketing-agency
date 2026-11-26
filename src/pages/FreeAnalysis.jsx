@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { ArrowUpRight, Loader2, CheckCircle, ChevronDown } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { leadCaptureEnabled, submitFormLead } from "@/lib/previewLeadCapture";
+import TurnstileWidget from "@/components/TurnstileWidget";
 
 const faqs = [
   {
@@ -73,32 +74,28 @@ export default function FreeAnalysis() {
   const [form, setForm] = useState({
     full_name: "", email: "", phone: "", website: "", business_name: "", google_maps_url: "", timeline: "Today", heard_from: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [submitOk, setSubmitOk] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const captureReady = leadCaptureEnabled();
 
   const set = (field) => (e) => setForm({ ...form, [field]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    await base44.entities.StrategyApplication.create({
-      full_name: form.full_name,
-      email: form.email,
-      phone: form.phone,
-      website: form.website,
-      business_name: form.business_name,
-      additional_info: `Google Maps URL: ${form.google_maps_url}\nTimeline: ${form.timeline}\nHeard about us: ${form.heard_from || "N/A"}`,
+    if (submitting) return;
+    setSubmitError("");
+    setSubmitOk("");
+    setSubmitting(true);
+    const result = await submitFormLead({
+      source: "free-analysis",
+      payload: form,
+      formEl: e.currentTarget,
+      hostname: window.location.hostname,
     });
-
-    await base44.integrations.Core.SendEmail({
-      to: "andre@akwmarketing.com",
-      subject: `New Free Analysis Request: ${form.business_name} (${form.full_name})`,
-      body: `New Free Analysis Request\n\nFull Name: ${form.full_name}\nEmail: ${form.email}\nPhone: ${form.phone}\nWebsite: ${form.website || "N/A"}\nBusiness Name: ${form.business_name}\nGoogle Maps URL: ${form.google_maps_url || "N/A"}\nTimeline: ${form.timeline}\nHow they heard about us: ${form.heard_from || "N/A"}`,
-    });
-
-    setLoading(false);
-    setSubmitted(true);
+    setSubmitting(false);
+    if (result.ok) setSubmitOk(result.message);
+    else setSubmitError(result.message);
   };
 
   return (
@@ -107,7 +104,7 @@ export default function FreeAnalysis() {
       <nav className="border-b border-stone-200/60 px-6 h-16 flex items-center justify-between bg-[#F5F0EB]">
         <a href="/" className="flex items-center gap-2">
           <img
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69aa2d66169a7c4374014381/adfe82e85_Logo_official1.png"
+            src="/assets/logo-official.png"
             alt="AKW Marketing Logo"
             className="w-8 h-8 rounded-md object-contain"
           />
@@ -141,16 +138,16 @@ export default function FreeAnalysis() {
 
           {/* Right — Form */}
           <div>
-            {submitted ? (
-              <div className="flex flex-col items-center justify-center py-20 text-center">
-                <CheckCircle className="w-14 h-14 text-green-500 mb-5" />
-                <h3 className="text-2xl font-bold text-stone-900 mb-2">Request Received!</h3>
-                <p className="text-stone-500 text-sm max-w-xs leading-relaxed">
-                  Thanks, <strong>{form.full_name}</strong>! We'll review your profile and send your personalized analysis within 24–48 hours.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-1">
+            <form onSubmit={handleSubmit} className="space-y-1" data-lead-capture={captureReady ? "ready" : "unavailable"}>
+                <input
+                  type="text"
+                  name="honeypot"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  defaultValue=""
+                  className="hidden"
+                />
                 <div>
                   <input
                     required
@@ -239,21 +236,27 @@ export default function FreeAnalysis() {
                   </div>
                 </div>
 
+                <TurnstileWidget />
                 <div className="pt-4">
                   <button
                     type="submit"
-                    disabled={loading}
-                    className="w-full bg-stone-900 hover:bg-stone-800 disabled:opacity-60 text-white font-semibold py-4 rounded-xl text-sm transition-colors flex items-center justify-center gap-2"
+                    disabled={submitting}
+                    className="w-full bg-stone-900 hover:bg-stone-800 text-white font-semibold py-4 rounded-xl text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
                   >
-                    {loading ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <>Submit <ArrowUpRight className="w-4 h-4" /></>
-                    )}
+                    {submitting ? "Submitting..." : "Submit"} <ArrowUpRight className="w-4 h-4" />
                   </button>
+                  {submitError && (
+                    <p className="text-sm text-stone-600 leading-relaxed mt-4" role="alert">
+                      {submitError}
+                    </p>
+                  )}
+                  {submitOk && (
+                    <p className="text-sm text-stone-600 leading-relaxed mt-4" role="status">
+                      {submitOk}
+                    </p>
+                  )}
                 </div>
               </form>
-            )}
           </div>
         </div>
       </section>
