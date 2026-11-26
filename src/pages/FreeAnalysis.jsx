@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { ArrowUpRight, ChevronDown } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import FaqDisclosure from "@/components/landing/FaqDisclosure";
 import { leadCaptureEnabled, submitFormLead } from "@/lib/previewLeadCapture";
 import TurnstileWidget from "@/components/TurnstileWidget";
 
@@ -28,32 +28,16 @@ const faqs = [
 ];
 
 function FAQItem({ q, a }) {
-  const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-stone-200 py-5 last:border-0">
-      <button
-        className="w-full flex justify-between items-center text-left gap-4"
-        onClick={() => setOpen(!open)}
-      >
-        <span className="text-stone-800 font-semibold text-sm md:text-base">{q}</span>
-        <ChevronDown
-          className={`w-4 h-4 text-stone-400 flex-shrink-0 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
-        />
-      </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="overflow-hidden"
-          >
-            <p className="text-stone-500 text-sm leading-relaxed mt-3 pr-6">{a}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+    <FaqDisclosure
+      question={q}
+      answer={a}
+      className="border-b border-stone-200 py-5 last:border-0"
+      summaryClassName="w-full text-left gap-4"
+      questionClassName="text-stone-800 font-semibold text-sm md:text-base"
+      answerClassName="text-stone-500 text-sm leading-relaxed mt-3 pr-6"
+      answerAs="p"
+    />
   );
 }
 

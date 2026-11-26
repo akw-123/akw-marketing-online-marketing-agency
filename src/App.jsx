@@ -16,6 +16,7 @@ import GoogleAdsKitchener from './pages/GoogleAdsKitchener';
 import MetaAdsKitchener from './pages/MetaAdsKitchener';
 import LocalSeoKitchener from './pages/LocalSeoKitchener';
 import AiSeoKitchener from './pages/AiSeoKitchener';
+import AiVisibilityBaseline from './pages/AiVisibilityBaseline';
 import Cambridge from './pages/Cambridge';
 import Guelph from './pages/Guelph';
 import Hamilton from './pages/Hamilton';
@@ -112,6 +113,7 @@ export const PublicApp = () => {
       <Route path="/meta-ads-kitchener" element={<MetaAdsKitchener />} />
       <Route path="/local-seo-kitchener" element={<LocalSeoKitchener />} />
       <Route path="/ai-seo-kitchener" element={<AiSeoKitchener />} />
+      <Route path="/ai-visibility-baseline" element={<AiVisibilityBaseline />} />
       <Route path="/cambridge" element={<Cambridge />} />
       <Route path="/guelph" element={<Guelph />} />
       <Route path="/hamilton" element={<Hamilton />} />

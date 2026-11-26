@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { upsertJsonLd } from "@/lib/upsertJsonLd";
-import { Users, Zap, TrendingUp, CheckCircle, ChevronDown, ArrowRight, Clock, Loader2 } from "lucide-react";
+import { Users, Zap, TrendingUp, CheckCircle, ArrowRight, Clock, Loader2 } from "lucide-react";
 import FooterSection from "@/components/landing/FooterSection";
 import SimplifiedApplicationForm from "@/components/SimplifiedApplicationForm";
-import { motion, AnimatePresence } from "framer-motion";
+import FaqDisclosure from "@/components/landing/FaqDisclosure";
+import { motion } from "framer-motion";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -47,30 +48,16 @@ const faqs = [
 ];
 
 function FAQItem({ q, a }) {
-  const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-stone-200 py-5 last:border-0">
-      <button
-        className="w-full flex justify-between items-center text-left gap-4"
-        onClick={() => setOpen(!open)}
-      >
-        <span className="text-stone-800 font-semibold text-sm">{q}</span>
-        <ChevronDown className={`w-4 h-4 text-stone-400 flex-shrink-0 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
-      </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="overflow-hidden"
-          >
-            <p className="text-stone-500 text-sm leading-relaxed mt-3 pr-8">{a}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+    <FaqDisclosure
+      question={q}
+      answer={a}
+      className="border-b border-stone-200 py-5 last:border-0"
+      summaryClassName="w-full text-left gap-4"
+      questionClassName="text-stone-800 font-semibold text-sm"
+      answerClassName="text-stone-500 text-sm leading-relaxed mt-3 pr-8"
+      answerAs="p"
+    />
   );
 }
 
