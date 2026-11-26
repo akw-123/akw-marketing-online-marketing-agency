@@ -27,6 +27,7 @@ import {
   CRM_SCHEMA,
   DEFAULT_TURNSTILE_HOSTNAMES,
   FORM_FIELDS,
+  HEARD_FROM_OPTIONS,
   HONEYPOT_FIELD,
   GMAIL_SEND_URL,
   GMAIL_SENDER,
@@ -154,6 +155,57 @@ describe("validateLead", () => {
       ...gbp,
       payload: { ...gbp.payload, monthly_budget: "$500" },
     }).field, "monthly_budget");
+  });
+
+  it("stores optional heard_from on custom and omits it when absent", () => {
+    assert.deepEqual(HEARD_FROM_OPTIONS, [
+      "Google search",
+      "Google Maps",
+      "ChatGPT or another AI tool",
+      "Facebook or Instagram",
+      "YouTube",
+      "Friend or colleague",
+      "Other",
+    ]);
+
+    const withHeard = validateLead(envelope("free-analysis", {
+      ...freeFields,
+      heard_from: "  Google search  ",
+    }));
+    assert.equal(withHeard.ok, true);
+    assert.equal(withHeard.lead.heard_from, "Google search");
+    const rows = buildLeadInsert(withHeard.lead);
+    assert.equal(rows.lead.custom.heard_from, "Google search");
+    assert.equal(rows.lead.custom.timeline, "Today");
+    assert.equal(rows.lead.custom.google_maps_url, "https://maps.example.com/place");
+    assert.equal(rows.lead.custom.form_path, "/free-analysis");
+
+    const gbpWith = validateLead(envelope("gbp", {
+      ...gbpFields,
+      heard_from: "Friend or colleague",
+    }));
+    assert.equal(gbpWith.ok, true);
+    const gbpRows = buildLeadInsert(gbpWith.lead);
+    assert.equal(gbpRows.lead.custom.heard_from, "Friend or colleague");
+    assert.equal(gbpRows.lead.custom.form_path, "/gbp");
+
+    const absent = validateLead(freeAnalysis);
+    assert.equal(absent.ok, true);
+    assert.equal(absent.lead.heard_from, undefined);
+    assert.equal("heard_from" in buildLeadInsert(absent.lead).lead.custom, false);
+
+    const blank = validateLead(envelope("gbp", { ...gbpFields, heard_from: "   " }));
+    assert.equal(blank.ok, true);
+    assert.equal(blank.lead.heard_from, undefined);
+    assert.equal("heard_from" in buildLeadInsert(blank.lead).lead.custom, false);
+
+    const unknown = validateLead(envelope("free-analysis", {
+      ...freeFields,
+      heard_from: "Billboard",
+    }));
+    assert.equal(unknown.ok, false);
+    assert.equal(unknown.field, "heard_from");
+    assert.equal(unknown.reason, "enum");
   });
 
   it("rejects a free-analysis timeline that the buttons do not offer", () => {

@@ -86,6 +86,17 @@ export const CRM_SCHEMA = {
 
 export const FREE_ANALYSIS_TIMELINES = ["Today", "Tomorrow", "In a few weeks"];
 
+/** Dropdown values on /free-analysis and /gbp. Empty is allowed; anything else is not. */
+export const HEARD_FROM_OPTIONS = [
+  "Google search",
+  "Google Maps",
+  "ChatGPT or another AI tool",
+  "Facebook or Instagram",
+  "YouTube",
+  "Friend or colleague",
+  "Other",
+];
+
 /**
  * Field names match the React state on each form.
  * HTML `required` is what the browser enforces today. Placeholders that say
@@ -100,6 +111,7 @@ export const FORM_FIELDS = {
     business_name: { required: true, max: 200 },
     google_maps_url: { required: false, max: 500, kind: "url" },
     timeline: { required: true, enum: FREE_ANALYSIS_TIMELINES },
+    heard_from: { required: false, max: 100, enum: HEARD_FROM_OPTIONS },
   },
   gbp: {
     first_name: { required: true, max: 100 },
@@ -109,6 +121,7 @@ export const FORM_FIELDS = {
     business_name: { required: true, max: 200 },
     website: { required: false, max: 500, kind: "url" },
     gbp_link: { required: false, max: 500, kind: "url" },
+    heard_from: { required: false, max: 100, enum: HEARD_FROM_OPTIONS },
   },
 };
 
@@ -422,6 +435,7 @@ export function buildLeadInsert(lead) {
   if (lead.google_maps_url) custom.google_maps_url = lead.google_maps_url;
   if (lead.gbp_link) custom.gbp_link = lead.gbp_link;
   if (lead.phone) custom.phone = lead.phone;
+  if (lead.heard_from) custom.heard_from = lead.heard_from;
   const phoneE164 = normalizePhoneE164(lead.phone || "");
   const contactName = lead.full_name || [lead.first_name, lead.last_name].filter(Boolean).join(" ");
   return {
