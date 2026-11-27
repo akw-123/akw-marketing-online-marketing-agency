@@ -73,6 +73,9 @@ export default function AiSeoKitchener() {
       <h2>Ready to see where you stand with AI search?</h2>
 
       <p>Most Kitchener businesses have never checked whether ChatGPT or Google AI Mode even knows they exist. Book a free AI visibility baseline at <a href="/free-analysis">/free-analysis</a> and we'll show you exactly where you stand today. See everything <a href="/">AKW Marketing</a> does on our <a href="/kitchener">Kitchener marketing services</a> page.</p>
+
+      <h2>About the author</h2>
+      <p>Written by Andre Kadjo, founder of AKW Marketing in Kitchener, Ontario.</p>
     </SeoArticlePage>
   );
 }

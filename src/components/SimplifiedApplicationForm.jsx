@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { leadCaptureEnabled, submitFormLead } from "@/lib/previewLeadCapture";
+import { withHeardFromDetail } from "@/lib/heardFrom";
+import HeardFromFields from "@/components/HeardFromFields";
 import TurnstileWidget from "@/components/TurnstileWidget";
 
 const inputClass =
   "w-full px-4 py-3 rounded-lg border border-stone-300 bg-white text-stone-900 text-sm focus:outline-none focus:border-[#85b6e9] focus:ring-1 focus:ring-[#85b6e9] transition-colors";
 
-const HEARD_OPTIONS = ["Google search", "Google Maps", "ChatGPT or another AI tool", "Facebook or Instagram", "YouTube", "Friend or colleague", "Other"];
 const emptyForm = {
   heard_from: "",
+  heard_from_detail: "",
   first_name: "",
   last_name: "",
   email: "",
@@ -46,7 +48,7 @@ export default function SimplifiedApplicationForm() {
     setSubmitting(true);
     const result = await submitFormLead({
       source: "gbp",
-      payload: form,
+      payload: withHeardFromDetail(form),
       formEl: e.currentTarget,
       hostname: window.location.hostname,
     });
@@ -92,12 +94,13 @@ export default function SimplifiedApplicationForm() {
         <input type="url" placeholder="Link to your Google Business Profile" value={form.gbp_link} onChange={set("gbp_link")} className={inputClass} />
       </div>
 
-      <div>
-        <select value={form.heard_from} onChange={set("heard_from")} className={inputClass} aria-label="How did you hear about us?">
-          <option value="">How did you hear about us?</option>
-          {HEARD_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
-        </select>
-      </div>
+      <HeardFromFields
+        heardFrom={form.heard_from}
+        detail={form.heard_from_detail}
+        onHeardFrom={(value) => setForm({ ...form, heard_from: value })}
+        onDetail={(value) => setForm({ ...form, heard_from_detail: value })}
+        inputClass={inputClass}
+      />
 
       {/* Disclaimer */}
       <p className="text-xs text-stone-500 leading-relaxed">
