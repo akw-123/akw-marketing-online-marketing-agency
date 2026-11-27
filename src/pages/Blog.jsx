@@ -34,7 +34,7 @@ export default function Blog() {
     document.title = "AKW Marketing | Blog";
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) { meta = document.createElement("meta"); meta.name = "description"; document.head.appendChild(meta); }
-    meta.content = "Simple marketing tactics that actually work for local businesses. No fluff, no theory — just proven strategies you can use this week to bring more customers through your door.";
+    meta.content = "Simple marketing tactics that actually work for local businesses. No fluff, no theory, just proven strategies you can use this week to bring more customers through your door.";
   }, []);
 
   return (
@@ -56,7 +56,7 @@ export default function Blog() {
               The Blog To Get<br />More Customers.
             </h1>
             <p className="text-lg text-stone-500 max-w-xl leading-relaxed">
-              Simple marketing tactics that actually work for local businesses. No fluff, no theory — just proven strategies you can use this week to bring more customers through your door.
+              Simple marketing tactics that actually work for local businesses. No fluff, no theory, just proven strategies you can use this week to bring more customers through your door.
             </p>
           </motion.div>
         </div>

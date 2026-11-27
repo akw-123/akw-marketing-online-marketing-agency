@@ -55,7 +55,7 @@ const EXPECTED = {
     types: ["ProfessionalService"],
   },
   "/free-analysis": {
-    title: "Free Google Profile Analysis — AKW Marketing",
+    title: "Free Google Profile Analysis. AKW Marketing",
     text: ["Get Your", "Profile", "Analyzed"],
   },
   "/blog": {

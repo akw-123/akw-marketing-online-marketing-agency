@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import React from "react";
+import { motion } from "framer-motion";
+import FaqDisclosure from "@/components/landing/FaqDisclosure";
 
 const faqs = [
   {
@@ -26,8 +26,6 @@ const faqs = [
 ];
 
 export default function FAQSection() {
-  const [openIndex, setOpenIndex] = useState(null);
-
   return (
     <section id="faq" className="py-20 md:py-28 px-6">
       <div className="max-w-3xl mx-auto">
@@ -62,31 +60,14 @@ export default function FAQSection() {
               transition={{ duration: 0.4, delay: idx * 0.08 }}
               className="bg-white/70 backdrop-blur-sm border border-stone-200/60 rounded-xl overflow-hidden"
             >
-              <button
-                onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
-                className="w-full text-left px-6 py-5 flex items-center justify-between hover:bg-stone-50/50 transition-colors"
-              >
-                <span className="text-sm font-semibold text-stone-900 pr-4">{faq.q}</span>
-                <ChevronDown
-                  className={`w-4 h-4 text-stone-400 flex-shrink-0 transition-transform duration-300 ${
-                    openIndex === idx ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              <AnimatePresence>
-                {openIndex === idx && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="px-6 pb-5 text-sm text-stone-500 leading-relaxed">
-                      {faq.a}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <FaqDisclosure
+                name="landing-faq"
+                question={faq.q}
+                answer={faq.a}
+                summaryClassName="w-full text-left px-6 py-5 hover:bg-stone-50/50 transition-colors"
+                questionClassName="text-sm font-semibold text-stone-900 pr-4"
+                answerClassName="px-6 pb-5 text-sm text-stone-500 leading-relaxed"
+              />
             </motion.div>
           ))}
         </div>

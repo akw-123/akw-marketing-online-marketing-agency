@@ -68,7 +68,7 @@ export default function About() {
 
       <h2>The Local SEO Top 3 Ranking Playbook</h2>
 
-      <p>Behind every local-SEO engagement sits our internal Top 3 Ranking Playbook — a structured methodology developed and refined across five active client engagements. It runs through eight phases: baseline audit, keyword and rank-target selection, Google Business Profile optimization, on-page rebuilding, technical foundation, citations and off-page signals, ongoing weekly maintenance, and reporting.</p>
+      <p>Behind every local-SEO engagement sits our internal Top 3 Ranking Playbook, a structured methodology developed and refined across five active client engagements. It runs through eight phases: baseline audit, keyword and rank-target selection, Google Business Profile optimization, on-page rebuilding, technical foundation, citations and off-page signals, ongoing weekly maintenance, and reporting.</p>
 
       <p>What makes it different from a generic SEO checklist is the emphasis on execution cadence. Ranking in the top three of Google is not a one-time project; it's a weekly discipline. Our runners fire weekly, our reports land weekly, and our clients see progress notes weekly. That rhythm is what compounds over 90-day, 6-month, and 12-month horizons.</p>
 
@@ -82,7 +82,7 @@ export default function About() {
 
       <p>Kitchener-Waterloo is one of Canada's most under-served local markets. The region has a technology hub reputation (Communitech, Waterloo tech corridor, University of Waterloo research spinouts), a strong small-business base along King Street and beyond, and buyer intent that ranks with any major city. But most of the local SEO work in KW is either done by out-of-town agencies with no local knowledge or by generalist marketers who treat SEO as a side service.</p>
 
-      <p>We built AKW here because Kitchener deserves an agency that understands its neighbourhoods, its business rhythms, and its buyer psychology, and that shows up every week to move rankings that matter. From Kitchener we serve Waterloo, Cambridge, Guelph, Stratford, Brantford, Hamilton, and Burlington — the full corridor.</p>
+      <p>We built AKW here because Kitchener deserves an agency that understands its neighbourhoods, its business rhythms, and its buyer psychology, and that shows up every week to move rankings that matter. From Kitchener we serve Waterloo, Cambridge, Guelph, Stratford, Brantford, Hamilton, and Burlington, the full corridor.</p>
 
       <h2>How to work with us</h2>
 

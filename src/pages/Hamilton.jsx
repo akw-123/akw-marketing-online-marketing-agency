@@ -36,7 +36,7 @@ export default function Hamilton() {
       <p>Every service we deliver across KW-Guelph-Hamilton follows the same playbook.</p>
 
       <h3>Local SEO for Hamilton</h3>
-      <p>We optimize your Google Business Profile with Hamilton-specific service listings, build citations on Hamilton-relevant directories (Hamilton Chamber of Commerce, Hamilton Small Business Enterprise Centre, Hamilton BIA associations for each neighbourhood, industry-specific for trades/healthcare/professional services), acquire authentic reviews from Hamilton customers, and post weekly geotagged updates. See our full Local SEO Kitchener page (<a href="/local-seo-kitchener">/local-seo-kitchener</a>) for the underlying playbook — every step applies equally to Hamilton.</p>
+      <p>We optimize your Google Business Profile with Hamilton-specific service listings, build citations on Hamilton-relevant directories (Hamilton Chamber of Commerce, Hamilton Small Business Enterprise Centre, Hamilton BIA associations for each neighbourhood, industry-specific for trades/healthcare/professional services), acquire authentic reviews from Hamilton customers, and post weekly geotagged updates. See our full Local SEO Kitchener page (<a href="/local-seo-kitchener">/local-seo-kitchener</a>) for the underlying playbook, every step applies equally to Hamilton.</p>
 
       <h3>Google Ads for Hamilton trades and services</h3>
       <p>Hamilton's competitive dynamics for Google Ads sit between Kitchener (moderate) and Toronto (high). For trades, healthcare, and professional-services searches, both search campaigns and Local Service Ads produce strong results with disciplined geotargeting that respects Hamilton's boundary (excluding Burlington, Stoney Creek, and Toronto unless you actually service those markets).</p>
@@ -67,7 +67,7 @@ export default function Hamilton() {
       <p>Yes. Hamilton is a regular part of our service area. Meetings happen at your Hamilton location, at cafes across Hamilton neighbourhoods, or on Zoom.</p>
 
       <h3>Is Hamilton local SEO more competitive than Kitchener?</h3>
-      <p>For most trades and healthcare categories, yes — meaningfully more competitive due to larger market and GTA-adjacent dynamics. For niche B2B or specialty consumer, comparable to Kitchener. We scope engagements to the specific competitive dynamics of your niche.</p>
+      <p>For most trades and healthcare categories, yes, meaningfully more competitive due to larger market and GTA-adjacent dynamics. For niche B2B or specialty consumer, comparable to Kitchener. We scope engagements to the specific competitive dynamics of your niche.</p>
 
       <h3>Can you help me rank in both Hamilton and Burlington/Stoney Creek?</h3>
       <p>Yes. Requires dedicated city or neighbourhood landing pages, separate citation work, and consistent local relevance signals for each. Hamilton core plus Ancaster or Dundas is a common bundling; Hamilton plus Burlington is typically treated as two separate markets due to different GBP addresses and competitor sets.</p>

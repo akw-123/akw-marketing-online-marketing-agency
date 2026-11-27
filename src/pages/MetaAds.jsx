@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { upsertJsonLd } from "@/lib/upsertJsonLd";
-import { Users, Zap, TrendingUp, CheckCircle, ChevronDown, ArrowRight, Clock, Loader2 } from "lucide-react";
+import { Users, Zap, TrendingUp, CheckCircle, ArrowRight, Clock, Loader2 } from "lucide-react";
 import FooterSection from "@/components/landing/FooterSection";
 import SimplifiedApplicationForm from "@/components/SimplifiedApplicationForm";
-import { motion, AnimatePresence } from "framer-motion";
+import FaqDisclosure from "@/components/landing/FaqDisclosure";
+import { motion } from "framer-motion";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -47,30 +48,16 @@ const faqs = [
 ];
 
 function FAQItem({ q, a }) {
-  const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-stone-200 py-5 last:border-0">
-      <button
-        className="w-full flex justify-between items-center text-left gap-4"
-        onClick={() => setOpen(!open)}
-      >
-        <span className="text-stone-800 font-semibold text-sm">{q}</span>
-        <ChevronDown className={`w-4 h-4 text-stone-400 flex-shrink-0 transition-transform duration-300 ${open ? "rotate-180" : ""}`} />
-      </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="overflow-hidden"
-          >
-            <p className="text-stone-500 text-sm leading-relaxed mt-3 pr-8">{a}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+    <FaqDisclosure
+      question={q}
+      answer={a}
+      className="border-b border-stone-200 py-5 last:border-0"
+      summaryClassName="w-full text-left gap-4"
+      questionClassName="text-stone-800 font-semibold text-sm"
+      answerClassName="text-stone-500 text-sm leading-relaxed mt-3 pr-8"
+      answerAs="p"
+    />
   );
 }
 
@@ -79,13 +66,13 @@ export default function MetaAds() {
     document.title = "Online Marketing Agency in Kitchener-Waterloo | AKW Marketing";
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
-    meta.content = "AKW Marketing is an online marketing agency serving the Kitchener-Waterloo area. We run Google Ads, Meta Ads, and SEO as your on-demand marketing department — every metric tracked, strategy adjusted to results. Get more customers; book a free introductory consultation.";
+    meta.content = "AKW Marketing is an online marketing agency serving the Kitchener-Waterloo area. We run Google Ads, Meta Ads, and SEO as your on-demand marketing department, every metric tracked, strategy adjusted to results. Get more customers; book a free introductory consultation.";
 
     const schema = {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
       "name": "AKW Marketing Agency",
-      "description": "AKW Marketing Agency — get your local business into Google's top 3 in 90 days. Serving the Kitchener-Waterloo area.",
+      "description": "AKW Marketing Agency, get your local business into Google's top 3 in 90 days. Serving the Kitchener-Waterloo area.",
       "url": "https://www.akwmarketing.com/gbp",
       "telephone": "+1-437-475-0076",
       "email": "contact@akwmarketing.com",
@@ -238,7 +225,7 @@ export default function MetaAds() {
                   { label: "Average Rank", value: "86th" },
                   { label: "Market Share", value: "1%" },
                   { label: "Clicks / Month", value: "~5" },
-                  { label: "New Clients / Month", value: "1–2" },
+                  { label: "New Clients / Month", value: "1 to 2" },
                 ].map((row, i) => (
                   <div key={i} className="flex justify-between items-center py-2 border-b border-stone-100 last:border-0">
                     <span className="text-sm text-stone-500">{row.label}</span>
@@ -252,9 +239,9 @@ export default function MetaAds() {
               <div className="space-y-1">
                 {[
                   { label: "Average Rank", value: "Top 3" },
-                  { label: "Market Share", value: "30–60%" },
+                  { label: "Market Share", value: "30 to 60%" },
                   { label: "Clicks / Month", value: "200+" },
-                  { label: "New Clients / Month", value: "10–20+" },
+                  { label: "New Clients / Month", value: "10 to 20+" },
                 ].map((row, i) => (
                   <div key={i} className="flex justify-between items-center py-2 border-b border-stone-700 last:border-0">
                     <span className="text-sm text-stone-400">{row.label}</span>

@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 
 const fmtPct = (r) => `${(Number(r) * 100).toFixed(1)}%`;
 const fmtNum = (n) => Number(n).toLocaleString();
-const fmtPos = (p) => (p == null ? "—" : Number(p).toFixed(1));
+const fmtPos = (p) => (p == null ? "-" : Number(p).toFixed(1));
 
 export default function TopQueriesTable({ data, loading }) {
   return (

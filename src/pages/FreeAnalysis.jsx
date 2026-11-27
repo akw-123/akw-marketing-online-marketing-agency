@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { ArrowUpRight, ChevronDown } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight } from "lucide-react";
+import FaqDisclosure from "@/components/landing/FaqDisclosure";
 import { leadCaptureEnabled, submitFormLead } from "@/lib/previewLeadCapture";
+import { withHeardFromDetail } from "@/lib/heardFrom";
+import HeardFromFields from "@/components/HeardFromFields";
 import TurnstileWidget from "@/components/TurnstileWidget";
 
 const faqs = [
   {
     q: "How do I know you can actually get me in the top 3?",
-    a: "We've done this for dozens of local businesses across plumbing, legal, dental, landscaping, construction, and more. We only take on businesses we know we can rank — that's why we've never had to refund anyone. Before we take your money, we audit your market and only proceed if we're confident we can get you there. If we can't deliver top 3 in 90 days, you get every penny back.",
+    a: "We've done this for dozens of local businesses across plumbing, legal, dental, landscaping, construction, and more. We only take on businesses we know we can rank, that's why we've never had to refund anyone. Before we take your money, we audit your market and only proceed if we're confident we can get you there. If we can't deliver top 3 in 90 days, you get every penny back.",
   },
   {
     q: "Will this work for my type of business?",
@@ -15,64 +17,47 @@ const faqs = [
   },
   {
     q: "How long until I see results?",
-    a: "Most businesses see ranking movement within 2–3 weeks. The goal is top 3 within 90 days, but many hit it sooner. Once you're in the top 3, the calls start coming in consistently — that's the real ROI.",
+    a: "Most businesses see ranking movement within 2, 3 weeks. The goal is top 3 within 90 days, but many hit it sooner. Once you're in the top 3, the calls start coming in consistently, that's the real ROI.",
   },
   {
     q: "How much of my time does this require?",
-    a: "About 30 minutes total. One short onboarding call where we get access to your Google Business Profile. After that, we handle everything — optimization, reviews, posts, citations. You just keep running your business.",
+    a: "About 30 minutes total. One short onboarding call where we get access to your Google Business Profile. After that, we handle everything, optimization, reviews, posts, citations. You just keep running your business.",
   },
   {
     q: "What if I need a refund?",
-    a: "If you're not in the top 3 after 90 days, email us and we'll process a full refund within 48 hours. No forms, no fighting. You either get top 3 rankings or your money back — simple as that.",
+    a: "If you're not in the top 3 after 90 days, email us and we'll process a full refund within 48 hours. No forms, no fighting. You either get top 3 rankings or your money back, simple as that.",
   },
 ];
 
 function FAQItem({ q, a }) {
-  const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-stone-200 py-5 last:border-0">
-      <button
-        className="w-full flex justify-between items-center text-left gap-4"
-        onClick={() => setOpen(!open)}
-      >
-        <span className="text-stone-800 font-semibold text-sm md:text-base">{q}</span>
-        <ChevronDown
-          className={`w-4 h-4 text-stone-400 flex-shrink-0 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
-        />
-      </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="overflow-hidden"
-          >
-            <p className="text-stone-500 text-sm leading-relaxed mt-3 pr-6">{a}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+    <FaqDisclosure
+      question={q}
+      answer={a}
+      className="border-b border-stone-200 py-5 last:border-0"
+      summaryClassName="w-full text-left gap-4"
+      questionClassName="text-stone-800 font-semibold text-sm md:text-base"
+      answerClassName="text-stone-500 text-sm leading-relaxed mt-3 pr-6"
+      answerAs="p"
+    />
   );
 }
 
 const inputClass =
   "w-full px-0 py-3 border-0 border-b border-stone-300 bg-transparent text-stone-900 text-sm placeholder-stone-400 focus:outline-none focus:border-stone-900 transition-colors";
 
-const HEARD_OPTIONS = ["Google search", "Google Maps", "ChatGPT or another AI tool", "Facebook or Instagram", "YouTube", "Friend or colleague", "Other"];
 const TIMELINE_OPTIONS = ["Today", "Tomorrow", "In a few weeks"];
 
 export default function FreeAnalysis() {
   useEffect(() => {
-    document.title = "Free Google Profile Analysis — AKW Marketing";
+    document.title = "Free Google Profile Analysis. AKW Marketing";
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) { meta = document.createElement("meta"); meta.name = "description"; document.head.appendChild(meta); }
     meta.content = "Get a free personalized analysis of your Google Business Profile. We'll show you exactly what needs to happen to rank in the top 3 in your area.";
   }, []);
 
   const [form, setForm] = useState({
-    full_name: "", email: "", phone: "", website: "", business_name: "", google_maps_url: "", timeline: "Today", heard_from: "",
+    full_name: "", email: "", phone: "", website: "", business_name: "", google_maps_url: "", timeline: "Today", heard_from: "", heard_from_detail: "",
   });
   const [submitError, setSubmitError] = useState("");
   const [submitOk, setSubmitOk] = useState("");
@@ -89,7 +74,7 @@ export default function FreeAnalysis() {
     setSubmitting(true);
     const result = await submitFormLead({
       source: "free-analysis",
-      payload: form,
+      payload: withHeardFromDetail(form),
       formEl: e.currentTarget,
       hostname: window.location.hostname,
     });
@@ -206,12 +191,13 @@ export default function FreeAnalysis() {
                   />
                 </div>
 
-                <div>
-                  <select value={form.heard_from} onChange={set("heard_from")} className={inputClass} aria-label="How did you hear about us?">
-                    <option value="">How did you hear about us?</option>
-                    {HEARD_OPTIONS.map((o) => <option key={o} value={o}>{o}</option>)}
-                  </select>
-                </div>
+                <HeardFromFields
+                  heardFrom={form.heard_from}
+                  detail={form.heard_from_detail}
+                  onHeardFrom={(value) => setForm({ ...form, heard_from: value })}
+                  onDetail={(value) => setForm({ ...form, heard_from_detail: value })}
+                  inputClass={inputClass}
+                />
 
                 {/* Timeline */}
                 <div className="pt-4 pb-2">

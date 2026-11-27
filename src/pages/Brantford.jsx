@@ -60,7 +60,7 @@ export default function Brantford() {
 
       <h2>Local client work</h2>
 
-      <p>Learn about our approach on our Kitchener page (<a href="/kitchener">/kitchener</a>) — the full Local SEO Top 3 Ranking playbook we use across the KW region and surrounding markets, the same GBP optimization, on-page rebuilding, and citation work we'd apply to your Brantford business.</p>
+      <p>Learn about our approach on our Kitchener page (<a href="/kitchener">/kitchener</a>), the full Local SEO Top 3 Ranking playbook we use across the KW region and surrounding markets, the same GBP optimization, on-page rebuilding, and citation work we'd apply to your Brantford business.</p>
 
       <p>If you're a Brantford business looking for something similar, book a free analysis at <a href="/free-analysis">/free-analysis</a> and we'll walk through what the same playbook would look like for your specific situation.</p>
 

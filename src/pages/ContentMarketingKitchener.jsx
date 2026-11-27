@@ -19,7 +19,7 @@ export default function ContentMarketingKitchener() {
 
       <h2>Why content marketing matters for Kitchener businesses</h2>
 
-      <p>Every Kitchener buyer researches before they buy. Insurance broker, wedding photographer, immigration consultant, contractor, retailer — the decision is preceded by 5 to 20 searches, blog reads, review scans, and comparison articles. Businesses that show up in those research searches earn a huge share of the resulting bookings. Businesses that don't, don't.</p>
+      <p>Every Kitchener buyer researches before they buy. Insurance broker, wedding photographer, immigration consultant, contractor, retailer, the decision is preceded by 5 to 20 searches, blog reads, review scans, and comparison articles. Businesses that show up in those research searches earn a huge share of the resulting bookings. Businesses that don't, don't.</p>
 
       <p>Three specific ways content marketing moves the needle for local Kitchener businesses:</p>
 

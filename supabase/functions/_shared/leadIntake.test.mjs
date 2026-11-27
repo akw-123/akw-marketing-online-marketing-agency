@@ -16,6 +16,7 @@ import {
   resolveLeadCaptureUrl,
   turnstileAllowedHost,
 } from "../../../src/lib/leadCaptureContract.js";
+import { HEARD_OPTIONS } from "../../../src/lib/heardFrom.js";
 import {
   LEAD_CAPTURE_FAILED,
   LEAD_CAPTURE_RECEIVED,
@@ -27,6 +28,7 @@ import {
   CRM_SCHEMA,
   DEFAULT_TURNSTILE_HOSTNAMES,
   FORM_FIELDS,
+  HEARD_FROM_OPTIONS,
   HONEYPOT_FIELD,
   GMAIL_SEND_URL,
   GMAIL_SENDER,
@@ -68,6 +70,7 @@ const freeFields = {
   business_name: "Analytical Engines",
   google_maps_url: "https://maps.example.com/place",
   timeline: "Today",
+  heard_from: "Google search",
 };
 
 const gbpFields = {
@@ -76,6 +79,7 @@ const gbpFields = {
   email: "ada@example.com",
   phone: "5550100",
   business_name: "Analytical Engines",
+  heard_from: "Google search",
 };
 
 const freeAnalysis = envelope("free-analysis", freeFields);
@@ -154,6 +158,66 @@ describe("validateLead", () => {
       ...gbp,
       payload: { ...gbp.payload, monthly_budget: "$500" },
     }).field, "monthly_budget");
+  });
+
+  it("requires heard_from, stores it, and keeps the optional detail", () => {
+    assert.deepEqual(HEARD_FROM_OPTIONS, HEARD_OPTIONS);
+    assert.equal(FORM_FIELDS["free-analysis"].heard_from.required, true);
+    assert.equal(FORM_FIELDS.gbp.heard_from.required, true);
+    assert.equal(FORM_FIELDS["free-analysis"].heard_from_detail.required, false);
+    assert.equal(FORM_FIELDS.gbp.heard_from_detail.max, 200);
+
+    const missing = validateLead(envelope("gbp", (() => {
+      const payload = { ...gbpFields };
+      delete payload.heard_from;
+      return payload;
+    })()));
+    assert.equal(missing.ok, false);
+    assert.equal(missing.field, "heard_from");
+    assert.equal(missing.reason, "required");
+
+    const withHeard = validateLead(envelope("free-analysis", {
+      ...freeFields,
+      heard_from: "  Review site or directory  ",
+      heard_from_detail: "  Clutch  ",
+    }));
+    assert.equal(withHeard.ok, true);
+    assert.equal(withHeard.lead.heard_from, "Review site or directory");
+    assert.equal(withHeard.lead.heard_from_detail, "Clutch");
+    const rows = buildLeadInsert(withHeard.lead);
+    assert.equal(rows.lead.custom.heard_from, "Review site or directory");
+    assert.equal(rows.lead.custom.heard_from_detail, "Clutch");
+
+    const gbpWith = validateLead(envelope("gbp", {
+      ...gbpFields,
+      heard_from: "Reddit or a forum",
+    }));
+    assert.equal(gbpWith.ok, true);
+    const gbpRows = buildLeadInsert(gbpWith.lead);
+    assert.equal(gbpRows.lead.custom.heard_from, "Reddit or a forum");
+    assert.equal("heard_from_detail" in gbpRows.lead.custom, false);
+
+    const blank = validateLead(envelope("gbp", { ...gbpFields, heard_from_detail: "   " }));
+    assert.equal(blank.ok, true);
+    assert.equal(blank.lead.heard_from_detail, undefined);
+    assert.equal("heard_from_detail" in buildLeadInsert(blank.lead).lead.custom, false);
+
+    const tooLong = validateLead(envelope("free-analysis", {
+      ...freeFields,
+      heard_from: "Other",
+      heard_from_detail: "x".repeat(201),
+    }));
+    assert.equal(tooLong.ok, false);
+    assert.equal(tooLong.field, "heard_from_detail");
+    assert.equal(tooLong.reason, "length");
+
+    const unknown = validateLead(envelope("free-analysis", {
+      ...freeFields,
+      heard_from: "Billboard",
+    }));
+    assert.equal(unknown.ok, false);
+    assert.equal(unknown.field, "heard_from");
+    assert.equal(unknown.reason, "enum");
   });
 
   it("rejects a free-analysis timeline that the buttons do not offer", () => {
