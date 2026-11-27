@@ -1,5 +1,13 @@
 import React, { useEffect } from "react";
 import SeoArticlePage from "@/components/landing/SeoArticlePage";
+import {
+  SEO_PLANS,
+  bestValueSavingsCad,
+  formatCad,
+  prosePrice,
+  tablePrice,
+  threeMonthsOfStandardCad,
+} from "@/data/seoPlans";
 
 const faqs = [
   {
@@ -37,7 +45,7 @@ export default function SeoCostKitchener() {
     document.title = "SEO Cost in Kitchener-Waterloo: Real Prices | AKW Marketing";
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) { meta = document.createElement("meta"); meta.name = "description"; document.head.appendChild(meta); }
-    meta.content = "What local SEO costs in Kitchener-Waterloo: CA$500 to CA$599 a month, or CA$999 a quarter. What is included, what changes the price, and the 90 day guarantee.";
+    meta.content = `What local SEO costs in Kitchener-Waterloo: ${formatCad(SEO_PLANS.minimum.amount)} to ${formatCad(SEO_PLANS.standard.amount)} a month, or ${formatCad(SEO_PLANS.bestValue.amount)} a quarter. What is included, what changes the price, and the 90 day guarantee.`;
 
     const ld = document.createElement("script");
     ld.type = "application/ld+json";
@@ -55,7 +63,7 @@ export default function SeoCostKitchener() {
     <SeoArticlePage>
       <h1>How much does SEO cost in Kitchener-Waterloo?</h1>
 
-      <p><strong>Short answer:</strong> local SEO with AKW Marketing costs CA$500 a month, CA$599 a month, or CA$999 a quarter, depending on the plan. The CA$599 Standard plan and the CA$999 quarterly plan come with a guarantee: your main search term reaches the top 3 on Google within 90 days, or you don't pay.</p>
+      <p><strong>Short answer:</strong> local SEO with AKW Marketing costs {prosePrice(SEO_PLANS.minimum)}, {prosePrice(SEO_PLANS.standard)}, or {prosePrice(SEO_PLANS.bestValue)}, depending on the plan. The {formatCad(SEO_PLANS.standard.amount)} Standard plan and the {formatCad(SEO_PLANS.bestValue.amount)} quarterly plan come with a guarantee: your main search term reaches the top 3 on Google within 90 days, or you don't pay.</p>
 
       <p>AKW Marketing is a local SEO agency in Kitchener, Ontario. We work with businesses in Kitchener, Waterloo and Cambridge. Here is what each plan includes and what changes the price.</p>
 
@@ -75,21 +83,21 @@ export default function SeoCostKitchener() {
           <tbody>
             <tr className="border-b border-stone-200">
               <td className="py-3 pr-4">Minimum</td>
-              <td className="py-3 pr-4">$500 a month</td>
+              <td className="py-3 pr-4">{tablePrice(SEO_PLANS.minimum)}</td>
               <td className="py-3 pr-4">3 months, then cancel monthly</td>
               <td className="py-3 pr-4">None. Goal: first page of Google within 90 days</td>
               <td className="py-3">Limited optimization</td>
             </tr>
             <tr className="border-b border-stone-200">
               <td className="py-3 pr-4">Standard (most popular)</td>
-              <td className="py-3 pr-4">$599 a month</td>
+              <td className="py-3 pr-4">{tablePrice(SEO_PLANS.standard)}</td>
               <td className="py-3 pr-4">3 months, then cancel monthly</td>
               <td className="py-3 pr-4">Top 3 on Google within 90 days, or you don't pay</td>
               <td className="py-3">Full optimization</td>
             </tr>
             <tr>
               <td className="py-3 pr-4">Best Value</td>
-              <td className="py-3 pr-4">$999 a quarter</td>
+              <td className="py-3 pr-4">{tablePrice(SEO_PLANS.bestValue)}</td>
               <td className="py-3 pr-4">Cancel every 3 months</td>
               <td className="py-3 pr-4">Top 3 on Google within 90 days, or you don't pay</td>
               <td className="py-3">Full optimization</td>
@@ -98,7 +106,7 @@ export default function SeoCostKitchener() {
         </table>
       </div>
 
-      <p>Paying quarterly on Best Value costs CA$999 for three months. Three months of Standard costs CA$1,797, so you save CA$798.</p>
+      <p>Paying quarterly on Best Value costs {formatCad(SEO_PLANS.bestValue.amount)} for three months. Three months of Standard costs {formatCad(threeMonthsOfStandardCad())}, so you save {formatCad(bestValueSavingsCad())}.</p>
 
       <h2>What every plan includes</h2>
       <ul>

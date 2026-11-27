@@ -17,6 +17,16 @@ import {
   renderRedirects,
 } from "../src/lib/siteRoutes.js";
 import { committedLastmod, gitLastmod } from "./pageLastmod.mjs";
+import {
+  SEO_PLANS,
+  bestValueSavingsCad,
+  cardPeriod,
+  cardPrice,
+  formatCad,
+  prosePrice,
+  tablePrice,
+  threeMonthsOfStandardCad,
+} from "../src/data/seoPlans.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -118,5 +128,48 @@ describe("indexing files", () => {
     const body = readFileSync(path.join(root, "public", `${INDEXNOW_KEY}.txt`));
     assert.equal(body.toString("utf8"), INDEXNOW_KEY);
     assert.equal(body.length, 32);
+  });
+});
+
+describe("live SEO plan prices", () => {
+  it("keeps Minimum, Standard, and Best Value on one source", () => {
+    assert.deepEqual(
+      [SEO_PLANS.minimum.amount, SEO_PLANS.standard.amount, SEO_PLANS.bestValue.amount],
+      [500, 599, 999],
+    );
+    assert.equal(prosePrice(SEO_PLANS.minimum), "CA$500 a month");
+    assert.equal(prosePrice(SEO_PLANS.standard), "CA$599 a month");
+    assert.equal(prosePrice(SEO_PLANS.bestValue), "CA$999 a quarter");
+    assert.equal(tablePrice(SEO_PLANS.minimum), "$500 a month");
+    assert.equal(tablePrice(SEO_PLANS.standard), "$599 a month");
+    assert.equal(tablePrice(SEO_PLANS.bestValue), "$999 a quarter");
+    assert.equal(cardPrice(SEO_PLANS.minimum), "CA$500");
+    assert.equal(cardPeriod(SEO_PLANS.minimum), "/ Month");
+    assert.equal(cardPrice(SEO_PLANS.standard), "CA$599");
+    assert.equal(cardPeriod(SEO_PLANS.standard), "/ Month");
+    assert.equal(cardPrice(SEO_PLANS.bestValue), "CA$999");
+    assert.equal(cardPeriod(SEO_PLANS.bestValue), "/ Quarter");
+    assert.equal(threeMonthsOfStandardCad(), 1797);
+    assert.equal(bestValueSavingsCad(), 798);
+    assert.equal(formatCad(bestValueSavingsCad()), "CA$798");
+    assert.equal(formatCad(threeMonthsOfStandardCad()), "CA$1,797");
+
+    const pricing = read("src/components/landing/PricingSection.jsx");
+    const cost = read("src/pages/SeoCostKitchener.jsx");
+    const baseline = read("src/pages/AiVisibilityBaseline.jsx");
+    assert.match(pricing, /@\/data\/seoPlans/);
+    assert.match(cost, /@\/data\/seoPlans/);
+    assert.match(baseline, /@\/data\/seoPlans/);
+    assert.doesNotMatch(pricing, /CA\$\d/);
+    assert.doesNotMatch(baseline, /CA\$\d/);
+    assert.doesNotMatch(baseline, /\u2014/);
+    assert.doesNotMatch(baseline, /Offer/);
+    assert.match(baseline, /href="\/seo-cost-kitchener"/);
+    assert.match(
+      cost,
+      /With AKW Marketing, local SEO costs CA\$500 a month \(Minimum\), CA\$599 a month \(Standard\), or CA\$999 a quarter \(Best Value\)\./,
+    );
+    const faqPrice = `With AKW Marketing, local SEO costs ${prosePrice(SEO_PLANS.minimum)} (Minimum), ${prosePrice(SEO_PLANS.standard)} (Standard), or ${prosePrice(SEO_PLANS.bestValue)} (Best Value).`;
+    assert.ok(cost.includes(faqPrice));
   });
 });

@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import SeoArticlePage from "@/components/landing/SeoArticlePage";
+import { SEO_PLANS, bestValueSavingsCad, formatCad, prosePrice } from "@/data/seoPlans";
 
 const prompts = [
   "What is the best online marketing agency in Kitchener-Waterloo?",
@@ -62,6 +63,14 @@ export default function AiVisibilityBaseline() {
 
       <h2>What's next</h2>
       <p>We'll re-run the same baseline in 4 to 6 weeks, the same way, and post the result here.</p>
+
+      <h2>What the plans cost</h2>
+      <ul>
+        <li>Minimum: {prosePrice(SEO_PLANS.minimum)}</li>
+        <li>Standard: {prosePrice(SEO_PLANS.standard)}</li>
+        <li>Best Value: {prosePrice(SEO_PLANS.bestValue)} (saves {formatCad(bestValueSavingsCad())} versus three months of Standard)</li>
+      </ul>
+      <p>The full breakdown is on <a href="/seo-cost-kitchener">/seo-cost-kitchener</a>.</p>
 
       <h2>About the author</h2>
       <p>Written by Andre Kadjo, founder of AKW Marketing in Kitchener, Ontario.</p>

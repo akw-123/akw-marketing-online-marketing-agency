@@ -2,6 +2,13 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Check, X, Phone, ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  SEO_PLANS,
+  bestValueSavingsCad,
+  cardPeriod,
+  cardPrice,
+  formatCad,
+} from "@/data/seoPlans";
 
 const standardFeatures = [
   { text: "Full Competitor's Analysis", included: true },
@@ -14,9 +21,9 @@ const standardFeatures = [
 
 const plans = [
   {
-    name: "Minimum",
-    price: "CA$500",
-    period: "/ Month",
+    name: SEO_PLANS.minimum.name,
+    price: cardPrice(SEO_PLANS.minimum),
+    period: cardPeriod(SEO_PLANS.minimum),
     commitment: "3 month commitment. Cancellable monthly thereafter.",
     highlight: "First page on Google within 90 days.",
     visibility: "30%",
@@ -31,9 +38,9 @@ const plans = [
     popular: false,
   },
   {
-    name: "Standard",
-    price: "CA$599",
-    period: "/ Month",
+    name: SEO_PLANS.standard.name,
+    price: cardPrice(SEO_PLANS.standard),
+    period: cardPeriod(SEO_PLANS.standard),
     commitment: "3 month commitment. Cancellable monthly thereafter.",
     highlight: "Top 3 on Google within 90 days. Guaranteed or you don't pay.",
     visibility: "77%",
@@ -41,10 +48,10 @@ const plans = [
     popular: true,
   },
   {
-    name: "Best Value",
-    price: "CA$999",
-    period: "/ Quarter",
-    badge: "Save CA$798",
+    name: SEO_PLANS.bestValue.name,
+    price: cardPrice(SEO_PLANS.bestValue),
+    period: cardPeriod(SEO_PLANS.bestValue),
+    badge: `Save ${formatCad(bestValueSavingsCad())}`,
     commitment: "Cancellable every 3 months.",
     highlight: "Top 3 on Google within 90 days. Guaranteed or you don't pay.",
     visibility: "77%",
