@@ -29,7 +29,6 @@ export const SITEMAP_PAGES = [
   { loc: "/google-ads-kitchener", source: "src/pages/GoogleAdsKitchener.jsx", priority: "0.8", changefreq: "monthly" },
   { loc: "/meta-ads-kitchener", source: "src/pages/MetaAdsKitchener.jsx", priority: "0.8", changefreq: "monthly" },
   { loc: "/ai-seo-kitchener", source: "src/pages/AiSeoKitchener.jsx", priority: "0.8", changefreq: "monthly" },
-  { loc: "/ai-visibility-baseline", source: "src/pages/AiVisibilityBaseline.jsx", priority: "0.8", changefreq: "monthly" },
   { loc: "/website-design-kitchener", source: "src/pages/WebsiteDesignKitchener.jsx", priority: "0.8", changefreq: "monthly" },
   { loc: "/content-marketing-kitchener", source: "src/pages/ContentMarketingKitchener.jsx", priority: "0.8", changefreq: "monthly" },
   { loc: "/hardest-working-seo-expert-kitchener-waterloo", source: "src/pages/HardestWorkingSeoExpert.jsx", priority: "0.9", changefreq: "weekly" },

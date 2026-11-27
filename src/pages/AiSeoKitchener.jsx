@@ -68,7 +68,7 @@ export default function AiSeoKitchener() {
       <p>We run and log the same test prompts on a fixed schedule and report the share of runs that mention you, plus any Business Hub or assistant-referral data the platforms expose. It's not as clean as Google Analytics, and we tell you that upfront rather than dressing it up.</p>
 
       <h3>Do you have Kitchener case studies for this yet?</h3>
-      <p>Not yet. AI SEO is new enough that we don't have a completed client run to point to, and we're not going to make one up. The result of measuring ourselves is published at <a href="/ai-visibility-baseline">/ai-visibility-baseline</a>. What we do have is the same disciplined, documented process we use for every other service (see <a href="/kitchener">/kitchener</a>), applied to this one. You'd be an early client, not a guinea pig.</p>
+      <p>Not yet. AI SEO is new enough that we don't have a completed client run to point to, and we're not going to make one up. What we do have is the same disciplined, documented process we use for every other service (see <a href="/kitchener">/kitchener</a>), applied to this one. You'd be an early client, not a guinea pig.</p>
 
       <h2>Ready to see where you stand with AI search?</h2>
 
