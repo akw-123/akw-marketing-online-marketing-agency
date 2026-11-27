@@ -114,7 +114,7 @@ export default function BeforeAfterSection() {
                 { Icon: BarChart3, label: "Average Ranking", value: "86", color: "text-red-400" },
                 { Icon: TrendingDown, label: "Marketshare", value: "1%", color: "text-red-400" },
                 { Icon: MousePointerClick, label: "Clicks / Month", value: "5", color: "text-red-400" },
-                { Icon: Users, label: "Customers / Month", value: "1–2", color: "text-red-400" },
+                { Icon: Users, label: "Customers / Month", value: "1 to 2", color: "text-red-400" },
               ].map(({ Icon, label, value, color }) => (
                 <div key={label} className="flex items-center justify-between py-2.5 border-b border-stone-100 last:border-0">
                   <div className="flex items-center gap-2">
@@ -187,7 +187,7 @@ export default function BeforeAfterSection() {
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-orange-400"></div>
-            <span>Ranked 4–10</span>
+            <span>Ranked 4 to 10</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-red-500"></div>

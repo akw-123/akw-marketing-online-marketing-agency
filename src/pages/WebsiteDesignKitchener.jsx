@@ -13,7 +13,7 @@ export default function WebsiteDesignKitchener() {
     <SeoArticlePage>
       <h1>Website Design in Kitchener</h1>
 
-      <p>Most local business websites in Kitchener were built once and never touched again. The typography looks like 2016, the load time is over three seconds, the mobile layout breaks on modern phones, and the whole thing exists as a brochure rather than a lead-generation tool. That's not a design problem, it's a strategy problem. AKW Marketing builds websites the other way: fast, mobile-first, SEO-ready from day one, and structured around one clear goal — turning visitors into inquiries.</p>
+      <p>Most local business websites in Kitchener were built once and never touched again. The typography looks like 2016, the load time is over three seconds, the mobile layout breaks on modern phones, and the whole thing exists as a brochure rather than a lead-generation tool. That's not a design problem, it's a strategy problem. AKW Marketing builds websites the other way: fast, mobile-first, SEO-ready from day one, and structured around one clear goal, turning visitors into inquiries.</p>
 
       <p>Book a free website audit at <a href="/free-analysis">/free-analysis</a> and we'll show you exactly where your current site is losing leads and what a modernized version would fix.</p>
 

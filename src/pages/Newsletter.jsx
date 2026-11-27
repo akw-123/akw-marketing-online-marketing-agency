@@ -69,7 +69,7 @@ export default function Newsletter() {
               Simple marketing tactics that actually work for local businesses.
             </p>
             <p className="mt-4 text-stone-500 text-base leading-relaxed">
-              No fluff, no theory — just proven strategies you can use this week to bring more customers through your door.
+              No fluff, no theory, just proven strategies you can use this week to bring more customers through your door.
             </p>
           </div>
 

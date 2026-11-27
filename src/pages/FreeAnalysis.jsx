@@ -50,7 +50,7 @@ const TIMELINE_OPTIONS = ["Today", "Tomorrow", "In a few weeks"];
 
 export default function FreeAnalysis() {
   useEffect(() => {
-    document.title = "Free Google Profile Analysis — AKW Marketing";
+    document.title = "Free Google Profile Analysis. AKW Marketing";
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) { meta = document.createElement("meta"); meta.name = "description"; document.head.appendChild(meta); }
     meta.content = "Get a free personalized analysis of your Google Business Profile. We'll show you exactly what needs to happen to rank in the top 3 in your area.";

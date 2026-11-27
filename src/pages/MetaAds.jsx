@@ -66,13 +66,13 @@ export default function MetaAds() {
     document.title = "Online Marketing Agency in Kitchener-Waterloo | AKW Marketing";
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
-    meta.content = "AKW Marketing is an online marketing agency serving the Kitchener-Waterloo area. We run Google Ads, Meta Ads, and SEO as your on-demand marketing department — every metric tracked, strategy adjusted to results. Get more customers; book a free introductory consultation.";
+    meta.content = "AKW Marketing is an online marketing agency serving the Kitchener-Waterloo area. We run Google Ads, Meta Ads, and SEO as your on-demand marketing department, every metric tracked, strategy adjusted to results. Get more customers; book a free introductory consultation.";
 
     const schema = {
       "@context": "https://schema.org",
       "@type": "ProfessionalService",
       "name": "AKW Marketing Agency",
-      "description": "AKW Marketing Agency — get your local business into Google's top 3 in 90 days. Serving the Kitchener-Waterloo area.",
+      "description": "AKW Marketing Agency, get your local business into Google's top 3 in 90 days. Serving the Kitchener-Waterloo area.",
       "url": "https://www.akwmarketing.com/gbp",
       "telephone": "+1-437-475-0076",
       "email": "contact@akwmarketing.com",
@@ -225,7 +225,7 @@ export default function MetaAds() {
                   { label: "Average Rank", value: "86th" },
                   { label: "Market Share", value: "1%" },
                   { label: "Clicks / Month", value: "~5" },
-                  { label: "New Clients / Month", value: "1–2" },
+                  { label: "New Clients / Month", value: "1 to 2" },
                 ].map((row, i) => (
                   <div key={i} className="flex justify-between items-center py-2 border-b border-stone-100 last:border-0">
                     <span className="text-sm text-stone-500">{row.label}</span>
@@ -239,9 +239,9 @@ export default function MetaAds() {
               <div className="space-y-1">
                 {[
                   { label: "Average Rank", value: "Top 3" },
-                  { label: "Market Share", value: "30–60%" },
+                  { label: "Market Share", value: "30 to 60%" },
                   { label: "Clicks / Month", value: "200+" },
-                  { label: "New Clients / Month", value: "10–20+" },
+                  { label: "New Clients / Month", value: "10 to 20+" },
                 ].map((row, i) => (
                   <div key={i} className="flex justify-between items-center py-2 border-b border-stone-700 last:border-0">
                     <span className="text-sm text-stone-400">{row.label}</span>
