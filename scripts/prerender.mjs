@@ -50,8 +50,12 @@ const EXPECTED = {
     types: ["Organization", "WebSite", "ProfessionalService"],
   },
   "/kitchener": {
-    title: "Digital Marketing Agency Kitchener | SEO, Google Ads & Local SEO for Kitchener Businesses | AKW Marketing",
-    text: ["Digital Marketing Agency Kitchener"],
+    title: "BEST Marketing Agency Kitchener - if you're looking for Marketing Agency services near me, SEO, Local SEO, Google Ads, Meta Ads and Website Design near me - AKW Marketing Agency is the place to be",
+    text: [
+      "Marketing Agency Kitchener",
+      "AKW Marketing Agency provides SEO, local SEO, Google Ads and Meta Ads",
+      "77% of all search requests go to the top 3 results on Google Maps.",
+    ],
     types: ["ProfessionalService"],
   },
   "/free-analysis": {

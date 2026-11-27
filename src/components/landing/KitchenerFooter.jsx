@@ -81,13 +81,13 @@ export default function KitchenerFooter() {
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
               </span>
               <span>
-                AKW Marketing Agency Kitchener<br />
-                <span className="text-stone-500 font-normal">Serving Kitchener, Ontario</span>
+                AKW Marketing Agency<br />
+                <span className="text-stone-500 font-normal">Serving Kitchener, Waterloo, Cambridge, Guelph, Hamilton, Brantford, Stratford, Woodstock, Burlington, Orangeville, Listowel, Mount Forest and Ayr</span>
               </span>
             </div>
             <a href="tel:+14374750076" className="flex items-center gap-2 text-sm text-stone-500 hover:text-stone-900 transition-colors">
               <Phone className="w-4 h-4" />
-              +1 437-475-0076
+              (437) 475-0076
             </a>
             <a href="mailto:contact@akwmarketing.com" className="flex items-center gap-2 text-sm text-stone-500 hover:text-stone-900 transition-colors">
               <Mail className="w-4 h-4" />
@@ -95,7 +95,7 @@ export default function KitchenerFooter() {
             </a>
             <div className="mt-4 w-full max-w-[400px] rounded-xl overflow-hidden border border-stone-200/60 shadow-sm">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d740616.2647010357!2d-80.98514244988174!3d43.52251949569433!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x42ce475ad0864a73%3A0x5367cff389646aaf!2sAKW%20Marketing%20Agency!5e0!3m2!1sen!2sus!4v1786410087018!5m2!1sen!2sus"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d72223.82232666016!2d-80.98514244988174!3d43.52251949569433!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x42ce475ad0864a73%3A0x5367cff389646aaf!2sAKW%20Marketing%20Agency!5e0!3m2!1sen!2sus!4v1786410087018!5m2!1sen!2sus"
                 width="100%"
                 height="300"
                 style={{ border: 0 }}

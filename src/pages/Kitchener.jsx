@@ -75,10 +75,13 @@ function KitchenerHero() {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-stone-900 leading-[1.1] tracking-tight">
-              Digital Marketing Agency Kitchener
+              Marketing Agency Kitchener
             </h1>
 
             <p className="mt-6 text-stone-600 leading-relaxed max-w-lg">
+              AKW Marketing Agency provides SEO, local SEO, Google Ads and Meta Ads for local businesses across Kitchener, Waterloo, Cambridge and Guelph, and the wider service area on the Google profile. The team works as an on-demand marketing department, tracks the calls and form fills that come from the work, and adjusts from those results. Request a free analysis to see where a Kitchener business stands in the map pack today.
+            </p>
+            <p className="mt-4 text-stone-600 leading-relaxed max-w-lg">
               77% of all search requests go to the top 3 results on Google Maps.
               <br /><br />
               If your Kitchener business isn't there, those customers are going to your competitors. Want to see how this applies to your business? <a href="/free-analysis" className="text-stone-800 underline underline-offset-2 hover:text-stone-900">Request a free analysis</a> and we'll show you exactly where you stand.
@@ -224,6 +227,47 @@ function KitchenerCTA() {
   );
 }
 
+const googleReviews = [
+  {
+    lead: "A Kitchener-Waterloo SEO client, Christina Thomas, wrote on Google:",
+    quote: "I had a great experience with AKW Marketing Agency. They significantly increased our visibility online, which really helped increase our revenue in our area.",
+    caption: "Christina Thomas, August 4, 2026",
+  },
+  {
+    lead: "A Kitchener-Waterloo SEO client, Adote, wrote on Google:",
+    quote: "Amazing team. They helped us with SEO and we noticed better rankings within a few months. I highly recommend!",
+    caption: "Adote, June 24, 2026",
+  },
+  {
+    lead: "A Kitchener-Waterloo marketing client, Sandra Konian, wrote on Google:",
+    quote: "Excellent experience with AKW Marketing Agency. Andre is professional, responsive, and the work he delivers is truly high quality.",
+    caption: "Sandra Konian, May 10, 2026 (translated from French by Google)",
+  },
+];
+
+function GoogleReviewsSection() {
+  return (
+    <section className="py-20 md:py-28 px-6 border-t border-stone-200/60">
+      <div className="max-w-3xl mx-auto">
+        <h2 className="text-3xl md:text-4xl font-bold text-stone-900 tracking-tight mb-10">
+          What Kitchener-Waterloo clients say on Google
+        </h2>
+        <div className="space-y-8">
+          {googleReviews.map((review) => (
+            <figure key={review.caption} className="bg-white/70 border border-stone-200/60 rounded-2xl p-6 md:p-8">
+              <p className="text-stone-600 leading-relaxed mb-4">{review.lead}</p>
+              <blockquote className="border-l-2 border-stone-300 pl-4">
+                <p className="text-stone-800 leading-relaxed">{review.quote}</p>
+              </blockquote>
+              <figcaption className="mt-4 text-sm font-medium text-stone-500">{review.caption}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function WhereWeWork() {
   const areas = [
     { name: "Waterloo", href: "/waterloo" },
@@ -284,7 +328,7 @@ function WhereWeWork() {
 
 export default function Kitchener() {
   useEffect(() => {
-    document.title = "Digital Marketing Agency Kitchener | SEO, Google Ads & Local SEO for Kitchener Businesses | AKW Marketing";
+    document.title = "BEST Marketing Agency Kitchener - if you're looking for Marketing Agency services near me, SEO, Local SEO, Google Ads, Meta Ads and Website Design near me - AKW Marketing Agency is the place to be";
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) { meta = document.createElement('meta'); meta.name = "description"; document.head.appendChild(meta); }
     meta.content = "Kitchener digital marketing agency offering SEO, Google Ads & Meta Ads. Get found, attract leads, scale revenue. Free analysis from AKW Marketing.";
@@ -342,6 +386,7 @@ export default function Kitchener() {
       <BeforeAfterSection />
       <KitchenerProcessSection />
       <TestimonialsSection />
+      <GoogleReviewsSection />
       <WhereWeWork />
       <FAQSection />
       <ExploreInsights />
